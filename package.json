@@ -1,0 +1,27 @@
+{
+  "name": "endaoment-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "solc": "^0.6.8"
+  },
+  "scripts": {
+    "start": "serve -s build",
+    "dev": "react-scripts start",
+    "build": "react-scripts --max_old_space_size=2048 build",
+    "build:rinkeby": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "gcp-build": "react-scripts --max_old_space_size=2048 build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
