@@ -23,7 +23,7 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : "remote",
     },
     coverage: {
-      url: 'http://localhost:8555'
+      url: 'http://localhost:8555',
     },
   },
 };
