@@ -8,7 +8,7 @@ ENDAOMENT V0.1 ADMIN CONTRACT:
 */
 
 
-pragma solidity 0.6.8;
+pragma solidity 0.6.10;
 
 interface EndaomentAdminInterface {
   event RoleModified(Role indexed role, address account);

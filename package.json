@@ -5,16 +5,17 @@
   "dependencies": {
     "bip39": "^3.0.2",
     "fs-extra": "^7.0.1",
-    "solc": "^0.6.8"
+    "solc": "^0.6.8",
+    "@nomiclabs/buidler": "^1.1.2",
+    "@nomiclabs/buidler-truffle5": "^1.1.2",
+    "@nomiclabs/buidler-web3": "^1.1.2",
+    "@openzeppelin/contracts": "^2.5.0",
+    "eth-sig-util": "^2.5.3",
+    "ethereumjs-util": "^6.2.0",
+    "web3": "^1.2.6"
   },
   "scripts": {
-    "start": "serve -s build",
-    "dev": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=2048 build",
-    "build:rinkeby": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "gcp-build": "react-scripts --max_old_space_size=2048 build"
+    "test": "builder test"
   },
   "eslintConfig": {
     "extends": "react-app"

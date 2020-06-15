@@ -2,11 +2,11 @@ const path = require("path");
 const solc = require("solc");
 const fs = require("fs-extra");
 
-const buildPath = path.resolve(__dirname, "build");
+const buildPath = path.resolve(__dirname, "../abis");
 
 const endaomentAdminPath = path.resolve(
   __dirname,
-  "contracts",
+  "../contracts",
   "endaomentAdmin.sol"
 );
 
@@ -48,7 +48,7 @@ if (endaomentAdminOutput.errors) {
   }
 }
 
-const fundFactory = path.resolve(__dirname, "contracts", "fundFactory.sol");
+const fundFactory = path.resolve(__dirname, "../contracts", "fundFactory.sol");
 const fundFactorySource = fs.readFileSync(fundFactory, "utf8");
 
 var fundFactoryInput = {
@@ -86,7 +86,7 @@ if (fundFactoryOutput.errors) {
     );
   }
 }
-const orgFactory = path.resolve(__dirname, "contracts", "orgFactory.sol");
+const orgFactory = path.resolve(__dirname, "../contracts", "orgFactory.sol");
 const orgFactorySource = fs.readFileSync(orgFactory, "utf8");
 
 var orgFactoryInput = {
