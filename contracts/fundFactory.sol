@@ -3,7 +3,7 @@
 ENDAOMENT V0.1 DONOR-ADVISED FUND CONTRACTS: 
 */
 
-pragma solidity 0.6.10;
+pragma solidity ^0.5.0;
 
 
 // INTERFACES

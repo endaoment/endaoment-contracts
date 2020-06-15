@@ -6,7 +6,7 @@
     "bip39": "^3.0.2",
     "fs-extra": "^7.0.1",
     "solc": "^0.6.8",
-    "@nomiclabs/buidler": "^1.1.2",
+    "@nomiclabs/buidler": "^1.3.6",
     "@nomiclabs/buidler-truffle5": "^1.1.2",
     "@nomiclabs/buidler-web3": "^1.1.2",
     "@openzeppelin/contracts": "^2.5.0",
@@ -15,7 +15,7 @@
     "web3": "^1.2.6"
   },
   "scripts": {
-    "test": "builder test"
+    "test": "buidler test"
   },
   "eslintConfig": {
     "extends": "react-app"

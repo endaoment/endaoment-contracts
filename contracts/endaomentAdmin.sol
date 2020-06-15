@@ -8,7 +8,7 @@ ENDAOMENT V0.1 ADMIN CONTRACT:
 */
 
 
-pragma solidity 0.6.10;
+pragma solidity ^0.5.0;
 
 interface EndaomentAdminInterface {
   event RoleModified(Role indexed role, address account);
@@ -151,7 +151,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @param role The role that the account will be set for.
    * @param account The account to set as the designated role bearer.
    */
-  function setRole(Role role, address account) external override onlyOwner {
+  function setRole(Role role, address account) external onlyOwner {
     require(account != address(0), "Must supply an account.");
     _setRole(role, account);
   }
@@ -162,7 +162,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * may call this function.
    * @param role The role that the account will be removed from.
    */
-  function removeRole(Role role) external override onlyOwner {
+  function removeRole(Role role) external onlyOwner {
     _setRole(role, address(0));
   }
   
@@ -172,7 +172,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * mind that only the owner may unpause a role once paused.
    * @param role The role to pause.
    */
-  function pause(Role role) external override onlyAdminOr(Role.PAUSER) {
+  function pause(Role role) external onlyAdminOr(Role.PAUSER) {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
     require(!storedRoleStatus.paused, "Role in question is already paused.");
     storedRoleStatus.paused = true;
@@ -184,7 +184,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * Only the owner may call this function.
    * @param role The role to pause.
    */
-  function unpause(Role role) external override onlyOwner {
+  function unpause(Role role) external onlyOwner {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
     require(storedRoleStatus.paused, "Role in question is already unpaused.");
     storedRoleStatus.paused = false;
@@ -201,7 +201,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @return paused A boolean to indicate if the functionality associated with
    * the role in question is currently paused.
    */
-  function isPaused(Role role) external view override returns (bool paused) {
+  function isPaused(Role role) external view returns (bool paused) {
     paused = _isPaused(role);
   }
 
@@ -211,7 +211,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @param role The role to check for.
    * @return hasRole A boolean indicating if the caller has the specified role.
    */
-  function isRole(Role role) external view override returns (bool hasRole) {
+  function isRole(Role role) external view returns (bool hasRole) {
     hasRole = _isRole(role);
   }
 
@@ -221,7 +221,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @return admin The address of the current admin, or the null
    * address if none is set.
    */
-  function getAdmin() external view override returns (
+  function getAdmin() external view returns (
     address admin
   ) {
     admin = _roles[uint256(Role.ADMIN)].account;
@@ -235,7 +235,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @return pauser The address of the current pauser, or the null address if
    * none is set.
    */
-  function getPauser() external view override returns (address pauser) {
+  function getPauser() external view returns (address pauser) {
     pauser = _roles[uint256(Role.PAUSER)].account;
   }
   
@@ -243,7 +243,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @notice External view function to check the account currently holding the
    * accountant role.
    */
-  function getAccountant() external view override returns (address accountant) {
+  function getAccountant() external view returns (address accountant) {
     accountant = _roles[uint256(Role.ACCOUNTANT)].account;
   }
   
@@ -251,7 +251,7 @@ contract EndaomentAdmin is EndaomentAdminInterface, TwoStepOwnable {
    * @notice External view function to check the account currently holding the
    * reviewer role.
    */
-  function getReviewer() external view override returns (address reviewer) {
+  function getReviewer() external view returns (address reviewer) {
     reviewer = _roles[uint256(Role.REVIEWER)].account;
   }
   
