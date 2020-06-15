@@ -7,8 +7,8 @@
 
 # testing
 /coverage
-cache
-artifacts
+/cache
+/artifacts
 
 # production
 /build
