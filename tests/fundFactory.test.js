@@ -1,4 +1,4 @@
-const FundFactory = artifacts.require("FundFactory");
+const FundFactory = artifacts.require("FundFactory.json");
 
 describe("FundFactory contract", function () {
   let accounts;
