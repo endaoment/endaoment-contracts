@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
 
-/*
-ENDAOMENT V0.1 ADMIN CONTRACT: 
-    EndaomentAdmin acts as a admin user state gatekeeper for the FundFactory, Fund, OrgFactory and Org Contracts. 
-    On deployment, the admin is set by the deployer. Once set, only the admin can change the admin role. 
-
-*/
 pragma solidity ^0.6.10;
 
 import "./interfaces/IEndaomentAdmin.sol";

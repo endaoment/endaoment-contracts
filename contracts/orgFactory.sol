@@ -1,14 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
-/*
-ENDAOMENT V0.1 ORGANIZATION CONTRACTS: 
-*/
 
 pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
 import "./Org.sol";
-
-// LIBRARY 
 
 //ORG FACTORY CONTRACT
 /**

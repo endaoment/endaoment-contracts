@@ -1,16 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
-/*
-ENDAOMENT V0.1 DONOR-ADVISED FUND CONTRACTS: 
-*/
 
 pragma solidity ^0.6.10;
-
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
 import "./libraries/SafeMath.sol";
 import "./Fund.sol";
-
 
 // FUND FACTORY CONTRACT
 /**
@@ -24,14 +19,10 @@ import "./Fund.sol";
 contract FundFactory is Administratable {
     
     // ========== STATE VARIABLES ==========
-    
     Fund[] public createdFunds;
     event fundCreated(address indexed newAddress);
     
-    
-     
     // ========== CONSTRUCTOR ==========    
-    
     /**
     * @notice Create new Fund Factory
     * @param adminContractAddress Address of EndaomentAdmin contract. 
@@ -41,7 +32,6 @@ contract FundFactory is Administratable {
     }
         
     // ========== Fund Creation & Management ==========
-
     /**
     * @notice  Create new Fund
     * @param managerAddress The address of the Fund's Primary Advisor

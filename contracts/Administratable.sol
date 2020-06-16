@@ -35,9 +35,9 @@ contract Administratable {
                      if (role == IEndaomentAdmin.Role.REVIEWER ){
                          require(msg.sender == x.getReviewer());
                      }
+                } else {
+                    require(msg.sender == x.getAdmin());
                 }
-                
-            require(msg.sender == x.getAdmin());
           }
           _;
          }
