@@ -16,8 +16,8 @@
     "solidity-coverage": "^0.7.0-beta.3"
   },
   "scripts": {
-    "test": "buidler test",
-    "coverage": "buidler coverage"
+    "test": "oz compile && mocha --exit --recursive test",
+    "coverage": "buidler coverage --network coverage"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,5 +27,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@openzeppelin/cli": "^2.8.2",
+    "@openzeppelin/test-environment": "^0.1.4",
+    "@openzeppelin/test-helpers": "^0.5.6",
+    "ganache-cli": "^6.9.1"
+  }
 }

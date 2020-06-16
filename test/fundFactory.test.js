@@ -1,23 +1,35 @@
-const FundFactory = artifacts.require("FundFactory");
+const { accounts, contract } = require('@openzeppelin/test-environment');
+const { assert, expect, should } = require('chai');
+
+const EndaomentAdminInterface = contract.fromArtifact("EndaomentAdminInterface");
+const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
+const FundFactory = contract.fromArtifact("FundFactory");
+const Fund = contract.fromArtifact("Fund");
+const TwoStepOwnable = contract.fromArtifact("TwoStepOwnable");
 
 describe("FundFactory contract", function () {
-  let accounts;
-
+  const [ admin, manager ] = accounts;
+  
   before(async function () {
-    accounts = await web3.eth.getAccounts();
+    this.admin_contract = await EndaomentAdmin.new({ from: admin });
   });
 
-  it("deploys funds", async function () {
-    const fundFactory = await FundFactory.new();
-    assert.isNotNull(fundFactory.address);
+  beforeEach(async function () {
+    await this.admin_contract.setRole(0, admin, { from: admin });
+    this.contract = await FundFactory.new(this.admin_contract.address, { from: admin });
+  });
 
-    const fund = await fundFactory.createFund(
-      accounts[0]
-      //NEED DEPLOYED ADMINCONTRACTADDRESS
+  it("creates funds", async function () {
+    assert.isNotNull(this.contract.address);
+
+    const fund = await this.contract.createFund(
+      manager,
+      this.admin_contract.address, { from: admin }
     );
 
     assert.isNotNull(fund.address);
   });
+
   it("returns count of total funds", async function () {
     const fundFactory = await FundFactory.new();
     assert.isNotNull(fundFactory.address);

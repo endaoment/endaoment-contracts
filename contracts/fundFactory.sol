@@ -5,7 +5,6 @@ ENDAOMENT V0.1 DONOR-ADVISED FUND CONTRACTS:
 
 pragma solidity ^0.5.0;
 
-
 // INTERFACES
 interface OrgFactory {
     function getAllowedOrgs(address recipient) external view returns (bool);
@@ -94,10 +93,10 @@ contract FundFactory {
          * @param adminContractAddress is the supplied EndaomentAdmin contract address
          */
         modifier onlyAdmin(address adminContractAddress) {
-        EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
+            EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
             
-        require(msg.sender == x.getAdmin());
-        _;
+            require(msg.sender == x.getAdmin(), "Only admins can access.");
+            _;
         }
      
         /**
@@ -141,7 +140,8 @@ contract FundFactory {
     * @param managerAddress The address of the Fund's Primary Advisor
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, EndaomentAdmin.Role.ACCOUNTANT){
+    function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, EndaomentAdmin.Role.ACCOUNTANT)
+                                                                              {
         Fund newFund = new Fund(managerAddress);
         createdFunds.push(newFund);
         emit fundCreated(address(newFund));

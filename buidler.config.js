@@ -11,6 +11,9 @@ task("accounts", "Prints the list of accounts", async () => {
 
 module.exports = {
   defaultNetwork: "rinkeby",
+  solc: {
+    version: "0.5.15"
+  },
   networks: {
     mainnet: {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
