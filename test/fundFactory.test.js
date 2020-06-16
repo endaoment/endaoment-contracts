@@ -1,11 +1,9 @@
 const { accounts, contract } = require("@openzeppelin/test-environment");
-const { assert, expect, should } = require("chai");
+const { assert } = require("chai");
 
-const EndaomentAdminInterface = contract.fromArtifact("IEndaomentAdmin");
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const FundFactory = contract.fromArtifact("FundFactory");
 const Fund = contract.fromArtifact("Fund");
-const TwoStepOwnable = contract.fromArtifact("TwoStepOwnable");
 
 describe("FundFactory", function () {
   const [admin, manager, accountant, pauser] = accounts;
