@@ -16,7 +16,8 @@
     "solidity-coverage": "^0.7.0-beta.3"
   },
   "scripts": {
-    "test": "oz compile && mocha --exit --recursive test",
+    "test": "mocha --exit --recursive test",
+    "build": "oz compile",
     "coverage": "buidler coverage --network coverage"
   },
   "eslintConfig": {

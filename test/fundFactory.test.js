@@ -26,7 +26,10 @@ describe("FundFactory contract", function () {
       manager,
       this.admin_contract.address, { from: admin }
     );
+    const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
 
+    const fund_manager = await fund_contract.manager(); 
+    assert.equal(fund_manager, manager);
     assert.isNotNull(fund.address);
   });
 
