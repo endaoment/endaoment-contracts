@@ -3,11 +3,12 @@
 ENDAOMENT V0.1 DONOR-ADVISED FUND CONTRACTS: 
 */
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.10;
 
-import "./interfaces/Administratable.sol";
+
+import "./Administratable.sol";
 import "./OrgFactory.sol";
-import "./SafeMath.sol";
+import "./libraries/SafeMath.sol";
 import "./Fund.sol";
 
 

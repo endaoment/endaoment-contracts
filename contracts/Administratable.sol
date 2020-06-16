@@ -1,6 +1,8 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: UNLICENSED
 
-import "../EndaomentAdmin.sol";
+pragma solidity ^0.6.10;
+
+import "./EndaomentAdmin.sol";
 
 contract Administratable {
 

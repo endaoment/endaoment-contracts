@@ -1,8 +1,10 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: UNLICENSED
 
-import "./interfaces/Administratable.sol";
+pragma solidity ^0.6.10;
+
+import "./Administratable.sol";
 import "./interfaces/IERC20.sol";
-import "./SafeMath.sol";
+import "./libraries/SafeMath.sol";
 
 //ORG CONTRACT
 /**

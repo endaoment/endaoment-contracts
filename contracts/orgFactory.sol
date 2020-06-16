@@ -3,9 +3,9 @@
 ENDAOMENT V0.1 ORGANIZATION CONTRACTS: 
 */
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.10;
 
-import "./interfaces/Administratable.sol";
+import "./Administratable.sol";
 import "./Org.sol";
 
 // LIBRARY 
