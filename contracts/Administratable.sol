@@ -35,6 +35,12 @@ contract Administratable {
                      if (role == IEndaomentAdmin.Role.REVIEWER ){
                          require(msg.sender == endaomentAdmin.getReviewer(), "Only REVIEWER can access");
                      }
+                     if (role == IEndaomentAdmin.Role.FUND_FACTORY ){
+                         require(msg.sender == endaomentAdmin.getFundFactory(), "Only FUND_FACTORY can access");
+                     }
+                     if (role == IEndaomentAdmin.Role.ORG_FACTORY ){
+                         require(msg.sender == endaomentAdmin.getOrgFactory(), "Only ORG_FACTORY can access");
+                     }
                 } else {
                     require(msg.sender == endaomentAdmin.getAdmin(), "Only ADMIN can access");
                 }
