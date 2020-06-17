@@ -12,7 +12,7 @@ task("accounts", "Prints the list of accounts", async () => {
 module.exports = {
   defaultNetwork: "rinkeby",
   solc: {
-    version: "0.5.15",
+    version: "0.6.10",
   },
   networks: {
     mainnet: {

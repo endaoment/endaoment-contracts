@@ -1,4 +1,5 @@
 const { accounts, contract } = require("@openzeppelin/test-environment");
+const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 const { assert } = require("chai");
 
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
@@ -21,9 +22,21 @@ describe("FundFactory", function () {
     });
   });
 
-  it("admin can create funds with correct manager", async function () {
-    assert.isDefined(this.FundFactory.address);
+  it("has defined contract address post-init", async function () {
+      assert.isDefined(this.FundFactory.address);
+  });
+  
+  it("allows admin contract to construct", async function () {
+      const fund_factory = await FundFactory.new(this.EndaomentAdmin.address, { from: admin });
+      assert.isDefined(fund_factory.address);
+  });
+  
+  it("denies invalid admin contract to construct", async function () {
+      await expectRevert.unspecified(FundFactory.new(constants.ZERO_ADDRESS, { from: admin }));
+  });
 
+
+  it("admin can create funds with correct manager", async function () {
     const fund = await this.FundFactory.createFund(
       manager,
       this.EndaomentAdmin.address,
@@ -37,8 +50,6 @@ describe("FundFactory", function () {
   });
 
   it("accountant can create funds with correct manager, only if not paused", async function () {
-    assert.isDefined(this.FundFactory.address);
-
     const fund = await this.FundFactory.createFund(
       manager,
       this.EndaomentAdmin.address,
@@ -60,20 +71,18 @@ describe("FundFactory", function () {
   });
 
   it("returns count of total funds", async function () {
-    assert.isDefined(this.FundFactory.address);
+    const before_count = await this.FundFactory.countFunds();
+    assert.equal(before_count, 0);
 
     await this.FundFactory.createFund(manager, this.EndaomentAdmin.address, {
       from: admin,
     });
 
-    const count = await this.FundFactory.countFunds();
-
-    assert.equal(count, 1);
+    const after_count = await this.FundFactory.countFunds();
+    assert.equal(after_count, 1);
   });
 
-  it("grabs a fund address using getFund()", async function () {
-    assert.isDefined(this.FundFactory.address);
-
+  it("gets fund address via index", async function () {
     const fund = await this.FundFactory.createFund(
       manager,
       this.EndaomentAdmin.address,
