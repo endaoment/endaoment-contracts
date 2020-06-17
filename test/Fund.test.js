@@ -9,6 +9,7 @@ const { assert } = require("chai");
 
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const FundFactory = contract.fromArtifact("FundFactory");
+const OrgFactory = contract.fromArtifact("OrgFactory");
 const Fund = contract.fromArtifact("Fund");
 
 describe("Fund", function() {
@@ -122,15 +123,112 @@ describe("Fund", function() {
     );
   });
 
-  it("returns count of total grants", async function() {
+  it("checks the recipeint of a grant with the OrgFactory", async function() {
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
+
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    const orgChecked = await this.fund.checkRecipient(
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: admin }
+    );
+
+    assert.isTrue(orgChecked);
+
+    const failingOrg = await this.fund.checkRecipient(
+      constants.ZERO_ADDRESS,
+      orgFactory.address,
+      { from: admin }
+    );
+
+    assert.isFalse(failingOrg);
+  });
+
+  it("allows only MANAGER to create a grant", async function() {
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
+
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    await this.fund.createGrant(
+      "test grant",
+      1,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+    const grant = await this.fund.grants(0);
+
+    assert.deepEqual(
+      {
+        description: grant.description,
+        value: grant.value.words[0],
+        recipient: grant.recipient,
+        complete: grant.complete,
+      },
+      {
+        description: "test grant",
+        value: 1,
+        recipient: org.logs[0].args.newAddress,
+        complete: false,
+      }
+    );
+
+    await expectRevert.unspecified(
+      this.fund.createGrant(
+        "test grant",
+        1,
+        org.logs[0].args.newAddress,
+        orgFactory.address,
+        { from: admin }
+      )
+    );
+  });
+
+  it("returns correct count of total grants", async function() {
     const before_count = await this.fund.getGrantsCount();
     assert.equal(before_count, 0);
 
-    // await this.fund.createGrant(manager, this.endaomentAdmin.address, {
-    //   from: admin,
-    // });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
 
-    // const after_count = await this.fund.getGrantsCount();
-    // assert.equal(after_count, 1);
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    await this.fund.createGrant(
+      "test grant",
+      1,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+
+    const after_count = await this.fund.getGrantsCount();
+    assert.equal(after_count, 1);
   });
 });

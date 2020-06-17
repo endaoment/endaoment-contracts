@@ -145,7 +145,7 @@ contract Fund is Administratable {
         }
 
         /**
-        * @notice Returns totla number of grants submitted to the fund. 
+        * @notice Returns total number of grants submitted to the fund. 
         */
         function getGrantsCount() public view returns (uint) {
             return grants.length;
