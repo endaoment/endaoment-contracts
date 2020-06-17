@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
@@ -38,11 +38,10 @@ contract FundFactory is Administratable {
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
     function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
-                                                                              returns (address) {
+                                                                             {
         Fund newFund = new Fund(managerAddress);
         createdFunds.push(newFund);
         emit fundCreated(address(newFund));
-        return address(newFund);
     }
 
     function countFunds() public view returns (uint) {

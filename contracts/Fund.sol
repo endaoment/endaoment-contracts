@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
 import "./interfaces/IERC20.sol";
@@ -71,12 +71,11 @@ contract Fund is Administratable {
         OrgFactory x = OrgFactory ( orgFactoryContractAddress );
 
         return x.getAllowedOrgs(recipient);
-
     }
 
-     function getSummary(address tokenAddress) public view returns (uint, uint, uint, address) {
-            ERC20 t = ERC20(tokenAddress);
-            uint bal = t.balanceOf(address(this));
+    function getSummary(address tokenAddress) public view returns (uint, uint, uint, address) {
+        ERC20 t = ERC20(tokenAddress);
+        uint bal = t.balanceOf(address(this));
 
         return (
             bal,
