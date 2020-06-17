@@ -29,16 +29,16 @@ contract Administratable {
             
             if (msg.sender != endaomentAdmin.getAdmin()) {
                 if (!endaomentAdmin.isPaused(role)) {
-                     if (role == IEndaomentAdmin.Role.ACCOUNTANT ){
+                     if (role == IEndaomentAdmin.Role.ACCOUNTANT) {
                          require(msg.sender == endaomentAdmin.getAccountant(), "Only ACCOUNTANT can access");
                     }
-                     if (role == IEndaomentAdmin.Role.REVIEWER ){
+                     if (role == IEndaomentAdmin.Role.REVIEWER) {
                          require(msg.sender == endaomentAdmin.getReviewer(), "Only REVIEWER can access");
                      }
-                     if (role == IEndaomentAdmin.Role.FUND_FACTORY ){
+                     if (role == IEndaomentAdmin.Role.FUND_FACTORY) {
                          require(msg.sender == endaomentAdmin.getFundFactory(), "Only FUND_FACTORY can access");
                      }
-                     if (role == IEndaomentAdmin.Role.ORG_FACTORY ){
+                     if (role == IEndaomentAdmin.Role.ORG_FACTORY) {
                          require(msg.sender == endaomentAdmin.getOrgFactory(), "Only ORG_FACTORY can access");
                      }
                 } else {
