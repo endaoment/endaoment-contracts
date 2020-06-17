@@ -22,7 +22,7 @@ describe("FundFactory", function() {
     this.fundFactory = await FundFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
-    await this.endaomentAdmin.setRole(3, this.fundFactory.address, {
+    await this.endaomentAdmin.setRole(4, this.fundFactory.address, {
       from: admin,
     });
   });

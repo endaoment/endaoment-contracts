@@ -22,7 +22,7 @@ describe("OrgFactory", function() {
     this.orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
-    await this.endaomentAdmin.setRole(4, this.orgFactory.address, {
+    await this.endaomentAdmin.setRole(5, this.orgFactory.address, {
       from: admin,
     });
   });
