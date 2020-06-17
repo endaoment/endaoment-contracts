@@ -12,9 +12,9 @@ contract Administratable {
          * @param adminContractAddress is the supplied EndaomentAdmin contract address
          */
         modifier onlyAdmin(address adminContractAddress) {
-            EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
+            EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
             
-            require(msg.sender == x.getAdmin(), "Only admins can access.");
+            require(msg.sender == endaomentAdmin.getAdmin(), "Only ADMIN can access.");
             _;
         }
      
@@ -25,18 +25,18 @@ contract Administratable {
         * roles are admin (0), accountant (2), and reviewer (3).
         */     
         modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
-            EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
+            EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
             
-            if (msg.sender != x.getAdmin()) {
-                if (!x.isPaused(role)) {
+            if (msg.sender != endaomentAdmin.getAdmin()) {
+                if (!endaomentAdmin.isPaused(role)) {
                      if (role == IEndaomentAdmin.Role.ACCOUNTANT ){
-                         require(msg.sender == x.getAccountant());
+                         require(msg.sender == endaomentAdmin.getAccountant(), "Only ACCOUNTANT can access");
                     }
                      if (role == IEndaomentAdmin.Role.REVIEWER ){
-                         require(msg.sender == x.getReviewer());
+                         require(msg.sender == endaomentAdmin.getReviewer(), "Only REVIEWER can access");
                      }
                 } else {
-                    require(msg.sender == x.getAdmin());
+                    require(msg.sender == endaomentAdmin.getAdmin(), "Only ADMIN can access");
                 }
           }
           _;

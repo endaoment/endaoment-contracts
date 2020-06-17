@@ -14,11 +14,8 @@ const Fund = contract.fromArtifact("Fund");
 describe("FundFactory", function () {
   const [admin, manager, accountant, pauser] = accounts;
 
-  before(async function () {
-    this.EndaomentAdmin = await EndaomentAdmin.new({ from: admin });
-  });
-
   beforeEach(async function () {
+    this.EndaomentAdmin = await EndaomentAdmin.new({ from: admin });
     await this.EndaomentAdmin.setRole(0, admin, { from: admin });
     await this.EndaomentAdmin.setRole(1, pauser, { from: admin });
     await this.EndaomentAdmin.setRole(2, accountant, { from: admin });
@@ -82,8 +79,6 @@ describe("FundFactory", function () {
         from: accountant,
       })
     );
-
-    await this.EndaomentAdmin.unpause(2, { from: admin });
   });
 
   it("returns count of total funds", async function () {
