@@ -1,5 +1,10 @@
 const { accounts, contract } = require("@openzeppelin/test-environment");
-const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const {
+  BN,
+  constants,
+  expectEvent,
+  expectRevert,
+} = require("@openzeppelin/test-helpers");
 const { assert } = require("chai");
 
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
@@ -23,20 +28,29 @@ describe("FundFactory", function () {
   });
 
   it("has defined contract address post-init", async function () {
-      assert.isDefined(this.FundFactory.address);
+    assert.isDefined(this.FundFactory.address);
   });
-  
-  it("allows admin contract to construct", async function () {
-      const fund_factory = await FundFactory.new(this.EndaomentAdmin.address, { from: admin });
-      assert.isDefined(fund_factory.address);
+
+  it("allows ADMIN contract to construct", async function () {
+    const fund_factory = await FundFactory.new(this.EndaomentAdmin.address, {
+      from: admin,
+    });
+    assert.isDefined(fund_factory.address);
   });
-  
+
   it("denies invalid admin contract to construct", async function () {
-      await expectRevert.unspecified(FundFactory.new(constants.ZERO_ADDRESS, { from: admin }));
+    await expectRevert.unspecified(
+      FundFactory.new(constants.ZERO_ADDRESS, { from: admin })
+    );
   });
 
+  it("denies invalid non-admin wallet to construct", async function () {
+    await expectRevert.unspecified(
+      FundFactory.new(this.EndaomentAdmin.address, { from: manager })
+    );
+  });
 
-  it("admin can create funds with correct manager", async function () {
+  it("ADMIN can create funds with correct manager", async function () {
     const fund = await this.FundFactory.createFund(
       manager,
       this.EndaomentAdmin.address,
@@ -49,7 +63,7 @@ describe("FundFactory", function () {
     assert.isDefined(fund.logs[0].args.newAddress);
   });
 
-  it("accountant can create funds with correct manager, only if not paused", async function () {
+  it("ACCOUNTANT can create funds with correct manager, only if not paused", async function () {
     const fund = await this.FundFactory.createFund(
       manager,
       this.EndaomentAdmin.address,
@@ -61,13 +75,15 @@ describe("FundFactory", function () {
     assert.equal(fund_manager, manager);
     assert.isDefined(fund.logs[0].args.newAddress);
 
-    // await this.EndaomentAdmin.pause(2, { from: pauser });
+    await this.EndaomentAdmin.pause(2, { from: pauser });
 
-    // assert.Throw(async () => {
-    //   await this.FundFactory.createFund(manager, this.EndaomentAdmin.address, {
-    //     from: accountant,
-    //   });
-    // });
+    await expectRevert.unspecified(
+      this.FundFactory.createFund(manager, this.EndaomentAdmin.address, {
+        from: accountant,
+      })
+    );
+
+    await this.EndaomentAdmin.unpause(2, { from: admin });
   });
 
   it("returns count of total funds", async function () {

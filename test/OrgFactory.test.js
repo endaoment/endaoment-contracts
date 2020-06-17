@@ -1,5 +1,11 @@
 const { accounts, contract } = require("@openzeppelin/test-environment");
 const { assert } = require("chai");
+const {
+  BN,
+  constants,
+  expectEvent,
+  expectRevert,
+} = require("@openzeppelin/test-helpers");
 
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const OrgFactory = contract.fromArtifact("OrgFactory");
@@ -21,9 +27,31 @@ describe("OrgFactory", function() {
     });
   });
 
+  it("has defined contract address post-init", async function() {
+    assert.isDefined(this.OrgFactory.address);
+  });
+
+  it("allows admin contract to construct", async function() {
+    const org_factory = await OrgFactory.new(this.EndaomentAdmin.address, {
+      from: admin,
+    });
+    assert.isDefined(org_factory.address);
+  });
+
+  it("denies invalid admin contract to construct", async function() {
+    await expectRevert.unspecified(
+      OrgFactory.new(constants.ZERO_ADDRESS, { from: admin })
+    );
+  });
+
+  it("denies invalid non-admin wallet to construct", async function() {
+    await expectRevert.unspecified(
+      OrgFactory.new(this.EndaomentAdmin.address, { from: manager })
+    );
+  });
+
   it("admin can create orgs", async function() {
     assert.isDefined(this.OrgFactory.address);
-    console.log(this.OrgFactory);
 
     const org = await this.OrgFactory.createOrg(
       123456789,
