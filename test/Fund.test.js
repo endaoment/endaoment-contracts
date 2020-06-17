@@ -12,7 +12,7 @@ const FundFactory = contract.fromArtifact("FundFactory");
 const OrgFactory = contract.fromArtifact("OrgFactory");
 const Fund = contract.fromArtifact("Fund");
 
-describe("Fund", function() {
+describe("Fund.sol", function() {
   const [admin, manager, newManager, accountant, pauser, reviewer] = accounts;
 
   beforeEach(async function() {

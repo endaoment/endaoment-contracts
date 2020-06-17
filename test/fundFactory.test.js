@@ -11,7 +11,7 @@ const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const FundFactory = contract.fromArtifact("FundFactory");
 const Fund = contract.fromArtifact("Fund");
 
-describe("FundFactory", function() {
+describe("FundFactory.sol", function() {
   const [admin, manager, accountant, pauser] = accounts;
 
   beforeEach(async function() {
