@@ -7,7 +7,7 @@ const {
 } = require("@openzeppelin/test-helpers");
 const { assert } = require("chai");
 
-const endaomentAdmin = contract.fromArtifact("endaomentAdmin");
+const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const FundFactory = contract.fromArtifact("FundFactory");
 const Fund = contract.fromArtifact("Fund");
 
@@ -22,26 +22,29 @@ describe("FundFactory", function() {
     this.fundFactory = await FundFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
+    await this.endaomentAdmin.setRole(3, this.fundFactory.address, {
+      from: admin,
+    });
   });
 
   it("has defined contract address post-init", async function() {
     assert.isDefined(this.fundFactory.address);
   });
 
-  it("allows ADMIN contract to construct", async function() {
+  it("allows ADMIN to construct factory contract", async function() {
     const fund_factory = await FundFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
     assert.isDefined(fund_factory.address);
   });
 
-  it("denies invalid admin contract to construct", async function() {
+  it("denies invalid admin contract to construct factory", async function() {
     await expectRevert.unspecified(
       FundFactory.new(constants.ZERO_ADDRESS, { from: admin })
     );
   });
 
-  it("denies invalid non-admin wallet to construct", async function() {
+  it("denies invalid non-ADMIN wallet to construct factory", async function() {
     await expectRevert.unspecified(
       FundFactory.new(this.endaomentAdmin.address, { from: manager })
     );

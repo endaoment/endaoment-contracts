@@ -209,6 +209,22 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   }
   
   /**
+   * @notice External view function to check the account currently holding the
+   * fund_factory role.
+   */
+  function getFundFactory() public override view returns (address fundFactory) {
+    fundFactory = _roles[uint256(Role.FUND_FACTORY)].account;
+  }
+  
+  /**
+   * @notice External view function to check the account currently holding the
+   * org_factory role.
+   */
+  function getOrgFactory() public override view returns (address orgFactory) {
+    orgFactory = _roles[uint256(Role.ORG_FACTORY)].account;
+  }
+  
+  /**
    * @notice Private function to set a new account on a given role and emit a
    * `RoleModified` event if the role holder has changed.
    * @param role The role that the account will be set for.

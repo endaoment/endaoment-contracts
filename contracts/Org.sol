@@ -41,7 +41,7 @@ contract Org is Administratable {
     * @param ein The U.S. Tax Identification Number for the Organization
     * @param adminContractAddress Contract Address for Endaoment Admin
     */
-    constructor(uint ein, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
+    constructor(uint ein, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ORG_FACTORY){
         taxId = ein;
     }
 

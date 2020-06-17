@@ -22,6 +22,9 @@ describe("OrgFactory", function() {
     this.orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
+    await this.endaomentAdmin.setRole(4, this.orgFactory.address, {
+      from: admin,
+    });
   });
 
   it("has defined contract address post-init", async function() {
@@ -55,12 +58,11 @@ describe("OrgFactory", function() {
       this.endaomentAdmin.address,
       { from: accountant }
     );
-
-    const org_contract = await Org.at(org.logs[0].args.newOrg);
+    const org_contract = await Org.at(org.logs[0].args.newAddress);
     const org_EIN = await org_contract.taxId();
 
     assert.equal(org_EIN, 123456789);
-    assert.isDefined(org.logs[0].args.newOrg);
+    assert.isDefined(org.logs[0].args.newAddress);
   });
 
   it("accountant can create orgs, only if not paused", async function() {
@@ -71,16 +73,13 @@ describe("OrgFactory", function() {
       this.endaomentAdmin.address,
       { from: accountant }
     );
-    const org_contract = await Org.at(org.logs[0].args.newOrg);
-    const org_manager = await org_contract.manager();
 
-    assert.equal(org_manager, manager);
-    assert.isDefined(org.logs[0].args.newOrg);
+    assert.isDefined(org.logs[0].args.newAddress);
 
     await this.endaomentAdmin.pause(2, { from: pauser });
 
     await expectRevert.unspecified(
-      this.orgFactory.createFund(123456789, this.endaomentAdmin.address, {
+      this.orgFactory.createOrg(123456789, this.endaomentAdmin.address, {
         from: accountant,
       })
     );
@@ -103,13 +102,13 @@ describe("OrgFactory", function() {
 
     const org = await this.orgFactory.createOrg(
       123456789,
-      this.EndaomentAdmin.address,
+      this.endaomentAdmin.address,
       { from: accountant }
     );
 
     const getFundAddress = await this.orgFactory.getDeployedOrg(1);
 
-    assert.equal(org.logs[0].args.newOrg, getFundAddress);
+    assert.equal(org.logs[0].args.newAddress, getFundAddress);
   });
 
   it("returns if an address is an existing org or not", async function() {
@@ -117,14 +116,15 @@ describe("OrgFactory", function() {
 
     const org = await this.orgFactory.createOrg(
       123456789,
-      this.EndaomentAdmin.address,
+      this.endaomentAdmin.address,
       { from: accountant }
     );
 
-    const getFundAddress = await this.orgFactory.getDeployedOrg(
-      org.logs[0].args.newOrg
+    const getOrgExistence = await this.orgFactory.getDeployedOrg(
+      org.logs[0].args.newAddress,
+      { from: admin }
     );
 
-    assert.isTrue(getFundAddress);
+    assert.isTrue(getOrgExistence);
   });
 });

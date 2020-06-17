@@ -11,7 +11,9 @@ interface IEndaomentAdmin {
     ADMIN,
     PAUSER,
     ACCOUNTANT,
-    REVIEWER
+    REVIEWER,
+    FUND_FACTORY,
+    ORG_FACTORY
   }
 
   struct RoleStatus {
@@ -29,4 +31,6 @@ interface IEndaomentAdmin {
   function getPauser() external view returns (address pauser);
   function getAccountant() external view returns (address accountant);
   function getReviewer() external view returns (address reviewer);
+  function getFundFactory() external view returns (address fundFactory);
+  function getOrgFactory() external view returns (address orgFactory);
 }

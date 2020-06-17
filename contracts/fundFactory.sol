@@ -39,7 +39,7 @@ contract FundFactory is Administratable {
     */
     function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
                                                                              {
-        Fund newFund = new Fund(managerAddress);
+        Fund newFund = new Fund(managerAddress, adminContractAddress);
         createdFunds.push(newFund);
         emit fundCreated(address(newFund));
     }
