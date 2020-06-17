@@ -17,7 +17,7 @@
   },
   "scripts": {
     "test": "mocha --exit --recursive test",
-    "build": "oz compile --solc-version=0.6.10",
+    "build": "oz compile",
     "coverage": "buidler coverage --network coverage"
   },
   "eslintConfig": {

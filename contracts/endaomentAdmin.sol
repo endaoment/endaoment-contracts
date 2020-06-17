@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity ^0.6.10;
+pragma solidity ^0.5.0;
 
 import "./interfaces/IEndaomentAdmin.sol";
 
@@ -104,7 +104,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @param role The role that the account will be set for.
    * @param account The account to set as the designated role bearer.
    */
-  function setRole(Role role, address account) public override onlyOwner {
+  function setRole(Role role, address account) public onlyOwner {
     require(account != address(0), "Must supply an account.");
     _setRole(role, account);
   }
@@ -115,7 +115,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * may call this function.
    * @param role The role that the account will be removed from.
    */
-  function removeRole(Role role) public override onlyOwner {
+  function removeRole(Role role) public onlyOwner {
     _setRole(role, address(0));
   }
   
@@ -125,7 +125,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * mind that only the owner may unpause a role once paused.
    * @param role The role to pause.
    */
-  function pause(Role role) public override onlyAdminOr(Role.PAUSER) {
+  function pause(Role role) public onlyAdminOr(Role.PAUSER) {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
     require(!storedRoleStatus.paused, "Role in question is already paused.");
     storedRoleStatus.paused = true;
@@ -137,7 +137,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * Only the owner may call this function.
    * @param role The role to pause.
    */
-  function unpause(Role role) public override onlyOwner {
+  function unpause(Role role) public onlyOwner {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
     require(storedRoleStatus.paused, "Role in question is already unpaused.");
     storedRoleStatus.paused = false;
@@ -154,7 +154,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @return paused A boolean to indicate if the functionality associated with
    * the role in question is currently paused.
    */
-  function isPaused(Role role) public override view returns (bool paused) {
+  function isPaused(Role role) public view returns (bool paused) {
     paused = _isPaused(role);
   }
 
@@ -164,7 +164,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @param role The role to check for.
    * @return hasRole A boolean indicating if the caller has the specified role.
    */
-  function isRole(Role role) public override view returns (bool hasRole) {
+  function isRole(Role role) public view returns (bool hasRole) {
     hasRole = _isRole(role);
   }
 
@@ -174,7 +174,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @return admin The address of the current admin, or the null
    * address if none is set.
    */
-  function getAdmin() public override view returns (
+  function getAdmin() public view returns (
     address admin
   ) {
     admin = _roles[uint256(Role.ADMIN)].account;
@@ -188,7 +188,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @return pauser The address of the current pauser, or the null address if
    * none is set.
    */
-  function getPauser() public override view returns (address pauser) {
+  function getPauser() public view returns (address pauser) {
     pauser = _roles[uint256(Role.PAUSER)].account;
   }
   
@@ -196,7 +196,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @notice External view function to check the account currently holding the
    * accountant role.
    */
-  function getAccountant() public override view returns (address accountant) {
+  function getAccountant() public view returns (address accountant) {
     accountant = _roles[uint256(Role.ACCOUNTANT)].account;
   }
   
@@ -204,7 +204,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @notice External view function to check the account currently holding the
    * reviewer role.
    */
-  function getReviewer() public override view returns (address reviewer) {
+  function getReviewer() public view returns (address reviewer) {
     reviewer = _roles[uint256(Role.REVIEWER)].account;
   }
   

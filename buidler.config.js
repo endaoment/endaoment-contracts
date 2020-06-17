@@ -12,7 +12,7 @@ task("accounts", "Prints the list of accounts", async () => {
 module.exports = {
   defaultNetwork: "rinkeby",
   solc: {
-    version: "0.5.15"
+    version: "0.5.15",
   },
   networks: {
     mainnet: {
@@ -26,7 +26,7 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : "remote",
     },
     coverage: {
-      url: 'http://localhost:8555',
+      url: "http://localhost:8555",
     },
   },
 };

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity ^0.6.10;
+pragma solidity ^0.5.0;
 
 library SafeMath {
   function add(uint256 a, uint256 b) internal pure returns (uint256) {
