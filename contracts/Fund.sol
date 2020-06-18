@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.10;
 
@@ -20,22 +20,20 @@ contract Fund is Administratable {
     using SafeMath for uint256;
 
 // ========== STATE VARIABLES ==========
+    struct Grant {
+        string description;
+        uint value;
+        address recipient;
+        bool complete;
+    }
 
-        struct Grant {
-            string description;
-            uint value;
-            address recipient;
-            bool complete;
-        }
-
-        address public manager;
-        address public admin;
-        mapping(address => bool) public contributors;
-        Grant[] public grants;
-        uint public totalContributors;
+    address public manager;
+    address public admin;
+    mapping(address => bool) public contributors;
+    Grant[] public grants;
+    uint public totalContributors;
 
 // ========== CONSTRUCTOR ==========
-
     /**
     * @notice Create new Fund
     * @param creator Address of the Fund's Primary Advisor
@@ -46,8 +44,7 @@ contract Fund is Administratable {
         manager = creator;
     }
 
-  // ========== Admin Management ==========
-
+// ========== Admin Management ==========
     /**
     * @notice Restricts method access to fund's manager
     */
@@ -56,7 +53,7 @@ contract Fund is Administratable {
       _;
     }
 
-  // ========== Fund Management & Info ==========
+// ========== Fund Management & Info ==========
     /**
     * @notice Change Fund Primary Advisor
     * @param  newManager The address of the new PrimaryAdvisor.
