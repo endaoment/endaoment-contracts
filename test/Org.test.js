@@ -18,7 +18,7 @@ describe("Org", function() {
   const symbol = 'TTKN';
   const initSupply = new BN(100);
 
-  const [initHolder, admin, accountant, pauser, reviewer, user, other_user] = accounts;
+  const [initHolder, admin, accountant, pauser, reviewer, user, other_user, orgFactory] = accounts;
 
   beforeEach(async function() {
     this.endaomentAdmin = await EndaomentAdmin.new({ from: admin });
@@ -27,6 +27,7 @@ describe("Org", function() {
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
     await this.endaomentAdmin.setRole(3, reviewer, { from: admin });
+    await this.endaomentAdmin.setRole(5, orgFactory, { from: admin });
   });
 
   it("allows ADMIN to construct", async function() {
@@ -34,13 +35,13 @@ describe("Org", function() {
     assert.isDefined(org.address);
   });
   
-  it("allows ACCOUNTANT to construct", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: accountant });
+  it("allows ORG_FACTORY to construct", async function() {
+    const org = await Org.new(123, this.endaomentAdmin.address, { from: orgFactory });
     assert.isDefined(org.address);
   });
   
   it("denies USER to construct", async function() {
-    await expectRevert(Org.new(123, this.endaomentAdmin.address, { from: user }), "Only ACCOUNTANT can access");
+    await expectRevert.unspecified(Org.new(123, this.endaomentAdmin.address, { from: user }));
   });
   
   it("registers valid claim requests", async function() {

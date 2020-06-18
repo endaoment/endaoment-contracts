@@ -120,13 +120,11 @@ contract Fund is Administratable {
     * @param  adminContractAddress Address of the EndaomentAdmin contract.
     */
     function finalizeGrant(uint index, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
-        EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
-        admin = x.getAdmin();
+        EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
+        admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
         Grant storage grant = grants[index];
         require(grant.complete == false);
         ERC20 t = ERC20(tokenAddress);
-
-
 
         //Process fees:
         uint256 fee = (grant.value)/100;

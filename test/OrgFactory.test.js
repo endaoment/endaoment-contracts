@@ -98,7 +98,7 @@ describe("OrgFactory", function () {
       { from: accountant }
     );
 
-    const getFundAddress = await this.orgFactory.getDeployedOrg(1);
+    const getFundAddress = await this.orgFactory.getDeployedOrg(0);
 
     assert.equal(org.logs[0].args.newAddress, getFundAddress);
   });
@@ -113,10 +113,9 @@ describe("OrgFactory", function () {
     );
 
     const getOrgExistence = await this.orgFactory.getDeployedOrg(
-      org.logs[0].args.newAddress,
-      { from: admin }
+      0, { from: admin }
     );
 
-    assert.isTrue(getOrgExistence);
+    assert.equal(getOrgExistence, org.logs[0].args.newAddress);
   });
 });
