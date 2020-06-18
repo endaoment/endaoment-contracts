@@ -16,12 +16,11 @@ import "./Fund.sol";
  * allowedOrgs. 
  */
 contract FundFactory is Administratable {
-    
-    // ========== STATE VARIABLES ==========
+// ========== STATE VARIABLES ==========
     Fund[] public createdFunds;
     event fundCreated(address indexed newAddress);
     
-    // ========== CONSTRUCTOR ==========    
+// ========== CONSTRUCTOR ==========    
     /**
     * @notice Create new Fund Factory
     * @param adminContractAddress Address of EndaomentAdmin contract. 
@@ -30,9 +29,9 @@ contract FundFactory is Administratable {
         
     }
         
-    // ========== Fund Creation & Management ==========
+// ========== Fund Creation & Management ==========
     /**
-    * @notice  Create new Fund
+    * @notice Creates new Fund and emits fundCreated event. 
     * @param managerAddress The address of the Fund's Primary Advisor
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
@@ -42,10 +41,17 @@ contract FundFactory is Administratable {
         emit fundCreated(address(newFund));
     }
 
+    /**
+    * @notice Returns total number of funds created by the factory. 
+    */
     function countFunds() public view returns (uint) {
         return createdFunds.length;
     }
 
+    /**
+    * @notice Returns address of a specific fund in createdFunds[] 
+    * @param index The index position of the Fund 
+    */
     function getFund(uint index) public view returns (address) {
         return address(createdFunds[index-1]); 
     }
