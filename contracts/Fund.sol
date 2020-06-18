@@ -3,8 +3,6 @@
 pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
-import "./interfaces/IERC20.sol";
-import "./libraries/SafeMath.sol";
 import "./OrgFactory.sol";
 
 // FUND CONTRACT

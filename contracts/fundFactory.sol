@@ -4,7 +4,6 @@ pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
-import "./libraries/SafeMath.sol";
 import "./Fund.sol";
 
 // FUND FACTORY CONTRACT

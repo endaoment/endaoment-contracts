@@ -10,6 +10,7 @@ coverage.json
 /coverage
 /cache
 /artifacts
+/.coverage_contracts
 
 # production
 /build
