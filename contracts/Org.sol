@@ -3,8 +3,8 @@
 pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
-import "./interfaces/IERC20.sol";
-import "./libraries/SafeMath.sol";
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 //ORG CONTRACT
 /**
@@ -89,10 +89,10 @@ contract Org is Administratable {
      * @param adminContractAddress Contract Address for Endaoment Admin
      */
     function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
-        ERC20 t = ERC20(tokenAddress);
-        uint256 cashOutAmount = t.balanceOf(address(this));
+        ERC20 token = ERC20(tokenAddress);
+        uint256 cashOutAmount = token.balanceOf(address(this));
 
-        t.transfer(desiredWithdrawlAddress, cashOutAmount);
+        token.transfer(desiredWithdrawlAddress, cashOutAmount);
         emit cashOutComplete(cashOutAmount);
     }
 
