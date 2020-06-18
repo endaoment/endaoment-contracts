@@ -14,7 +14,7 @@ contract Administratable {
         modifier onlyAdmin(address adminContractAddress) {
             EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
             
-            require(msg.sender == endaomentAdmin.getAdmin(), "Only ADMIN can access.");
+            require(msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN), "Only ADMIN can access.");
             _;
         }
      
@@ -27,13 +27,13 @@ contract Administratable {
         modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
             EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
             
-            if (msg.sender != endaomentAdmin.getAdmin()) {
+            if (msg.sender != endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN)) {
                 if (!endaomentAdmin.isPaused(role)) {
                      if (role == IEndaomentAdmin.Role.ACCOUNTANT) {
-                         require(msg.sender == endaomentAdmin.getAccountant(), "Only ACCOUNTANT can access");
-                    }
+                         require(msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ACCOUNTANT), "Only ACCOUNTANT can access");
+                     }
                      if (role == IEndaomentAdmin.Role.REVIEWER) {
-                         require(msg.sender == endaomentAdmin.getReviewer(), "Only REVIEWER can access");
+                         require(msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.REVIEWER), "Only REVIEWER can access");
                      }
                      if (role == IEndaomentAdmin.Role.FUND_FACTORY) {
                          require(msg.sender == endaomentAdmin.getFundFactory(), "Only FUND_FACTORY can access");
@@ -42,9 +42,24 @@ contract Administratable {
                          require(msg.sender == endaomentAdmin.getOrgFactory(), "Only ORG_FACTORY can access");
                      }
                 } else {
-                    require(msg.sender == endaomentAdmin.getAdmin(), "Only ADMIN can access");
+                    require(msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN), "Only ADMIN can access");
                 }
-          }
-          _;
-         }
+                    if (role == IEndaomentAdmin.Role.ACCOUNTANT) {
+                         require(msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ACCOUNTANT), "Only ACCOUNTANT can access");
+                    }
+                    if (role == IEndaomentAdmin.Role.REVIEWER) {
+                        require(msg.sender == endaomentAdmin.getReviewer(), "Only REVIEWER can access");
+                    }
+                    if (role == IEndaomentAdmin.Role.FUND_FACTORY) {
+                        require(msg.sender == endaomentAdmin.getFundFactory(), "Only FUND_FACTORY can access");
+                    }
+                    if (role == IEndaomentAdmin.Role.ORG_FACTORY) {
+                        require(msg.sender == endaomentAdmin.getOrgFactory(), "Only ORG_FACTORY can access");
+                    }
+            } else {
+                require(msg.sender == endaomentAdmin.getAdmin(), "Only ADMIN can access");
+            }
+        }
+        _;
+        }
 }

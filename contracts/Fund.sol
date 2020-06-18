@@ -19,7 +19,7 @@ import "./OrgFactory.sol";
 contract Fund is Administratable {
     using SafeMath for uint256;
 
-    // ========== STATE VARIABLES ==========
+// ========== STATE VARIABLES ==========
 
         struct Grant {
             string description;
@@ -34,118 +34,114 @@ contract Fund is Administratable {
         Grant[] public grants;
         uint public totalContributors;
 
+// ========== CONSTRUCTOR ==========
 
-    // ========== CONSTRUCTOR ==========
+    /**
+    * @notice Create new Fund
+    * @param creator Address of the Fund's Primary Advisor
+    * @param adminContractAddress Address of the EndaomentAdmin contract.
+    */
+    constructor (address creator, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY){
+        require(creator != address(0));
+        manager = creator;
+    }
 
-        /**
-        * @notice Create new Fund
-        * @param creator Address of the Fund's Primary Advisor
-        * @param  adminContractAddress Address of the EndaomentAdmin contract.
-        */
-        constructor(address creator, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY){
-            require(creator != 0x0000000000000000000000000000000000000000);
-            manager = creator;
+  // ========== Admin Management ==========
 
-        }
+    /**
+    * @notice Restricts method access to fund's manager
+    */
+    modifier restricted() {
+      require(msg.sender == manager);
+      _;
+    }
 
+  // ========== Fund Management & Info ==========
+    /**
+    * @notice Change Fund Primary Advisor
+    * @param  newManager The address of the new PrimaryAdvisor.
+    * @param  adminContractAddress Address of the EndaomentAdmin contract.
+    */
+    function changeManager (address newManager, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
+        manager = newManager;
+    }
 
-    // ========== Admin Management ==========
+    /**
+    * @notice Checks recipient of a Grant is an address created by the OrgFactory 
+    * @param  recipient The address of the Grant recipient.
+    * @param  orgFactoryContractAddress Address of the OrgFactory contract.
+    */
+    function checkRecipient(address recipient, address orgFactoryContractAddress) public view returns (bool) {
+        OrgFactory x = OrgFactory ( orgFactoryContractAddress );
 
-        /**
-        * @notice Restricts method access to fund's manager
-        */
-        modifier restricted() {
-        require(msg.sender == manager);
-        _;
-        }
+        return x.getAllowedOrg(recipient);
+    }
 
-    // ========== Fund Management & Info ==========
+    /**
+    * @notice Returns summary of details about the fund [tokenBalance, ethBlance, number of grants, managerAddress]. 
+    * @param  tokenAddress The token address of the stablecoin being used by the web-server.
+    */
+    function getSummary(address tokenAddress) public view returns (uint, uint, uint, address) {
+        ERC20 t = ERC20(tokenAddress);
+        uint bal = t.balanceOf(address(this));
 
-        /**
-        * @notice Change Fund Primary Advisor
-        * @param  newManager The address of the new PrimaryAdvisor.
-        * @param  adminContractAddress Address of the EndaomentAdmin contract.
-        */
-        function changeManager (address newManager, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
-            manager = newManager;
-        }
+        return (
+            bal,
+            address(this).balance,
+            grants.length,
+            manager
+        );
+    }
 
-        /**
-        * @notice Checks recipient of a Grant is an address created by the OrgFactory 
-        * @param  recipient The address of the Grant recipient.
-        * @param  orgFactoryContractAddress Address of the OrgFactory contract.
-        */
-        function checkRecipient(address recipient, address orgFactoryContractAddress) public view returns (bool) {
-            OrgFactory x = OrgFactory ( orgFactoryContractAddress );
+    /**
+    * @notice Create new Grant Reccomendation
+    * @param  description The address of the Owner.
+    * @param  value The value of the grant in base units.
+    * @param  recipient The address of the recieving organization's contract.
+    * @param  orgFactoryContractAddress Address of the orgFactory Contract.
+    */
+    function createGrant(string memory description, uint256 value, address recipient, address orgFactoryContractAddress) public restricted {
+        require(checkRecipient(recipient, orgFactoryContractAddress) == true);
 
-            return x.getAllowedOrg(recipient);
-        }
+        Grant memory newGrant = Grant({
+            description: description,
+            value: value,
+            recipient: recipient,
+            complete: false
+        });
 
-        /**
-        * @notice Returns summary of details about the fund [tokenBalance, ethBlance, number of grants, managerAddress]. 
-        * @param  tokenAddress The token address of the stablecoin being used by the web-server.
-        */
-        function getSummary(address tokenAddress) public view returns (uint, uint, uint, address) {
-            ERC20 t = ERC20(tokenAddress);
-            uint bal = t.balanceOf(address(this));
+        grants.push(newGrant);
+    }
 
-            return (
-                bal,
-                address(this).balance,
-                grants.length,
-                manager
-            );
-        }
-
-        /**
-        * @notice Create new Grant Reccomendation
-        * @param  description The address of the Owner.
-        * @param  value The value of the grant in base units.
-        * @param  recipient The address of the recieving organization's contract.
-        * @param  orgFactoryContractAddress Address of the orgFactory Contract.
-        */
-        function createGrant(string memory description, uint256 value, address recipient, address orgFactoryContractAddress) public restricted {
-            require(checkRecipient(recipient, orgFactoryContractAddress) == true);
-
-            Grant memory newGrant = Grant({
-                description: description,
-                value: value,
-                recipient: recipient,
-                complete: false
-            });
-
-            grants.push(newGrant);
-        }
-
-        /**
-        * @notice Approve Grant Reccomendation
-        * @param  index This Grant's index position
-        * @param  tokenAddress The stablecoin's token address.
-        * @param  adminContractAddress Address of the EndaomentAdmin contract.
-        */
-        function finalizeGrant(uint index, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
-            EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
-            admin = x.getAdmin();
-            Grant storage grant = grants[index];
-            require(grant.complete == false);
-            ERC20 t = ERC20(tokenAddress);
+    /**
+    * @notice Approve Grant Reccomendation
+    * @param  index This Grant's index position
+    * @param  tokenAddress The stablecoin's token address.
+    * @param  adminContractAddress Address of the EndaomentAdmin contract.
+    */
+    function finalizeGrant(uint index, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
+        EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
+        admin = x.getAdmin();
+        Grant storage grant = grants[index];
+        require(grant.complete == false);
+        ERC20 t = ERC20(tokenAddress);
 
 
 
-            //Process fees:
-            uint256 fee = (grant.value)/100;
-            uint256 finalGrant = (grant.value * 99)/100;
-            t.transfer(admin, fee);
+        //Process fees:
+        uint256 fee = (grant.value)/100;
+        uint256 finalGrant = (grant.value * 99)/100;
+        t.transfer(admin, fee);
 
-            t.transfer(grant.recipient, finalGrant);
+        t.transfer(grant.recipient, finalGrant);
 
-            grant.complete = true;
-        }
+        grant.complete = true;
+    }
 
-        /**
-        * @notice Returns total number of grants submitted to the fund. 
-        */
-        function getGrantsCount() public view returns (uint) {
-            return grants.length;
-        }
+    /**
+    * @notice Returns total number of grants submitted to the fund. 
+    */
+    function getGrantsCount() public view returns (uint) {
+        return grants.length;
+    }
 }
