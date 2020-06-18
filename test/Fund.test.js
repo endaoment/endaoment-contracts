@@ -10,13 +10,21 @@ const { assert } = require("chai");
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const FundFactory = contract.fromArtifact("FundFactory");
 const OrgFactory = contract.fromArtifact("OrgFactory");
+const Org = contract.fromArtifact("Org");
 const Fund = contract.fromArtifact("Fund");
+const ERC20Mock = contract.fromArtifact('ERC20Mock');
 
-describe("Fund", function () {
-  const [admin, manager, newManager, accountant, pauser, reviewer] = accounts;
 
-  beforeEach(async function () {
+describe("Fund", function() {
+  const name = 'TestToken';
+  const symbol = 'TTKN';
+  const initSupply = new BN(100);
+  
+  const [initHolder, admin, manager, newManager, accountant, pauser, reviewer] = accounts;
+
+  beforeEach(async function() {
     this.endaomentAdmin = await EndaomentAdmin.new({ from: admin });
+    this.token = await ERC20Mock.new(name, symbol, initHolder, initSupply);
     await this.endaomentAdmin.setRole(0, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
@@ -77,9 +85,8 @@ describe("Fund", function () {
     assert.equal(fundManager, manager);
 
     await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: admin });
-    const new_manager = await fundContract.manager();
-
-    await assert.equal(new_manager, newManager);
+    const newFundManager = await fundContract.manager();
+    await assert.equal(newFundManager, newManager);
   });
 
   it("allows REVIEWER to change manager", async function () {
@@ -136,7 +143,7 @@ describe("Fund", function () {
       this.endaomentAdmin.address,
       { from: accountant }
     );
-
+    
     //Check that the new org's address passes the checkRecipient() function on the Fund contract
     const orgChecked = await this.fund.checkRecipient(
       org.logs[0].args.newAddress,
@@ -156,6 +163,7 @@ describe("Fund", function () {
     assert.isFalse(failingOrg);
   });
 
+
   it("allows only MANAGER to create a grant", async function () {
     //Open a new OrgFacotry using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
@@ -173,7 +181,7 @@ describe("Fund", function () {
       this.endaomentAdmin.address,
       { from: accountant }
     );
-
+    
     //Create new grant on the Fund contract
     await this.fund.createGrant(
       "test grant",
@@ -212,6 +220,7 @@ describe("Fund", function () {
     );
   });
 
+
   it("returns correct count of total grants", async function () {
     const before_count = await this.fund.getGrantsCount();
     assert.equal(before_count, 0);
@@ -235,5 +244,97 @@ describe("Fund", function () {
 
     const after_count = await this.fund.getGrantsCount();
     assert.equal(after_count, 1);
+  });
+
+  it("allows ADMIN to finalize fund", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
+
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    await this.token.transfer(fund.address, 100, { from: initHolder });
+    
+    await fund.createGrant(
+      "test grant",
+      100,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+    
+    await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: admin });
+   
+    const orgBalance = await this.token.balanceOf(org.logs[0].args.newAddress);
+    const adminBalance = await this.token.balanceOf(admin);
+    assert(orgBalance.eq(new BN(99)));
+    assert(adminBalance.eq(new BN(1)));
+  });
+  
+  it("allows ACCOUNTANT to finalize fund", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
+
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    await this.token.transfer(fund.address, 100, { from: initHolder });
+    
+    await fund.createGrant(
+      "test grant",
+      100,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+    
+    await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: accountant });
+   
+    const orgBalance = await this.token.balanceOf(org.logs[0].args.newAddress);
+    const adminBalance = await this.token.balanceOf(admin);
+    assert(orgBalance.eq(new BN(99)));
+    assert(adminBalance.eq(new BN(1)));
+  });
+  
+  it("denies USER to finalize fund", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
+
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    await this.token.transfer(fund.address, 100, { from: initHolder });
+    
+    await fund.createGrant(
+      "test grant",
+      100,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+    
+    await expectRevert.unspecified(fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: manager }));
+  });
+
+  it("gets fund summary", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    await this.token.transfer(fund.address, 1, { from: initHolder });
+    const fundSummary = await fund.getSummary(this.token.address);
+    assert(fundSummary[0].eq(new BN(1)));
+    assert(fundSummary[1].eq(new BN(0)));
+    assert(fundSummary[2].eq(new BN(0)));
+    assert.equal(fundSummary[3], await fund.manager());
   });
 });

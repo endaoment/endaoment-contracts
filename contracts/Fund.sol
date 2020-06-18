@@ -21,18 +21,18 @@ contract Fund is Administratable {
 
 // ========== STATE VARIABLES ==========
 
-    struct Grant {
-        string description;
-        uint value;
-        address recipient;
-        bool complete;
-    }
+        struct Grant {
+            string description;
+            uint value;
+            address recipient;
+            bool complete;
+        }
 
-    address public manager;
-    address public admin;
-    mapping(address => bool) public contributors;
-    Grant[] public grants;
-    uint public totalContributors;
+        address public manager;
+        address public admin;
+        mapping(address => bool) public contributors;
+        Grant[] public grants;
+        uint public totalContributors;
 
 // ========== CONSTRUCTOR ==========
 
@@ -44,21 +44,19 @@ contract Fund is Administratable {
     constructor (address creator, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY){
         require(creator != address(0));
         manager = creator;
-
     }
 
-// ========== Admin Management ==========
+  // ========== Admin Management ==========
 
     /**
     * @notice Restricts method access to fund's manager
     */
     modifier restricted() {
-    require(msg.sender == manager);
-    _;
+      require(msg.sender == manager);
+      _;
     }
 
-// ========== Fund Management & Info ==========
-
+  // ========== Fund Management & Info ==========
     /**
     * @notice Change Fund Primary Advisor
     * @param  newManager The address of the new PrimaryAdvisor.
