@@ -24,6 +24,14 @@ contract TwoStepOwnable {
     address indexed previousOwner,
     address indexed newOwner
   );
+ 
+  event TransferInitiated(
+    address indexed newOwner
+  );
+  
+  event TransferCancelled(
+    address indexed _newPotentialOwner
+  );
 
   /**
    * @dev Initialize contract by setting transaction submitter as initial owner.
@@ -66,6 +74,7 @@ contract TwoStepOwnable {
     );
 
     _newPotentialOwner = newOwner;
+    emit TransferInitiated(address(newOwner));
   }
 
   /**
@@ -73,6 +82,7 @@ contract TwoStepOwnable {
    * Can only be called by the current owner.
    */
   function cancelOwnershipTransfer() public onlyOwner {
+    emit TransferCancelled(address(_newPotentialOwner));
     delete _newPotentialOwner;
   }
 
