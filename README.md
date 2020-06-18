@@ -1,6 +1,6 @@
 # Endaoment 
 
-[![codecov](https://codecov.io/gh/Synthetixio/synthetix/branch/develop/graph/badge.svg)](https://codecov.io/gh/Synthetixio/synthetix)
+[![codecov](https://codecov.io/gh/Synthetixio/synthetix/branch/develop/graph/badge.svg)](https://codecov.io/gh/endaoment/endaoment-contracts)
 
 Endaoment is a public, tax-exempt 5013(c)(3) charity providing smart contract powered Donor-Advised Funds. 
 
