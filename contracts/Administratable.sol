@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: BSD 3-Clause
 
 pragma solidity ^0.6.10;
 
