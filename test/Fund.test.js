@@ -76,9 +76,7 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    await fundContract.changeManager(newManager, this.endaomentAdmin.address, {
-      from: admin,
-    });
+    await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: admin });
     const new_manager = await fundContract.manager();
 
     await assert.equal(new_manager, newManager);
@@ -90,9 +88,7 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    await fundContract.changeManager(newManager, this.endaomentAdmin.address, {
-      from: reviewer,
-    });
+    await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
     const new_manager = await fundContract.manager();
 
     await assert.equal(new_manager, newManager);
@@ -104,9 +100,7 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    await fundContract.changeManager(newManager, this.endaomentAdmin.address, {
-      from: reviewer,
-    });
+    await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
     const new_manager = await fundContract.manager();
 
     await assert.equal(new_manager, newManager);
@@ -114,9 +108,7 @@ describe("Fund", function () {
     await this.endaomentAdmin.pause(3, { from: pauser });
 
     await expectRevert.unspecified(
-      fundContract.changeManager(newManager, this.endaomentAdmin.address, {
-        from: reviewer,
-      })
+      fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer })
     );
   });
 
@@ -127,22 +119,16 @@ describe("Fund", function () {
     assert.equal(fundManager, manager);
 
     await expectRevert.unspecified(
-      fundContract.changeManager(newManager, this.endaomentAdmin.address, {
-        from: accountant,
-      })
+      fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: accountant })
     );
   });
 
   it("checks the recipeint of a grant with the OrgFactory", async function () {
     //Open a new OrgFacotry using EndaomentAdmin
-    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
-      from: admin,
-    });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
 
     //Set the new OrgFactory as the ORG_FACTORY role
-    await this.endaomentAdmin.setRole(5, orgFactory.address, {
-      from: admin,
-    });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
     //Deploy an org contract using the OrgFactory
     const org = await orgFactory.createOrg(
@@ -230,12 +216,8 @@ describe("Fund", function () {
     const before_count = await this.fund.getGrantsCount();
     assert.equal(before_count, 0);
 
-    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
-      from: admin,
-    });
-    await this.endaomentAdmin.setRole(5, orgFactory.address, {
-      from: admin,
-    });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
     const org = await orgFactory.createOrg(
       123456789,

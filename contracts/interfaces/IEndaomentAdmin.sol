@@ -27,10 +27,5 @@ interface IEndaomentAdmin {
   function unpause(Role role) external;
   function isPaused(Role role) external view returns (bool paused);
   function isRole(Role role) external view returns (bool hasRole);
-  function getAdmin() external view returns (address admin);
-  function getPauser() external view returns (address pauser);
-  function getAccountant() external view returns (address accountant);
-  function getReviewer() external view returns (address reviewer);
-  function getFundFactory() external view returns (address fundFactory);
-  function getOrgFactory() external view returns (address orgFactory);
+  function getRoleAddress(Role role) external view returns (address admin);
 }
