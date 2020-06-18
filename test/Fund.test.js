@@ -12,10 +12,10 @@ const FundFactory = contract.fromArtifact("FundFactory");
 const OrgFactory = contract.fromArtifact("OrgFactory");
 const Fund = contract.fromArtifact("Fund");
 
-describe("Fund", function() {
+describe("Fund", function () {
   const [admin, manager, newManager, accountant, pauser, reviewer] = accounts;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     this.endaomentAdmin = await EndaomentAdmin.new({ from: admin });
     await this.endaomentAdmin.setRole(0, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
@@ -26,21 +26,17 @@ describe("Fund", function() {
     });
   });
 
-  it("has defined fund contract address post-init", async function() {
+  it("has defined fund contract address post-init", async function () {
     assert.isDefined(this.fund.address);
   });
 
-  it("allows ADMIN to construct Fund contract", async function() {
-    const fund = await Fund.new(manager, this.endaomentAdmin.address, {
-      from: admin,
-    });
+  it("allows ADMIN to construct Fund contract", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
     assert.isDefined(fund.address);
   });
 
-  it("allows FUND_FACTORY to construct Fund contract via ACCOUNTANT", async function() {
-    const fundFactory = await FundFactory.new(this.endaomentAdmin.address, {
-      from: admin,
-    });
+  it("allows FUND_FACTORY to construct Fund contract via ACCOUNTANT", async function () {
+    const fundFactory = await FundFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(4, fundFactory.address, { from: admin });
     const fund = await fundFactory.createFund(
       manager,
@@ -52,7 +48,7 @@ describe("Fund", function() {
     assert.isDefined(fund.logs[0].args.newAddress);
   });
 
-  it("denies invalid admin contract to construct fund contract", async function() {
+  it("denies invalid admin contract to construct fund contract", async function () {
     await expectRevert.unspecified(
       Fund.new(constants.ZERO_ADDRESS, this.endaomentAdmin.address, {
         from: admin,
@@ -60,83 +56,102 @@ describe("Fund", function() {
     );
   });
 
-  it("denies invalid non-ADMIN wallet to construct fund contract", async function() {
+  it("denies invalid non-ADMIN wallet to construct fund contract", async function () {
     await expectRevert.unspecified(
       Fund.new(manager, this.endaomentAdmin.address, { from: manager })
     );
   });
 
-  it("creates funds with correct manager", async function() {
-    const fund_contract = await Fund.at(this.fund.address);
-    const fund_manager = await fund_contract.manager();
+  it("creates funds with correct manager", async function () {
+    const fundContract = await Fund.at(this.fund.address);
+    const fundManager = await fundContract.manager();
 
-    assert.equal(fund_manager, manager);
+    assert.equal(fundManager, manager);
     assert.isDefined(this.fund.address);
   });
 
-  it("allows ADMIN to change manager", async function() {
-    const fund_contract = await Fund.at(this.fund.address);
-    const fund_manager = await fund_contract.manager();
+  it("allows ADMIN to change manager", async function () {
+    const fundContract = await Fund.at(this.fund.address);
+    const fundManager = await fundContract.manager();
 
-    assert.equal(fund_manager, manager);
+    assert.equal(fundManager, manager);
 
-    await fund_contract.changeManager(newManager, this.endaomentAdmin.address, {
+    await fundContract.changeManager(newManager, this.endaomentAdmin.address, {
       from: admin,
     });
-    const new_manager = await fund_contract.manager();
+    const new_manager = await fundContract.manager();
 
     await assert.equal(new_manager, newManager);
   });
 
-  it("allows REVIEWER to change manager, only if not paused", async function() {
-    const fund_contract = await Fund.at(this.fund.address);
-    const fund_manager = await fund_contract.manager();
+  it("allows REVIEWER to change manager", async function () {
+    const fundContract = await Fund.at(this.fund.address);
+    const fundManager = await fundContract.manager();
 
-    assert.equal(fund_manager, manager);
+    assert.equal(fundManager, manager);
 
-    await fund_contract.changeManager(newManager, this.endaomentAdmin.address, {
+    await fundContract.changeManager(newManager, this.endaomentAdmin.address, {
       from: reviewer,
     });
-    const new_manager = await fund_contract.manager();
+    const new_manager = await fundContract.manager();
+
+    await assert.equal(new_manager, newManager);
+  });
+
+  it("denies REVIEWER to change manager when REVIEWER is paused", async function () {
+    const fundContract = await Fund.at(this.fund.address);
+    const fundManager = await fundContract.manager();
+
+    assert.equal(fundManager, manager);
+
+    await fundContract.changeManager(newManager, this.endaomentAdmin.address, {
+      from: reviewer,
+    });
+    const new_manager = await fundContract.manager();
 
     await assert.equal(new_manager, newManager);
 
     await this.endaomentAdmin.pause(3, { from: pauser });
 
     await expectRevert.unspecified(
-      fund_contract.changeManager(newManager, this.endaomentAdmin.address, {
+      fundContract.changeManager(newManager, this.endaomentAdmin.address, {
         from: reviewer,
       })
     );
   });
 
-  it("denies non-ADMIN, non-REVIEWER from changing manager", async function() {
-    const fund_contract = await Fund.at(this.fund.address);
-    const fund_manager = await fund_contract.manager();
+  it("denies USER from changing manager", async function () {
+    const fundContract = await Fund.at(this.fund.address);
+    const fundManager = await fundContract.manager();
 
-    assert.equal(fund_manager, manager);
+    assert.equal(fundManager, manager);
 
     await expectRevert.unspecified(
-      fund_contract.changeManager(newManager, this.endaomentAdmin.address, {
+      fundContract.changeManager(newManager, this.endaomentAdmin.address, {
         from: accountant,
       })
     );
   });
 
-  it("checks the recipeint of a grant with the OrgFactory", async function() {
+  it("checks the recipeint of a grant with the OrgFactory", async function () {
+    //Open a new OrgFacotry using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
+
+    //Set the new OrgFactory as the ORG_FACTORY role
     await this.endaomentAdmin.setRole(5, orgFactory.address, {
       from: admin,
     });
 
+    //Deploy an org contract using the OrgFactory
     const org = await orgFactory.createOrg(
       123456789,
       this.endaomentAdmin.address,
       { from: accountant }
     );
 
+    //Check that the new org's address passes the checkRecipient() function on the Fund contract
     const orgChecked = await this.fund.checkRecipient(
       org.logs[0].args.newAddress,
       orgFactory.address,
@@ -145,6 +160,7 @@ describe("Fund", function() {
 
     assert.isTrue(orgChecked);
 
+    //Check that a zero address doesn't pass the checkRecipient() function
     const failingOrg = await this.fund.checkRecipient(
       constants.ZERO_ADDRESS,
       orgFactory.address,
@@ -154,20 +170,25 @@ describe("Fund", function() {
     assert.isFalse(failingOrg);
   });
 
-  it("allows only MANAGER to create a grant", async function() {
+  it("allows only MANAGER to create a grant", async function () {
+    //Open a new OrgFacotry using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
+
+    //Set the new OrgFactory as the ORG_FACTORY role
     await this.endaomentAdmin.setRole(5, orgFactory.address, {
       from: admin,
     });
 
+    //Deploy an org contract using the OrgFactory
     const org = await orgFactory.createOrg(
       123456789,
       this.endaomentAdmin.address,
       { from: accountant }
     );
 
+    //Create new grant on the Fund contract
     await this.fund.createGrant(
       "test grant",
       1,
@@ -175,6 +196,8 @@ describe("Fund", function() {
       orgFactory.address,
       { from: manager }
     );
+
+    //Get Grant struct at position 0, confirm values
     const grant = await this.fund.grants(0);
 
     assert.deepEqual(
@@ -203,7 +226,7 @@ describe("Fund", function() {
     );
   });
 
-  it("returns correct count of total grants", async function() {
+  it("returns correct count of total grants", async function () {
     const before_count = await this.fund.getGrantsCount();
     assert.equal(before_count, 0);
 

@@ -37,8 +37,7 @@ contract FundFactory is Administratable {
     * @param managerAddress The address of the Fund's Primary Advisor
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
-                                                                             {
+    function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT) {
         Fund newFund = new Fund(managerAddress, adminContractAddress);
         createdFunds.push(newFund);
         emit fundCreated(address(newFund));
