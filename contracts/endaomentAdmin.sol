@@ -24,6 +24,14 @@ contract TwoStepOwnable {
     address indexed previousOwner,
     address indexed newOwner
   );
+ 
+  event TransferInitiated(
+    address indexed newOwner
+  );
+  
+  event TransferCancelled(
+    address indexed newPotentialOwner
+  );
 
   /**
    * @dev Initialize contract by setting transaction submitter as initial owner.
@@ -66,6 +74,7 @@ contract TwoStepOwnable {
     );
 
     _newPotentialOwner = newOwner;
+    emit TransferInitiated(address(newOwner));
   }
 
   /**
@@ -73,6 +82,7 @@ contract TwoStepOwnable {
    * Can only be called by the current owner.
    */
   function cancelOwnershipTransfer() public onlyOwner {
+    emit TransferCancelled(address(_newPotentialOwner));
     delete _newPotentialOwner;
   }
 
@@ -170,60 +180,15 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
 
   /**
    * @notice External view function to check the account currently holding the
-   * admin role. The admin can execute and cancel limit orders.
-   * @return admin The address of the current admin, or the null
+   * given role.
+   * @return roleAddress The address of the current admin, or the null
    * address if none is set.
    */
-  function getAdmin() public override view returns (
-    address admin
-  ) {
-    admin = _roles[uint256(Role.ADMIN)].account;
+  function getRoleAddress(Role role) public override view returns (address roleAddress) {
+    require(_roles[uint256(role)].account != address(0));
+    roleAddress = _roles[uint256(role)].account;
   }
 
-  /**
-   * @notice External view function to check the account currently holding the
-   * pauser role. The pauser can pause any role from taking its standard action,
-   * though the owner will still be able to call the associated function in the
-   * interim and is the only entity able to unpause the given role once paused.
-   * @return pauser The address of the current pauser, or the null address if
-   * none is set.
-   */
-  function getPauser() public override view returns (address pauser) {
-    pauser = _roles[uint256(Role.PAUSER)].account;
-  }
-  
-  /**
-   * @notice External view function to check the account currently holding the
-   * accountant role.
-   */
-  function getAccountant() public override view returns (address accountant) {
-    accountant = _roles[uint256(Role.ACCOUNTANT)].account;
-  }
-  
-  /**
-   * @notice External view function to check the account currently holding the
-   * reviewer role.
-   */
-  function getReviewer() public override view returns (address reviewer) {
-    reviewer = _roles[uint256(Role.REVIEWER)].account;
-  }
-  
-  /**
-   * @notice External view function to check the account currently holding the
-   * fund_factory role.
-   */
-  function getFundFactory() public override view returns (address fundFactory) {
-    fundFactory = _roles[uint256(Role.FUND_FACTORY)].account;
-  }
-  
-  /**
-   * @notice External view function to check the account currently holding the
-   * org_factory role.
-   */
-  function getOrgFactory() public override view returns (address orgFactory) {
-    orgFactory = _roles[uint256(Role.ORG_FACTORY)].account;
-  }
-  
   /**
    * @notice Private function to set a new account on a given role and emit a
    * `RoleModified` event if the role holder has changed.
