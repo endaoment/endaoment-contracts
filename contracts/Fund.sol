@@ -78,7 +78,7 @@ contract Fund is Administratable {
         * @param  orgFactoryContractAddress Address of the OrgFactory contract.
         */
         function checkRecipient(address recipient, address orgFactoryContractAddress) public view returns (bool) {
-            OrgFactory orgFactory = OrgFactory ( orgFactoryContractAddress );
+            OrgFactory orgFactory = OrgFactory (orgFactoryContractAddress);
 
             return orgFactory.getAllowedOrg(recipient);
         }

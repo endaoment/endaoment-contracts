@@ -18,7 +18,7 @@ import "./interfaces/IEndaomentAdmin.sol";
  */
 contract TwoStepOwnable {
   address private _owner;
-  address private newPotentialOwner;
+  address private _newPotentialOwner;
 
   event OwnershipTransferred(
     address indexed previousOwner,
@@ -73,7 +73,7 @@ contract TwoStepOwnable {
       "TwoStepOwnable: new potential owner is the zero address."
     );
 
-    newPotentialOwner = newOwner;
+    _newPotentialOwner = newOwner;
     emit TransferInitiated(address(newOwner));
   }
 
@@ -82,8 +82,8 @@ contract TwoStepOwnable {
    * Can only be called by the current owner.
    */
   function cancelOwnershipTransfer() public onlyOwner {
-    emit TransferCancelled(address(newPotentialOwner));
-    delete newPotentialOwner;
+    emit TransferCancelled(address(_newPotentialOwner));
+    delete _newPotentialOwner;
   }
 
   /**
@@ -92,11 +92,11 @@ contract TwoStepOwnable {
    */
   function acceptOwnership() public {
     require(
-      msg.sender == newPotentialOwner,
+      msg.sender == _newPotentialOwner,
       "TwoStepOwnable: current owner must set caller as new potential owner."
     );
 
-    delete newPotentialOwner;
+    delete _newPotentialOwner;
 
     emit OwnershipTransferred(_owner, msg.sender);
 
