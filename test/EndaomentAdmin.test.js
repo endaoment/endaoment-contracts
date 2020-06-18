@@ -22,7 +22,7 @@ describe("EndaomentAmin", function () {
     assert.isDefined(this.endaomentAdmin.address);
   });
 
-  it("set originator as the Owner on construct, allows retrieval of owner address", async function () {
+  it("sets originator as Owner, retrieves owner address", async function () {
     const owner = await this.endaomentAdmin.getOwner({ from: admin });
     assert.equal(owner, admin);
   });
@@ -114,11 +114,15 @@ describe("EndaomentAmin", function () {
 
   it("allows Owner to remove Role", async function () {
     await this.endaomentAdmin.setRole(0, admin, { from: admin });
-    const beforeRole = await this.endaomentAdmin.getRoleAddress(0);
-    await this.endaomentAdmin.removeRole(0, { from: admin });
-    const afterRole = await this.endaomentAdmin.getRoleAddress(0);
+    const assignedAddress = await this.endaomentAdmin.getRoleAddress(0);
 
-    assert.notEqual(beforeRole, afterRole);
+    assert.equal(assignedAddress, admin);
+
+    await this.endaomentAdmin.removeRole(0, { from: admin });
+
+    await expectRevert.unspecified(
+      this.endaomentAdmin.getRoleAddress(0)
+    )
   });
 
   it("denies non-Owner from removing role", async function () {

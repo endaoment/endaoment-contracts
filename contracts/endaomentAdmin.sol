@@ -185,6 +185,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * address if none is set.
    */
   function getRoleAddress(Role role) public override view returns (address roleAddress) {
+    require(_roles[uint256(role)].account != address(0));
     roleAddress = _roles[uint256(role)].account;
   }
 
