@@ -19,12 +19,8 @@ describe("OrgFactory", function () {
     await this.endaomentAdmin.setRole(0, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
-    this.orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
-      from: admin,
-    });
-    await this.endaomentAdmin.setRole(5, this.orgFactory.address, {
-      from: admin,
-    });
+    this.orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(5, this.orgFactory.address, { from: admin });
   });
 
   it("has defined contract address post-init", async function () {
@@ -32,9 +28,7 @@ describe("OrgFactory", function () {
   });
 
   it("allows admin contract to construct", async function () {
-    const org_factory = await OrgFactory.new(this.endaomentAdmin.address, {
-      from: admin,
-    });
+    const org_factory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     assert.isDefined(org_factory.address);
   });
 
@@ -88,9 +82,7 @@ describe("OrgFactory", function () {
   it("returns count of total orgs", async function () {
     assert.isDefined(this.orgFactory.address);
 
-    await this.orgFactory.createOrg(123456789, this.endaomentAdmin.address, {
-      from: admin,
-    });
+    await this.orgFactory.createOrg(123456789, this.endaomentAdmin.address, { from: admin });
 
     const count = await this.orgFactory.countDeployedOrgs();
 

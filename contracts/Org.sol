@@ -18,7 +18,7 @@ import "./libraries/SafeMath.sol";
 contract Org is Administratable {
     using SafeMath for uint256;
 
-    // ========== STATE VARIABLES ==========
+// ========== STATE VARIABLES ==========
     
     struct Claim {
         string firstName;
@@ -34,7 +34,7 @@ contract Org is Administratable {
     event cashOutComplete(uint cashOutAmount);
 
 
-    // ========== CONSTRUCTOR ==========    
+// ========== CONSTRUCTOR ==========    
     
     /**
     * @notice Create new Organization Contract
@@ -45,7 +45,7 @@ contract Org is Administratable {
         taxId = ein;
     }
 
-    // ========== Org Management & Info ==========
+// ========== Org Management & Info ==========
     
     /**
      * @notice Create Organization Claim
