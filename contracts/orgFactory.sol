@@ -57,7 +57,7 @@ contract OrgFactory is Administratable {
         return address(deployedOrgs[index-1]);
     }
 
-    function getAllowedOrgs(address Org) public view returns (bool){
+    function getAllowedOrg(address Org) public view returns (bool){
         return allowedOrgs[Org];
     }
 }

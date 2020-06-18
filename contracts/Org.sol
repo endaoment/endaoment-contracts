@@ -18,7 +18,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract Org is Administratable {
     using SafeMath for uint256;
 
-    // ========== STATE VARIABLES ==========
+// ========== STATE VARIABLES ==========
     
     struct Claim {
         string firstName;
@@ -34,18 +34,18 @@ contract Org is Administratable {
     event cashOutComplete(uint cashOutAmount);
 
 
-    // ========== CONSTRUCTOR ==========    
+// ========== CONSTRUCTOR ==========    
     
     /**
     * @notice Create new Organization Contract
     * @param ein The U.S. Tax Identification Number for the Organization
     * @param adminContractAddress Contract Address for Endaoment Admin
     */
-    constructor(uint ein, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
+    constructor(uint ein, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ORG_FACTORY){
         taxId = ein;
     }
 
-    // ========== Org Management & Info ==========
+// ========== Org Management & Info ==========
     
     /**
      * @notice Create Organization Claim
