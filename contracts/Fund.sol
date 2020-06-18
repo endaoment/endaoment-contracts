@@ -45,7 +45,7 @@ contract Fund is Administratable {
         * @param  adminContractAddress Address of the EndaomentAdmin contract.
         */
         constructor(address creator, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY){
-            require(creator != 0x0000000000000000000000000000000000000000);
+            require(creator != address(0));
             manager = creator;
 
         }
@@ -78,9 +78,9 @@ contract Fund is Administratable {
         * @param  orgFactoryContractAddress Address of the OrgFactory contract.
         */
         function checkRecipient(address recipient, address orgFactoryContractAddress) public view returns (bool) {
-            OrgFactory x = OrgFactory ( orgFactoryContractAddress );
+            OrgFactory orgFactory = OrgFactory ( orgFactoryContractAddress );
 
-            return x.getAllowedOrg(recipient);
+            return orgFactory.getAllowedOrg(recipient);
         }
 
         /**
@@ -126,8 +126,8 @@ contract Fund is Administratable {
         * @param  adminContractAddress Address of the EndaomentAdmin contract.
         */
         function finalizeGrant(uint index, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
-            EndaomentAdmin x = EndaomentAdmin(adminContractAddress);
-            admin = x.getAdmin();
+            EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
+            admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
             Grant storage grant = grants[index];
             require(grant.complete == false);
             ERC20 t = ERC20(tokenAddress);
