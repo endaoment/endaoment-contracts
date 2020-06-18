@@ -25,9 +25,7 @@ contract FundFactory is Administratable {
     * @notice Create new Fund Factory
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {
-        
-    }
+    constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {}
         
 // ========== Fund Creation & Management ==========
     /**
@@ -53,7 +51,7 @@ contract FundFactory is Administratable {
     * @param index The index position of the Fund 
     */
     function getFund(uint index) public view returns (address) {
-        return address(createdFunds[index-1]); 
+        return address(createdFunds[index]); 
     }
 
 }

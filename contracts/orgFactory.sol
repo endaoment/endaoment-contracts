@@ -25,7 +25,7 @@ contract OrgFactory is Administratable {
     * @notice Create new Org Factory
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    constructor(address adminContractAddress) public onlyAdmin(adminContractAddress){}
+    constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {}
 
 // ========== Org Creation & Management ==========
     /**
@@ -49,13 +49,15 @@ contract OrgFactory is Administratable {
 
     /**
     * @notice Returns address of given index postiion in deployedOrgs[]. 
+    * @param index Array position of requested org
     */
     function getDeployedOrg(uint index) public view returns (address) {
         return address(deployedOrgs[index]);
     }
 
     /**
-    * @notice Returns total number of grants submitted to the fund. 
+    * @notice Returns boolean is provided address is present in allowedOrgs[]. 
+    * @param Org address of the organization contract requested.
     */
     function getAllowedOrg(address Org) public view returns (bool){
         return allowedOrgs[Org];
