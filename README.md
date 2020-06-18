@@ -1,6 +1,6 @@
 # Endaoment 
 
-Endaoment is a public, tax-exempt 5013(c)(3) charity providing smart contract powered Donor-Advised Funds. 
+Endaoment is a public, tax-exempt 501(c)(3) charity providing smart contract powered Donor-Advised Funds. 
 
 
 ## DApps
