@@ -7,7 +7,9 @@
     "@nomiclabs/buidler-truffle5": "^1.1.2",
     "@nomiclabs/buidler-web3": "^1.1.2",
     "@openzeppelin/contracts": "^3.0.2",
+    "@truffle/hdwallet-provider": "^1.0.35",
     "bip39": "^3.0.2",
+    "dotenv": "^8.2.0",
     "fs-extra": "^7.0.1",
     "solc": "^0.6.10",
     "solidity-coverage": "^0.7.0-beta.3"
