@@ -26,18 +26,23 @@ const deploy = async () => {
   accounts = await web3.eth.getAccounts();
 
 
+  console.log("///STARTING ENDAOMENT CONTRACTS DEPLOYMENT///");
+  console.log("Network: " + process.env.INFURA_PREFIX);
+  console.log("Account: " + accounts[0]);
+
+
   //Deploy EndamentAdmin contract
-  console.log("Deploying EndaomentAdmin from account", accounts[0]);
+  console.log("Deploying EndaomentAdmin...");
   const endaomentAdmin = await new web3.eth.Contract(
     EndaomentAdmin.abi
   )
     .deploy({ data: EndaomentAdmin.bytecode })
     .send({ from: accounts[0] });
-  console.log("EndaomentAdmin deployed to", endaomentAdmin.options.address);
+  console.log("EndaomentAdmin deployed to:", endaomentAdmin.options.address);
 
 
-  //Set roles for wallet addresses
-  console.log("Setting roles...");
+  //Set wallet address roles
+  console.log("Setting wallet address roles...");
   const adminReciept = await attemptRoleSet(0, admin, endaomentAdmin, accounts[0])
   console.log("EndaomentAdmin.Role.ADMIN set to:", adminReciept.events.RoleModified.returnValues.account);
 
@@ -51,37 +56,33 @@ const deploy = async () => {
   console.log("EndaomentAdmin.Role.REVIEWER set to:", reviewerReceipt.events.RoleModified.returnValues.account);
 
 
-  //Deploy FundFactory and set address as FUND_FACTORY role
-  console.log("Deploying FundFactory from account", accounts[0]);
+  //Deploy FundFactory and set role
+  console.log("Deploying FundFactory...");
   const fundFactory = await new web3.eth.Contract(
     FundFactory.abi
   )
     .deploy({ data: FundFactory.bytecode, arguments: [endaomentAdmin.options.address] })
     .send({ from: accounts[0] });
-
-  console.log("FundFactory deployed to", fundFactory.options.address);
+  console.log("FundFactory deployed to:", fundFactory.options.address);
 
   const fundFactoryReceipt = await attemptRoleSet(4, fundFactory.options.address, endaomentAdmin, accounts[0])
   console.log("EndaomentAdmin.Role.FUND_FACTORY set to:", fundFactoryReceipt.events.RoleModified.returnValues.account);
 
 
-  //Deploy OrgFactory and set address as ORG_FACTORY role
-  console.log("Deploying OrgFactory from account", accounts[0]);
+  //Deploy OrgFactory and set role
+  console.log("Deploying OrgFactory...");
   const orgFactory = await new web3.eth.Contract(
     OrgFactory.abi
   )
     .deploy({ data: OrgFactory.bytecode, arguments: [endaomentAdmin.options.address] })
     .send({ from: accounts[0] });
-
-  console.log("OrgFactory deployed to", orgFactory.options.address);
+  console.log("OrgFactory deployed to:", orgFactory.options.address);
 
   const orgFactoryReceipt = await attemptRoleSet(5, orgFactory.options.address, endaomentAdmin, accounts[0])
   console.log("EndaomentAdmin.Role.ORG_FACTORY set to:", orgFactoryReceipt.events.RoleModified.returnValues.account);
 
 
-
-  return console.log("Contract suite sucessfully deployed");
-
+  return console.log("Endaoment contract suite sucessfully deployed to the " + process.env.INFURA_PREFIX + " ethereum network!");
 };
 
 
