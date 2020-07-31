@@ -20,18 +20,11 @@ contract TwoStepOwnable {
   address private _owner;
   address private _newPotentialOwner;
 
-  event OwnershipTransferred(
-    address indexed previousOwner,
-    address indexed newOwner
-  );
- 
-  event TransferInitiated(
-    address indexed newOwner
-  );
-  
-  event TransferCancelled(
-    address indexed newPotentialOwner
-  );
+  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+  event TransferInitiated(address indexed newOwner);
+
+  event TransferCancelled(address indexed newPotentialOwner);
 
   /**
    * @dev Initialize contract by setting transaction submitter as initial owner.
@@ -68,10 +61,7 @@ contract TwoStepOwnable {
    * Can only be called by the current owner.
    */
   function transferOwnership(address newOwner) public onlyOwner {
-    require(
-      newOwner != address(0),
-      "TwoStepOwnable: new potential owner is the zero address."
-    );
+    require(newOwner != address(0), "TwoStepOwnable: new potential owner is the zero address.");
 
     _newPotentialOwner = newOwner;
     emit TransferInitiated(address(newOwner));
@@ -107,7 +97,7 @@ contract TwoStepOwnable {
 contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   // Maintain a role status mapping with assigned accounts and paused states.
   mapping(uint256 => RoleStatus) private _roles;
-  
+
   /**
    * @notice Set a new account on a given role and emit a `RoleModified` event
    * if the role holder has changed. Only the owner may call this function.
@@ -128,7 +118,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   function removeRole(Role role) public override onlyOwner {
     _setRole(role, address(0));
   }
-  
+
   /**
    * @notice Pause a currently unpaused role and emit a `RolePaused` event. Only
    * the owner or the designated pauser may call this function. Also, bear in
@@ -153,7 +143,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
     storedRoleStatus.paused = false;
     emit RoleUnpaused(role);
   }
-  
+
   /**
    * @notice External view function to check whether or not the functionality
    * associated with a given role is currently paused or not. The owner or the
@@ -223,8 +213,8 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   function _isPaused(Role role) private view returns (bool paused) {
     paused = _roles[uint256(role)].paused;
   }
-  
-    /**
+
+  /**
    * @notice Modifier that throws if called by any account other than the owner
    * or the supplied role, or if the caller is not the owner and the role in
    * question is paused.
@@ -238,7 +228,4 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
     }
     _;
   }
-
 }
-
-
