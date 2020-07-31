@@ -102,18 +102,18 @@ contract Org is Administratable {
     address tokenAddress,
     address adminContractAddress
   ) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT) {
-    ERC20 token = ERC20(tokenAddress);
-    uint256 cashOutAmount = token.balanceOf(address(this));
+    ERC20 tokenContract = ERC20(tokenAddress);
+    uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 
-    token.transfer(desiredWithdrawalAddress, cashOutAmount);
+    tokenContract.transfer(desiredWithdrawalAddress, cashOutAmount);
     emit CashOutComplete(cashOutAmount);
   }
 
   function getTokenBalance(address tokenAddress) public view returns (uint256) {
-    ERC20 t = ERC20(tokenAddress);
-    uint256 bal = t.balanceOf(address(this));
+    ERC20 tokenContract = ERC20(tokenAddress);
+    uint256 balance = tokenContract.balanceOf(address(this));
 
-    return bal;
+    return balance;
   }
 
   function getClaimsCount() public view returns (uint256) {

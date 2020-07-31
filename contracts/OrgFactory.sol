@@ -60,9 +60,9 @@ contract OrgFactory is Administratable {
 
   /**
    * @notice Returns boolean if provided address is present in allowedOrgs[].
-   * @param Org address of the organization contract requested.
+   * @param org address of the organization contract requested.
    */
-  function getAllowedOrg(address Org) public view returns (bool) {
-    return allowedOrgs[Org];
+  function getAllowedOrg(address org) public view returns (bool) {
+    return allowedOrgs[org];
   }
 }

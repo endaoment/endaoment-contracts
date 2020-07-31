@@ -34,15 +34,15 @@ contract Fund is Administratable {
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund
-   * @param creator Address of the Fund's Primary Advisor
+   * @param admin Address of the Fund's Primary Advisor
    * @param adminContractAddress Address of the EndaomentAdmin contract.
    */
-  constructor(address creator, address adminContractAddress)
+  constructor(address admin, address adminContractAddress)
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY)
   {
-    require(creator != address(0));
-    manager = creator;
+    require(admin != address(0));
+    manager = admin;
   }
 
   // ========== Admin Management ==========
@@ -77,9 +77,9 @@ contract Fund is Administratable {
     view
     returns (bool)
   {
-    OrgFactory x = OrgFactory(orgFactoryContractAddress);
+    OrgFactory orgFactory = OrgFactory(orgFactoryContractAddress);
 
-    return x.getAllowedOrg(recipient);
+    return orgFactory.getAllowedOrg(recipient);
   }
 
   /**
@@ -96,10 +96,10 @@ contract Fund is Administratable {
       address
     )
   {
-    ERC20 t = ERC20(tokenAddress);
-    uint256 bal = t.balanceOf(address(this));
+    ERC20 tokenContract = ERC20(tokenAddress);
+    uint256 balance = tokenContract.balanceOf(address(this));
 
-    return (bal, address(this).balance, grants.length, manager);
+    return (balance, address(this).balance, grants.length, manager);
   }
 
   /**
@@ -142,14 +142,14 @@ contract Fund is Administratable {
     admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     Grant storage grant = grants[index];
     require(grant.complete == false);
-    ERC20 t = ERC20(tokenAddress);
+    ERC20 tokenContract = ERC20(tokenAddress);
 
     //Process fees:
     uint256 fee = (grant.value) / 100;
     uint256 finalGrant = (grant.value * 99) / 100;
-    t.transfer(admin, fee);
+    tokenContract.transfer(admin, fee);
 
-    t.transfer(grant.recipient, finalGrant);
+    tokenContract.transfer(grant.recipient, finalGrant);
 
     grant.complete = true;
   }

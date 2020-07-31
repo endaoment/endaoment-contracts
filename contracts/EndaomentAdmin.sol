@@ -60,11 +60,14 @@ contract TwoStepOwnable {
    * @dev Allows a new account (`newOwner`) to accept ownership.
    * Can only be called by the current owner.
    */
-  function transferOwnership(address newOwner) public onlyOwner {
-    require(newOwner != address(0), "TwoStepOwnable: new potential owner is the zero address.");
+  function transferOwnership(address newPotentialOwner) public onlyOwner {
+    require(
+      newPotentialOwner != address(0),
+      "TwoStepOwnable: new potential owner is the zero address."
+    );
 
-    _newPotentialOwner = newOwner;
-    emit TransferInitiated(address(newOwner));
+    _newPotentialOwner = newPotentialOwner;
+    emit TransferInitiated(address(newPotentialOwner));
   }
 
   /**
@@ -105,7 +108,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @param account The account to set as the designated role bearer.
    */
   function setRole(Role role, address account) public override onlyOwner {
-    require(account != address(0), "Must supply an account.");
+    require(account != address(0), "EndaomentAdmin: Must supply an account.");
     _setRole(role, account);
   }
 
@@ -127,7 +130,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    */
   function pause(Role role) public override onlyAdminOr(Role.PAUSER) {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
-    require(!storedRoleStatus.paused, "Role in question is already paused.");
+    require(!storedRoleStatus.paused, "EndaomentAdmin: Role in question is already paused.");
     storedRoleStatus.paused = true;
     emit RolePaused(role);
   }
@@ -139,7 +142,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    */
   function unpause(Role role) public override onlyOwner {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
-    require(storedRoleStatus.paused, "Role in question is already unpaused.");
+    require(storedRoleStatus.paused, "EndaomentAdmin: Role in question is already unpaused.");
     storedRoleStatus.paused = false;
     emit RoleUnpaused(role);
   }
@@ -223,8 +226,8 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    */
   modifier onlyAdminOr(Role role) {
     if (!isOwner()) {
-      require(_isRole(role), "Caller does not have a required role.");
-      require(!_isPaused(role), "Role in question is currently paused.");
+      require(_isRole(role), "EndaomentAdmin: Caller does not have a required role.");
+      require(!_isPaused(role), "EndaomentAdmin: Role in question is currently paused.");
     }
     _;
   }
