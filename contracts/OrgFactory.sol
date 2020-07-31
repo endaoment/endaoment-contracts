@@ -18,7 +18,7 @@ contract OrgFactory is Administratable {
 // ========== STATE VARIABLES==========
     Org[] public deployedOrgs;
     mapping(address => bool) public allowedOrgs;
-    event orgCreated(address indexed newAddress);
+    event OrgCreated(address indexed newAddress);
 
 // ========== CONSTRUCTOR ==========        
     /**
@@ -37,7 +37,7 @@ contract OrgFactory is Administratable {
         Org newOrg = new Org(ein, adminContractAddress);
         deployedOrgs.push(newOrg);
         allowedOrgs[address(newOrg)] = true;
-        emit orgCreated(address(newOrg));
+        emit OrgCreated(address(newOrg));
     }
 
     /**

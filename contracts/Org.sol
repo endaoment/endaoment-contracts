@@ -31,7 +31,7 @@ contract Org is Administratable {
     uint public taxId;
     address public orgWallet;
     Claim[] public claims;
-    event cashOutComplete(uint cashOutAmount);
+    event CashOutComplete(uint cashOutAmount);
 
 
 // ========== CONSTRUCTOR ==========    
@@ -91,7 +91,7 @@ contract Org is Administratable {
         uint256 cashOutAmount = token.balanceOf(address(this));
 
         token.transfer(desiredWithdrawalAddress, cashOutAmount);
-        emit cashOutComplete(cashOutAmount);
+        emit CashOutComplete(cashOutAmount);
     }
 
      function getTokenBalance(address tokenAddress) public view returns (uint) {

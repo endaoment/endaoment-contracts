@@ -17,7 +17,7 @@ import "./Fund.sol";
 contract FundFactory is Administratable {
 // ========== STATE VARIABLES ==========
     Fund[] public createdFunds;
-    event fundCreated(address indexed newAddress);
+    event FundCreated(address indexed newAddress);
     
 // ========== CONSTRUCTOR ==========    
     /**
@@ -28,14 +28,14 @@ contract FundFactory is Administratable {
         
 // ========== Fund Creation & Management ==========
     /**
-    * @notice Creates new Fund and emits fundCreated event. 
+    * @notice Creates new Fund and emits FundCreated event. 
     * @param managerAddress The address of the Fund's Primary Advisor
     * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
     function createFund(address managerAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT) {
         Fund newFund = new Fund(managerAddress, adminContractAddress);
         createdFunds.push(newFund);
-        emit fundCreated(address(newFund));
+        emit FundCreated(address(newFund));
     }
 
     /**
