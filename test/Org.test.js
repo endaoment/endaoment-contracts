@@ -23,7 +23,7 @@ describe("Org", function() {
   beforeEach(async function() {
     this.endaomentAdmin = await EndaomentAdmin.new({ from: admin });
     this.token = await ERC20Mock.new(name, symbol, initHolder, initSupply);
-    await this.endaomentAdmin.setRole(0, admin, { from: admin });
+    await this.endaomentAdmin.setRole(6, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
     await this.endaomentAdmin.setRole(3, reviewer, { from: admin });
