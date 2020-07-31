@@ -141,21 +141,4 @@ describe("Org", function() {
     const claimCount1 = await org.getClaimsCount({ from: user });
     assert.equal(claimCount1, 1);
   });
-
-  it("allows ADMIN to set org wallet", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const setOrgWalletReceipt = await org.setOrgWallet(user, this.endaomentAdmin.address, {from: admin});
-    assert.equal(await org.orgWallet(), user);
-  });
-  
-  it("allows REVIEWER to set org wallet", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const setOrgWalletReceipt = await org.setOrgWallet(user, this.endaomentAdmin.address, { from: reviewer });
-    assert.equal(await org.orgWallet(), user);
-  });
-  
-  it("denies USER to set org wallet", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    await expectRevert.unspecified(org.setOrgWallet(user, this.endaomentAdmin.address, { from: user }));
-  });
 });
