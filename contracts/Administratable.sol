@@ -5,9 +5,9 @@ pragma solidity ^0.6.10;
 import "./EndaomentAdmin.sol";
 
 /**
- * @dev Provides a of modifiers allowing contracts administered
+ * @dev Provides two modifiers allowing contracts administered
  * by the EndaomentAdmin contract to properly restrict method calls
- * based on the a given role. 
+ * based on the a given role.
  */
 contract Administratable {
     /**
