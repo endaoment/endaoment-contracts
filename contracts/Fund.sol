@@ -29,9 +29,7 @@ contract Fund is Administratable {
 
     address public manager;
     address public admin;
-    mapping(address => bool) public contributors;
     Grant[] public grants;
-    uint public totalContributors;
 
 // ========== CONSTRUCTOR ==========
     /**
