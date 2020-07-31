@@ -25,9 +25,9 @@ interface IEndaomentAdmin {
 
   function unpause(Role role) external;
 
-  function isPaused(Role role) external view returns (bool paused);
+  function isPaused(Role role) external view returns (bool);
 
-  function isRole(Role role) external view returns (bool hasRole);
+  function isRole(Role role) external view returns (bool);
 
-  function getRoleAddress(Role role) external view returns (address admin);
+  function getRoleAddress(Role role) external view returns (address);
 }

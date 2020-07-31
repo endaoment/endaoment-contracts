@@ -151,32 +151,32 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * owner may unpause functionality. Additionally, the owner may call paused
    * functions directly.
    * @param role The role to check the pause status on.
-   * @return paused A boolean to indicate if the functionality associated with
+   * @return A boolean to indicate if the functionality associated with
    * the role in question is currently paused.
    */
-  function isPaused(Role role) public override view returns (bool paused) {
-    paused = _isPaused(role);
+  function isPaused(Role role) public override view returns (bool) {
+    return _isPaused(role);
   }
 
   /**
    * @notice External view function to check whether the caller is the current
    * role holder.
    * @param role The role to check for.
-   * @return hasRole A boolean indicating if the caller has the specified role.
+   * @return A boolean indicating if the caller has the specified role.
    */
-  function isRole(Role role) public override view returns (bool hasRole) {
-    hasRole = _isRole(role);
+  function isRole(Role role) public override view returns (bool) {
+    return _isRole(role);
   }
 
   /**
    * @notice External view function to check the account currently holding the
    * given role.
-   * @return roleAddress The address of the current admin, or the null
+   * @return The address of the current admin, or the null
    * address if none is set.
    */
-  function getRoleAddress(Role role) public override view returns (address roleAddress) {
+  function getRoleAddress(Role role) public override view returns (address) {
     require(_roles[uint256(role)].account != address(0));
-    roleAddress = _roles[uint256(role)].account;
+    return _roles[uint256(role)].account;
   }
 
   /**
@@ -198,20 +198,20 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @notice Private view function to check whether the caller is the current
    * role holder.
    * @param role The role to check for.
-   * @return hasRole A boolean indicating if the caller has the specified role.
+   * @return A boolean indicating if the caller has the specified role.
    */
-  function _isRole(Role role) private view returns (bool hasRole) {
-    hasRole = msg.sender == _roles[uint256(role)].account;
+  function _isRole(Role role) private view returns (bool) {
+    return msg.sender == _roles[uint256(role)].account;
   }
 
   /**
    * @notice Private view function to check whether the given role is paused or
    * not.
    * @param role The role to check for.
-   * @return paused A boolean indicating if the specified role is paused or not.
+   * @return A boolean indicating if the specified role is paused or not.
    */
-  function _isPaused(Role role) private view returns (bool paused) {
-    paused = _roles[uint256(role)].paused;
+  function _isPaused(Role role) private view returns (bool) {
+    return _roles[uint256(role)].paused;
   }
 
   /**
