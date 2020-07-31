@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
  * @notice Org is a contract that serves as a smart wallet for US nonprofit
  * organizations. It holds the organization's federal Tax ID number as taxID, 
  * and allows for an address to submit a Claim struct to the contract whereby 
- * the organization can direct recieved grant awards from Endaoment Funds.
+ * the organization can directly receive grant awards from Endaoment Funds.
  */
 contract Org is Administratable {
     using SafeMath for uint256;
@@ -73,7 +73,6 @@ contract Org is Administratable {
     /**
      * @notice Approving Organization Claim 
      * @param  index Index value of Claim.
-     * @param  index Index value of Claim.
      * @param adminContractAddress Contract Address for Endaoment Admin
      */
     function approveClaim(uint index, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
@@ -83,16 +82,16 @@ contract Org is Administratable {
     }
 
     /**
-     * @notice Cashing out Organization Contract 
-     * @param  desiredWithdrawlAddress Destination for withdrawl
-     * @param tokenAddress Stablecoin address of desired token withdrawl
+     * @notice Cashing out Organization Contract
+     * @param  desiredWithdrawalAddress Destination for withdrawal
+     * @param tokenAddress Stablecoin address of desired token withdrawal
      * @param adminContractAddress Contract Address for Endaoment Admin
      */
-    function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
+    function cashOutOrg(address desiredWithdrawalAddress, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
         ERC20 token = ERC20(tokenAddress);
         uint256 cashOutAmount = token.balanceOf(address(this));
 
-        token.transfer(desiredWithdrawlAddress, cashOutAmount);
+        token.transfer(desiredWithdrawalAddress, cashOutAmount);
         emit cashOutComplete(cashOutAmount);
     }
 
