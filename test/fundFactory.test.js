@@ -16,7 +16,7 @@ describe("FundFactory", function () {
 
   beforeEach(async function () {
     this.endaomentAdmin = await EndaomentAdmin.new({ from: admin });
-    await this.endaomentAdmin.setRole(0, admin, { from: admin });
+    await this.endaomentAdmin.setRole(6, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
     this.fundFactory = await FundFactory.new(this.endaomentAdmin.address, { from: admin });
