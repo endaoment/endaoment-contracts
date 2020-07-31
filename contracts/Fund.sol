@@ -22,7 +22,7 @@ contract Fund is Administratable {
 // ========== STATE VARIABLES ==========
     struct Grant {
         string description;
-        uint value;
+        uint256 value;
         address recipient;
         bool complete;
     }
@@ -78,7 +78,7 @@ contract Fund is Administratable {
     */
     function getSummary(address tokenAddress) public view returns (uint, uint, uint, address) {
         ERC20 t = ERC20(tokenAddress);
-        uint bal = t.balanceOf(address(this));
+        uint256 bal = t.balanceOf(address(this));
 
         return (
             bal,
@@ -114,7 +114,7 @@ contract Fund is Administratable {
     * @param  tokenAddress The stablecoin's token address.
     * @param  adminContractAddress Address of the EndaomentAdmin contract.
     */
-    function finalizeGrant(uint index, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
+    function finalizeGrant(uint256 index, address tokenAddress, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
         EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
         admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
         Grant storage grant = grants[index];

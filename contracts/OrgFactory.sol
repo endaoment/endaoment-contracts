@@ -33,7 +33,7 @@ contract OrgFactory is Administratable {
     * @param ein The U.S. Tax Identification Number for the Organization
     * @param adminContractAddress Contract address for Endaoment Admin
     */
-    function createOrg(uint ein, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
+    function createOrg(uint256 ein, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT){
         Org newOrg = new Org(ein, adminContractAddress);
         deployedOrgs.push(newOrg);
         allowedOrgs[address(newOrg)] = true;
@@ -51,7 +51,7 @@ contract OrgFactory is Administratable {
     * @notice Returns address of given index postiion in deployedOrgs[]. 
     * @param index Array position of requested org
     */
-    function getDeployedOrg(uint index) public view returns (address) {
+    function getDeployedOrg(uint256 index) public view returns (address) {
         return address(deployedOrgs[index]);
     }
 
