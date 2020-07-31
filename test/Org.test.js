@@ -9,7 +9,7 @@ const {
 } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const EndaomentAdmin = contract.fromArtifact("endaomentAdmin");
+const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const Org = contract.fromArtifact("Org");
 const ERC20Mock = contract.fromArtifact('ERC20Mock');
 
