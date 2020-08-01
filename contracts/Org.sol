@@ -94,6 +94,11 @@ contract Org is Administratable {
         emit cashOutComplete(cashOutAmount);
     }
 
+    /**
+     * @notice Retrieves Token Balance of Org Contract
+     * @param tokenAddress Address of desired token to query for balance
+     * @return Balance of conract in token base unit of provided tokenAddress  
+     */
      function getTokenBalance(address tokenAddress) public view returns (uint) {
             ERC20 t = ERC20(tokenAddress);
             uint256 bal = t.balanceOf(address(this));
@@ -101,6 +106,10 @@ contract Org is Administratable {
         return bal;
      }
 
+    /**
+     * @notice Retrieves Count of Claims Made 
+     * @return Length of Claims[] as uint  
+     */
        function getClaimsCount() public view returns (uint) {
         return claims.length;
     }
