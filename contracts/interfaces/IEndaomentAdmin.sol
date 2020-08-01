@@ -24,12 +24,18 @@ interface IEndaomentAdmin {
     address account;
     bool paused;
   }
-  
+
   function setRole(Role role, address account) external;
+
   function removeRole(Role role) external;
+
   function pause(Role role) external;
+
   function unpause(Role role) external;
-  function isPaused(Role role) external view returns (bool paused);
-  function isRole(Role role) external view returns (bool hasRole);
-  function getRoleAddress(Role role) external view returns (address admin);
+
+  function isPaused(Role role) external view returns (bool);
+
+  function isRole(Role role) external view returns (bool);
+
+  function getRoleAddress(Role role) external view returns (address);
 }
