@@ -64,8 +64,8 @@ contract Org is Administratable {
     string memory eMail,
     address orgAdminAddress
   ) public {
-    require(fSub == true);
-    require(msg.sender == orgAdminAddress);
+    require(fSub == true, "Org: Information was not submitted successfully.");
+    require(msg.sender == orgAdminAddress, "Org: Only callable by organization's administrator.");
 
     Claim memory newClaim = Claim({
       firstName: fName,

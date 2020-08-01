@@ -10,7 +10,7 @@ import "./interfaces/IEndaomentAdmin.sol";
  * specific functions.
  *
  * This module is used through inheritance. It will make available the modifier
- * `onlyOwner`, which can be aplied to your functions to restrict their use to
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
  * the owner.
  *
  * In order to transfer ownership, a recipient must be specified, at which point
@@ -20,11 +20,18 @@ contract TwoStepOwnable {
   address private _owner;
   address private _newPotentialOwner;
 
-  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
-  event TransferInitiated(address indexed newOwner);
-
-  event TransferCancelled(address indexed newPotentialOwner);
+  event OwnershipTransferred(
+    address indexed previousOwner,
+    address indexed newOwner
+  );
+ 
+  event TransferInitiated(
+    address indexed newOwner
+  );
+  
+  event TransferCancelled(
+    address indexed newPotentialOwner
+  );
 
   /**
    * @dev Initialize contract by setting transaction submitter as initial owner.
@@ -178,7 +185,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * address if none is set.
    */
   function getRoleAddress(Role role) public override view returns (address) {
-    require(_roles[uint256(role)].account != address(0));
+    require(_roles[uint256(role)].account != address(0), "EndaomentAdmin: Role bearer is null address.");
     return _roles[uint256(role)].account;
   }
 
