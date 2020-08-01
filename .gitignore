@@ -24,6 +24,7 @@ coverage.json
 .env.test.local
 .env.production.local
 .out
+*.orig
 
 npm-debug.log*
 yarn-debug.log*
