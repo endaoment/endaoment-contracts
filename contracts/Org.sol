@@ -71,14 +71,13 @@ contract Org is Administratable {
     }
 
     /**
-     * @notice Approving Organization Claim 
+     * @notice Approving Organization Claim
      * @param  index Index value of Claim.
      * @param adminContractAddress Contract Address for Endaoment Admin
      */
     function approveClaim(uint256 index, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
-        Claim storage claim = claims[index]; 
-        
-        setOrgWallet(claim.desiredWallet, adminContractAddress);
+        Claim storage claim = claims[index];
+        orgWallet = claim.desiredWallet;
     }
 
     /**
@@ -93,10 +92,6 @@ contract Org is Administratable {
 
         token.transfer(desiredWithdrawalAddress, cashOutAmount);
         emit cashOutComplete(cashOutAmount);
-    }
-
-    function setOrgWallet(address providedWallet, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
-        orgWallet = providedWallet;
     }
 
      function getTokenBalance(address tokenAddress) public view returns (uint) {
