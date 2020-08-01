@@ -98,7 +98,7 @@ contract Org is Administratable {
 
     /**
      * @notice Assigns orgWallet to Provided Address
-     * @param providedWallet Wallet address that will serve as destination for withdrawl
+     * @param providedWallet Wallet address that will serve as destination for withdrawal
      * @param adminContractAddress Contract Address for Endaoment Admin
      */
     function setOrgWallet(address providedWallet, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
@@ -108,6 +108,7 @@ contract Org is Administratable {
     /**
      * @notice Retrieves Token Balance of Org Contract
      * @param tokenAddress Address of desired token to query for balance
+     * @return Balance of conract in token base unit of provided tokenAddress  
      */
      function getTokenBalance(address tokenAddress) public view returns (uint) {
             ERC20 t = ERC20(tokenAddress);
@@ -118,6 +119,7 @@ contract Org is Administratable {
 
     /**
      * @notice Retrieves Count of Claims Made 
+     * @return Length of Claims[] as uint  
      */
        function getClaimsCount() public view returns (uint) {
         return claims.length;
