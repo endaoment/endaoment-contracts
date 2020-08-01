@@ -144,10 +144,10 @@ contract Fund is Administratable {
     require(grant.complete == false, "Fund: Grant is already finalized.");
     ERC20 tokenContract = ERC20(tokenAddress);
 
-    //Process fees:
-    uint256 fee = (grant.value) / 100;
-    uint256 finalGrant = (grant.value * 99) / 100;
-    tokenContract.transfer(admin, fee);
+        // Process fees:
+        uint256 fee = grant.value.div(100);
+        uint256 finalGrant = grant.value.mul(99).div(100);
+        tokenContract.transfer(admin, fee);
 
     tokenContract.transfer(grant.recipient, finalGrant);
 

@@ -16,7 +16,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
  * the organization can directly receive grant awards from Endaoment Funds.
  */
 contract Org is Administratable {
-  using SafeMath for uint256;
 
   // ========== STATE VARIABLES ==========
 
