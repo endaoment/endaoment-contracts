@@ -122,8 +122,8 @@ contract Fund is Administratable {
         ERC20 t = ERC20(tokenAddress);
 
         //Process fees:
-        uint256 fee = (grant.value)/100;
-        uint256 finalGrant = (grant.value * 99)/100;
+        uint256 fee = grant.value.div(100);
+        uint256 finalGrant = grant.value.mul(99).div(100);
         t.transfer(admin, fee);
 
         t.transfer(grant.recipient, finalGrant);
