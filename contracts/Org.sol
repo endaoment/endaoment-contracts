@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 pragma solidity ^0.6.10;
+pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 
@@ -32,6 +33,8 @@ contract Org is Administratable {
     address public orgWallet;
     Claim[] public claims;
     event cashOutComplete(uint cashOutAmount);
+    event ClaimCreated(Claim claim);
+    event ClaimApproved(Claim claim);
 
 
 // ========== CONSTRUCTOR ==========    
@@ -66,6 +69,7 @@ contract Org is Administratable {
             desiredWallet: msg.sender,
             filesSubmitted: true
         });
+        emit ClaimCreated(newClaim);
 
         claims.push(newClaim);
     }
@@ -77,6 +81,7 @@ contract Org is Administratable {
      */
     function approveClaim(uint index, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
         Claim storage claim = claims[index];
+        emit ClaimApproved(claim);
         orgWallet = claim.desiredWallet;
     }
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 pragma solidity ^0.6.10;
+pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
@@ -31,6 +32,10 @@ contract Fund is Administratable {
     address public admin;
     Grant[] public grants;
 
+    event ManagerChanged(address newManager);
+    event GrantCreated(Grant grant);
+    event GrantFinalized(Grant grant);
+
 // ========== CONSTRUCTOR ==========
     /**
     * @notice Create new Fund
@@ -58,6 +63,7 @@ contract Fund is Administratable {
     * @param  adminContractAddress Address of the EndaomentAdmin contract.
     */
     function changeManager (address newManager, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER){
+        emit ManagerChanged(newManager);
         manager = newManager;
     }
 
@@ -105,6 +111,7 @@ contract Fund is Administratable {
             complete: false
         });
 
+        emit GrantCreated(newGrant);
         grants.push(newGrant);
     }
 
@@ -119,6 +126,7 @@ contract Fund is Administratable {
         admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
         Grant storage grant = grants[index];
         require(grant.complete == false);
+        emit GrantFinalized(grant);
         ERC20 t = ERC20(tokenAddress);
 
         //Process fees:
