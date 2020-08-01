@@ -67,14 +67,14 @@ contract TwoStepOwnable {
    * @dev Allows a new account (`newOwner`) to accept ownership.
    * Can only be called by the current owner.
    */
-  function transferOwnership(address newOwner) public onlyOwner {
+  function transferOwnership(address newPotentialOwner) public onlyOwner {
     require(
-      newOwner != address(0),
+      newPotentialOwner != address(0),
       "TwoStepOwnable: new potential owner is the zero address."
     );
 
-    _newPotentialOwner = newOwner;
-    emit TransferInitiated(address(newOwner));
+    _newPotentialOwner = newPotentialOwner;
+    emit TransferInitiated(address(newPotentialOwner));
   }
 
   /**
@@ -107,7 +107,7 @@ contract TwoStepOwnable {
 contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   // Maintain a role status mapping with assigned accounts and paused states.
   mapping(uint256 => RoleStatus) private _roles;
-  
+
   /**
    * @notice Set a new account on a given role and emit a `RoleModified` event
    * if the role holder has changed. Only the owner may call this function.
@@ -115,7 +115,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @param account The account to set as the designated role bearer.
    */
   function setRole(Role role, address account) public override onlyOwner {
-    require(account != address(0), "Must supply an account.");
+    require(account != address(0), "EndaomentAdmin: Must supply an account.");
     _setRole(role, account);
   }
 
@@ -128,7 +128,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   function removeRole(Role role) public override onlyOwner {
     _setRole(role, address(0));
   }
-  
+
   /**
    * @notice Pause a currently unpaused role and emit a `RolePaused` event. Only
    * the owner or the designated pauser may call this function. Also, bear in
@@ -137,7 +137,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    */
   function pause(Role role) public override onlyAdminOr(Role.PAUSER) {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
-    require(!storedRoleStatus.paused, "Role in question is already paused.");
+    require(!storedRoleStatus.paused, "EndaomentAdmin: Role in question is already paused.");
     storedRoleStatus.paused = true;
     emit RolePaused(role);
   }
@@ -149,11 +149,11 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    */
   function unpause(Role role) public override onlyOwner {
     RoleStatus storage storedRoleStatus = _roles[uint256(role)];
-    require(storedRoleStatus.paused, "Role in question is already unpaused.");
+    require(storedRoleStatus.paused, "EndaomentAdmin: Role in question is already unpaused.");
     storedRoleStatus.paused = false;
     emit RoleUnpaused(role);
   }
-  
+
   /**
    * @notice External view function to check whether or not the functionality
    * associated with a given role is currently paused or not. The owner or the
@@ -161,31 +161,32 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * owner may unpause functionality. Additionally, the owner may call paused
    * functions directly.
    * @param role The role to check the pause status on.
-   * @return paused A boolean to indicate if the functionality associated with
+   * @return A boolean to indicate if the functionality associated with
    * the role in question is currently paused.
    */
-  function isPaused(Role role) public override view returns (bool paused) {
-    paused = _isPaused(role);
+  function isPaused(Role role) public override view returns (bool) {
+    return _isPaused(role);
   }
 
   /**
    * @notice External view function to check whether the caller is the current
    * role holder.
    * @param role The role to check for.
-   * @return hasRole A boolean indicating if the caller has the specified role.
+   * @return A boolean indicating if the caller has the specified role.
    */
-  function isRole(Role role) public override view returns (bool hasRole) {
-    hasRole = _isRole(role);
+  function isRole(Role role) public override view returns (bool) {
+    return _isRole(role);
   }
 
   /**
    * @notice External view function to check the account currently holding the
    * given role.
-   * @return roleAddress The address of the current admin.
+   * @return The address of the current admin, or the null
+   * address if none is set.
    */
-  function getRoleAddress(Role role) public override view returns (address roleAddress) {
+  function getRoleAddress(Role role) public override view returns (address) {
     require(_roles[uint256(role)].account != address(0), "EndaomentAdmin: Role bearer is null address.");
-    roleAddress = _roles[uint256(role)].account;
+    return _roles[uint256(role)].account;
   }
 
   /**
@@ -207,23 +208,23 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @notice Private view function to check whether the caller is the current
    * role holder.
    * @param role The role to check for.
-   * @return hasRole A boolean indicating if the caller has the specified role.
+   * @return A boolean indicating if the caller has the specified role.
    */
-  function _isRole(Role role) private view returns (bool hasRole) {
-    hasRole = msg.sender == _roles[uint256(role)].account;
+  function _isRole(Role role) private view returns (bool) {
+    return msg.sender == _roles[uint256(role)].account;
   }
 
   /**
    * @notice Private view function to check whether the given role is paused or
    * not.
    * @param role The role to check for.
-   * @return paused A boolean indicating if the specified role is paused or not.
+   * @return A boolean indicating if the specified role is paused or not.
    */
-  function _isPaused(Role role) private view returns (bool paused) {
-    paused = _roles[uint256(role)].paused;
+  function _isPaused(Role role) private view returns (bool) {
+    return _roles[uint256(role)].paused;
   }
-  
-    /**
+
+  /**
    * @notice Modifier that throws if called by any account other than the owner
    * or the supplied role, or if the caller is not the owner and the role in
    * question is paused.
@@ -232,10 +233,9 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    */
   modifier onlyAdminOr(Role role) {
     if (!isOwner()) {
-      require(_isRole(role), "Caller does not have a required role.");
-      require(!_isPaused(role), "Role in question is currently paused.");
+      require(_isRole(role), "EndaomentAdmin: Caller does not have a required role.");
+      require(!_isPaused(role), "EndaomentAdmin: Role in question is currently paused.");
     }
     _;
   }
-
 }
