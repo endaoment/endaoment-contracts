@@ -10,7 +10,7 @@ import "./interfaces/IEndaomentAdmin.sol";
  * specific functions.
  *
  * This module is used through inheritance. It will make available the modifier
- * `onlyOwner`, which can be aplied to your functions to restrict their use to
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
  * the owner.
  *
  * In order to transfer ownership, a recipient must be specified, at which point
@@ -181,11 +181,10 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   /**
    * @notice External view function to check the account currently holding the
    * given role.
-   * @return roleAddress The address of the current admin, or the null
-   * address if none is set.
+   * @return roleAddress The address of the current admin.
    */
   function getRoleAddress(Role role) public override view returns (address roleAddress) {
-    require(_roles[uint256(role)].account != address(0));
+    require(_roles[uint256(role)].account != address(0), "EndaomentAdmin: Role bearer is null address.");
     roleAddress = _roles[uint256(role)].account;
   }
 
@@ -240,5 +239,3 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   }
 
 }
-
-

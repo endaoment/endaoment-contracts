@@ -38,7 +38,7 @@ contract Fund is Administratable {
     * @param adminContractAddress Address of the EndaomentAdmin contract.
     */
     constructor (address creator, address adminContractAddress) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY){
-        require(creator != address(0));
+        require(creator != address(0), "Fund: Creator cannot be null address.");
         manager = creator;
     }
 
@@ -47,7 +47,7 @@ contract Fund is Administratable {
     * @notice Restricts method access to fund's manager
     */
     modifier restricted() {
-      require(msg.sender == manager);
+      require(msg.sender == manager, "Fund: This method is only callable by the fund manager.");
       _;
     }
 
@@ -96,7 +96,7 @@ contract Fund is Administratable {
     * @param  orgFactoryContractAddress Address of the orgFactory Contract.
     */
     function createGrant(string memory description, uint256 value, address recipient, address orgFactoryContractAddress) public restricted {
-        require(checkRecipient(recipient, orgFactoryContractAddress) == true);
+        require(checkRecipient(recipient, orgFactoryContractAddress) == true, "Fund: Recipient contract was not created by the OrgFactory and is not allowed.");
 
         Grant memory newGrant = Grant({
             description: description,
@@ -118,7 +118,7 @@ contract Fund is Administratable {
         EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
         admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
         Grant storage grant = grants[index];
-        require(grant.complete == false);
+        require(grant.complete == false, "Fund: Grant is already finalized.");
         ERC20 t = ERC20(tokenAddress);
 
         //Process fees:
