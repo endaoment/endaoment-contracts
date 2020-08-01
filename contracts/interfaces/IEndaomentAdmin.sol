@@ -11,12 +11,13 @@ interface IEndaomentAdmin {
   event RoleUnpaused(Role indexed role);
 
   enum Role {
-    ADMIN,
+    EMPTY,
     PAUSER,
     ACCOUNTANT,
     REVIEWER,
     FUND_FACTORY,
-    ORG_FACTORY
+    ORG_FACTORY,
+    ADMIN
   }
 
   struct RoleStatus {

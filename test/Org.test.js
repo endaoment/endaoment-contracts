@@ -9,7 +9,7 @@ const {
 } = require("@openzeppelin/test-helpers");
 const { assert, expect } = require("chai");
 
-const EndaomentAdmin = contract.fromArtifact("endaomentAdmin");
+const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const Org = contract.fromArtifact("Org");
 const ERC20Mock = contract.fromArtifact('ERC20Mock');
 
@@ -23,7 +23,7 @@ describe("Org", function() {
   beforeEach(async function() {
     this.endaomentAdmin = await EndaomentAdmin.new({ from: admin });
     this.token = await ERC20Mock.new(name, symbol, initHolder, initSupply);
-    await this.endaomentAdmin.setRole(0, admin, { from: admin });
+    await this.endaomentAdmin.setRole(6, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
     await this.endaomentAdmin.setRole(3, reviewer, { from: admin });
@@ -140,22 +140,5 @@ describe("Org", function() {
     const claimRequestReceipt = await org.claimRequest("John", "Doe", true, "john@doe.com", user, { from: user });
     const claimCount1 = await org.getClaimsCount({ from: user });
     assert.equal(claimCount1, 1);
-  });
-
-  it("allows ADMIN to set org wallet", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const setOrgWalletReceipt = await org.setOrgWallet(user, this.endaomentAdmin.address, {from: admin});
-    assert.equal(await org.orgWallet(), user);
-  });
-  
-  it("allows REVIEWER to set org wallet", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const setOrgWalletReceipt = await org.setOrgWallet(user, this.endaomentAdmin.address, { from: reviewer });
-    assert.equal(await org.orgWallet(), user);
-  });
-  
-  it("denies USER to set org wallet", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    await expectRevert.unspecified(org.setOrgWallet(user, this.endaomentAdmin.address, { from: user }));
   });
 });

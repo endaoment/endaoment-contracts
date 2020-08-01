@@ -11,8 +11,8 @@ import "./OrgFactory.sol";
  * @author rheeger
  * @notice Fund is a contract that serves as an on-chain US Donor-Advised Fund.
  * It holds the proceeds of gifted cryptocurrency as ERC20 tokens, 
- * and allows for the manager to submit Grant reccomendations to the contract. 
- * The EndaomentAdmin can then chose to approve the Grant reccomendation, triggering
+ * and allows for the manager to submit Grant recommendations to the contract. 
+ * The EndaomentAdmin can then chose to approve the Grant recommendation, triggering
  * a SafeMath transfer of a 1% fee to the EndaomentAdmin and the remainder to the 
  * recipient Org contract.
  */
@@ -29,9 +29,7 @@ contract Fund is Administratable {
 
     address public manager;
     address public admin;
-    mapping(address => bool) public contributors;
     Grant[] public grants;
-    uint public totalContributors;
 
 // ========== CONSTRUCTOR ==========
     /**
@@ -91,7 +89,7 @@ contract Fund is Administratable {
     }
 
     /**
-    * @notice Create new Grant Reccomendation
+    * @notice Create new Grant Recommendation
     * @param  description The address of the Owner.
     * @param  value The value of the grant in base units.
     * @param  recipient The address of the recieving organization's contract.
@@ -111,7 +109,7 @@ contract Fund is Administratable {
     }
 
     /**
-    * @notice Approve Grant Reccomendation
+    * @notice Approve Grant Recommendation
     * @param  index This Grant's index position
     * @param  tokenAddress The stablecoin's token address.
     * @param  adminContractAddress Address of the EndaomentAdmin contract.
