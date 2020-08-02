@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 pragma solidity ^0.6.10;
+pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
@@ -31,6 +32,10 @@ contract Fund is Administratable {
   address public admin;
   Grant[] public grants;
 
+  event ManagerChanged(address newManager);
+  event GrantCreated(Grant grant);
+  event GrantFinalized(Grant grant);
+
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund
@@ -45,14 +50,14 @@ contract Fund is Administratable {
     manager = admin;
   }
 
-// ========== Admin Management ==========
-    /**
-    * @notice Restricts method access to fund's manager
-    */
-    modifier restricted() {
-      require(msg.sender == manager, "Fund: This method is only callable by the fund manager.");
-      _;
-    }
+  // ========== Admin Management ==========
+  /**
+   * @notice Restricts method access to fund's manager
+   */
+  modifier restricted() {
+    require(msg.sender == manager, "Fund: This method is only callable by the fund manager.");
+    _;
+  }
 
   // ========== Fund Management & Info ==========
   /**
@@ -64,6 +69,7 @@ contract Fund is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
   {
+    emit ManagerChanged(newManager);
     manager = newManager;
   }
 
@@ -115,7 +121,10 @@ contract Fund is Administratable {
     address recipient,
     address orgFactoryContractAddress
   ) public restricted {
-    require(checkRecipient(recipient, orgFactoryContractAddress) == true, "Fund: Recipient contract was not created by the OrgFactory and is not allowed.");
+    require(
+      checkRecipient(recipient, orgFactoryContractAddress) == true,
+      "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
+    );
 
     Grant memory newGrant = Grant({
       description: description,
@@ -123,7 +132,7 @@ contract Fund is Administratable {
       recipient: recipient,
       complete: false
     });
-
+    emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
@@ -142,12 +151,13 @@ contract Fund is Administratable {
     admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     Grant storage grant = grants[index];
     require(grant.complete == false, "Fund: Grant is already finalized.");
+    emit GrantFinalized(grant);
     ERC20 tokenContract = ERC20(tokenAddress);
 
-        // Process fees:
-        uint256 fee = grant.value.div(100);
-        uint256 finalGrant = grant.value.mul(99).div(100);
-        tokenContract.transfer(admin, fee);
+    // Process fees:
+    uint256 fee = grant.value.div(100);
+    uint256 finalGrant = grant.value.mul(99).div(100);
+    tokenContract.transfer(admin, fee);
 
     tokenContract.transfer(grant.recipient, finalGrant);
 
