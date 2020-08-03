@@ -84,7 +84,8 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: admin });
+    const changeManagerReceipt = await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: admin });
+    expectEvent(changeManagerReceipt, "ManagerChanged", { newManager: newManager });
     const newFundManager = await fundContract.manager();
     await assert.equal(newFundManager, newManager);
   });
@@ -95,10 +96,11 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
-    const new_manager = await fundContract.manager();
+    const changeManagerReceipt = await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
+    expectEvent(changeManagerReceipt, "ManagerChanged", { newManager: newManager });
+    const newFundManager = await fundContract.manager();
 
-    await assert.equal(new_manager, newManager);
+    await assert.equal(newFundManager, newManager);
   });
 
   it("denies REVIEWER to change manager when REVIEWER is paused", async function () {
@@ -108,9 +110,9 @@ describe("Fund", function () {
     assert.equal(fundManager, manager);
 
     await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
-    const new_manager = await fundContract.manager();
+    const newFundManager = await fundContract.manager();
 
-    await assert.equal(new_manager, newManager);
+    await assert.equal(newFundManager, newManager);
 
     await this.endaomentAdmin.pause(3, { from: pauser });
 
@@ -183,7 +185,7 @@ describe("Fund", function () {
     );
 
     //Create new grant on the Fund contract
-    await this.fund.createGrant(
+    const createGrantReceipt = await this.fund.createGrant(
       "test grant",
       1,
       org.logs[0].args.newAddress,
@@ -193,6 +195,14 @@ describe("Fund", function () {
 
     //Get Grant struct at position 0, confirm values
     const grant = await this.fund.grants(0);
+    expectEvent(createGrantReceipt, "GrantCreated", 
+      { grant: [
+        grant.description,
+        "1",
+        grant.recipient,
+        grant.complete,
+      ]}
+    );
 
     assert.deepEqual(
       {
@@ -267,7 +277,17 @@ describe("Fund", function () {
       { from: manager }
     );
 
-    await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: admin });
+    const grant = await fund.grants(0);
+    
+    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: admin });
+    expectEvent(finalizeGrantReceipt, "GrantFinalized",
+      { grant: [
+        grant.description,
+        "100",
+        grant.recipient,
+        grant.complete,
+      ]}
+    );
 
     const orgBalance = await this.token.balanceOf(org.logs[0].args.newAddress);
     const adminBalance = await this.token.balanceOf(admin);
@@ -295,8 +315,18 @@ describe("Fund", function () {
       orgFactory.address,
       { from: manager }
     );
-
-    await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: accountant });
+    
+    const grant = await fund.grants(0);
+    
+    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: accountant });
+    expectEvent(finalizeGrantReceipt, "GrantFinalized",
+      { grant: [
+        grant.description,
+        "100",
+        grant.recipient,
+        grant.complete,
+      ]}
+    );
 
     const orgBalance = await this.token.balanceOf(org.logs[0].args.newAddress);
     const adminBalance = await this.token.balanceOf(admin);
