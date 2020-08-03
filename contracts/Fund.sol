@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // FUND CONTRACT
 /**
@@ -102,7 +103,7 @@ contract Fund is Administratable {
       address
     )
   {
-    ERC20 tokenContract = ERC20(tokenAddress);
+    IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
     return (balance, address(this).balance, grants.length, manager);
@@ -133,7 +134,7 @@ contract Fund is Administratable {
       complete: false
     });
     emit GrantCreated(newGrant);
-        emit GrantCreated(newGrant);
+    emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
@@ -153,7 +154,7 @@ contract Fund is Administratable {
     Grant storage grant = grants[index];
     require(grant.complete == false, "Fund: Grant is already finalized.");
     emit GrantFinalized(grant);
-    ERC20 tokenContract = ERC20(tokenAddress);
+    IERC20 tokenContract = IERC20(tokenAddress);
 
     // Process fees:
     uint256 fee = grant.value.div(100);
