@@ -73,13 +73,12 @@ Includes a `Claims` mapping that allows for any address to create a new `Claim` 
 ## Additional Documentation
 Full technical documentation of our contracts can be found in our doucmentation repository: 
 
-### Full Docs: [endaoment-docs/developers](https://github.com/endaoment/endaoment-docs/developers)
+### Full Docs: [endaoment-docs/developers](https://github.com/endaoment/endaoment-docs/tree/master/developers)
 
 ### Other Resources:
 - Website: [endaoment.org](https://endaoment.org)
 - Twitter: [@endaomentdotorg](https://twitter.com/endaomentdotorg)
 - Discord: [Join Server](https://discord.gg/9xZCgca)
-<br />
 
 ## License
 [BSD 3-Clause](LICENSE)
