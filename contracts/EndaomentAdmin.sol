@@ -20,18 +20,11 @@ contract TwoStepOwnable {
   address private _owner;
   address private _newPotentialOwner;
 
-  event OwnershipTransferred(
-    address indexed previousOwner,
-    address indexed newOwner
-  );
- 
-  event TransferInitiated(
-    address indexed newOwner
-  );
-  
-  event TransferCancelled(
-    address indexed newPotentialOwner
-  );
+  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+  event TransferInitiated(address indexed newOwner);
+
+  event TransferCancelled(address indexed newPotentialOwner);
 
   /**
    * @dev Initialize contract by setting transaction submitter as initial owner.
@@ -185,7 +178,10 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * address if none is set.
    */
   function getRoleAddress(Role role) public override view returns (address) {
-    require(_roles[uint256(role)].account != address(0), "EndaomentAdmin: Role bearer is null address.");
+    require(
+      _roles[uint256(role)].account != address(0),
+      "EndaomentAdmin: Role bearer is null address."
+    );
     return _roles[uint256(role)].account;
   }
 

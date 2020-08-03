@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 pragma solidity ^0.6.10;
+pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
-
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 //ORG CONTRACT
@@ -16,7 +16,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
  * the organization can directly receive grant awards from Endaoment Funds.
  */
 contract Org is Administratable {
-
   // ========== STATE VARIABLES ==========
 
   struct Claim {
@@ -30,7 +29,10 @@ contract Org is Administratable {
   uint256 public taxId;
   address public orgWallet;
   Claim[] public claims;
+
   event CashOutComplete(uint256 cashOutAmount);
+  event ClaimCreated(Claim claim);
+  event ClaimApproved(Claim claim);
 
   // ========== CONSTRUCTOR ==========
 
@@ -73,7 +75,7 @@ contract Org is Administratable {
       desiredWallet: msg.sender,
       filesSubmitted: true
     });
-
+    emit ClaimCreated(newClaim);
     claims.push(newClaim);
   }
 
@@ -87,6 +89,7 @@ contract Org is Administratable {
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
   {
     Claim storage claim = claims[index];
+    emit ClaimApproved(claim);
     orgWallet = claim.desiredWallet;
   }
 
@@ -121,8 +124,8 @@ contract Org is Administratable {
   }
 
   /**
-   * @notice Retrieves Count of Claims Made 
-   * @return Length of Claims[] as uint  
+   * @notice Retrieves Count of Claims Made
+   * @return Length of Claims[] as uint
    */
   function getClaimsCount() public view returns (uint256) {
     return claims.length;
