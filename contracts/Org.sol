@@ -4,7 +4,6 @@ pragma solidity ^0.6.10;
 pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
-
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 //ORG CONTRACT
@@ -17,7 +16,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
  * the organization can directly receive grant awards from Endaoment Funds.
  */
 contract Org is Administratable {
-
   // ========== STATE VARIABLES ==========
 
   struct Claim {
@@ -78,7 +76,6 @@ contract Org is Administratable {
       filesSubmitted: true
     });
     emit ClaimCreated(newClaim);
-
     claims.push(newClaim);
   }
 
@@ -127,8 +124,8 @@ contract Org is Administratable {
   }
 
   /**
-   * @notice Retrieves Count of Claims Made 
-   * @return Length of Claims[] as uint  
+   * @notice Retrieves Count of Claims Made
+   * @return Length of Claims[] as uint
    */
   function getClaimsCount() public view returns (uint256) {
     return claims.length;
