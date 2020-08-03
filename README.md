@@ -2,7 +2,7 @@
 Endaoment is a public, tax-exempt 501(c)(3) charity providing smart contract powered Donor-Advised Funds. <br />
 
 The solidity contracts in this repository govern the creation, operation and flow-of-funds of Endaoment's Donor-Advised Funds and Nonprofit Organization Escrow Contracts. 
-<br/>
+<br />
 
 ## Table of Contents
 - [Usage](#usage)
@@ -11,11 +11,11 @@ The solidity contracts in this repository govern the creation, operation and flo
 - [Testing](#testing)
 - [Additional Documentation](#additional_documentation)
 - [License](#license)
-<br/>
+<br />
 
 ## Usage
 These contracts should be used exclusively in conjunction with the Endaoment Client (repo) and Endaoment API (repo), in order to replicate proper behavior.  
-<br/>
+<br />
 
 ## Installation
 To install, clone this repository using: 
@@ -33,7 +33,7 @@ Once installed, in the project directory run:
 This builds all contracts in `/contracts` directory using `oz compile`.<br/>
 
 Outputs `/artifcts`, `/build` and `/cache` to root directory.
-<br/>
+<br />
 
 ## Testing
 After installation, you can run: 
@@ -71,7 +71,7 @@ Provides method for creating/deploying a new `Org` contract. Methods are also av
 Provides all methods for the administration of any specific Org in the Endaoment ecosystem. <br />
 
 Includes a `Claims` mapping that allows for any address to create a new `Claim` data struct whereby they provide a `orgWallet` address and contact info. If a `Claim` is approved, a subset of Admin accounts can release granted funds from the Org contract to the desired wallet via the `cashOutOrg()` method.
-<br/>
+<br />
 
 ## Additional Documentation
 Full technical documentation of our contracts can be found in our doucmentation repository: 
