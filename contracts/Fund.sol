@@ -93,7 +93,7 @@ contract Fund is Administratable {
    * @param  tokenAddress The token address of the stablecoin being used by the web-server.
    */
   function getSummary(address tokenAddress)
-    public
+    external
     view
     returns (
       uint256,
@@ -168,7 +168,7 @@ contract Fund is Administratable {
   /**
    * @notice Returns total number of grants submitted to the fund.
    */
-  function getGrantsCount() public view returns (uint256) {
+  function getGrantsCount() external view returns (uint256) {
     return grants.length;
   }
 }

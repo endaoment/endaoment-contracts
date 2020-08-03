@@ -37,14 +37,14 @@ contract TwoStepOwnable {
   /**
    * @dev Returns the address of the current owner.
    */
-  function getOwner() public view returns (address) {
+  function getOwner() external view returns (address) {
     return _owner;
   }
 
   /**
    * @dev Returns the address of the current potential new owner.
    */
-  function getNewPotentialOwner() public view returns (address) {
+  function getNewPotentialOwner() external view returns (address) {
     return _newPotentialOwner;
   }
 
@@ -161,10 +161,10 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * owner may unpause functionality. Additionally, the owner may call paused
    * functions directly.
    * @param role The role to check the pause status on.
-   * @return A boolean to indicate if the functionality associated with
+   * @return A boolean to indicate if the functionalitfy associated with
    * the role in question is currently paused.
    */
-  function isPaused(Role role) public override view returns (bool) {
+  function isPaused(Role role) external override view returns (bool) {
     return _isPaused(role);
   }
 
@@ -174,7 +174,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @param role The role to check for.
    * @return A boolean indicating if the caller has the specified role.
    */
-  function isRole(Role role) public override view returns (bool) {
+  function isRole(Role role) external override view returns (bool) {
     return _isRole(role);
   }
 
@@ -184,7 +184,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @return The address of the current admin, or the null
    * address if none is set.
    */
-  function getRoleAddress(Role role) public override view returns (address) {
+  function getRoleAddress(Role role) external override view returns (address) {
     require(
       _roles[uint256(role)].account != address(0),
       "EndaomentAdmin: Role bearer is null address."
