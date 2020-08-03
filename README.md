@@ -3,6 +3,7 @@ Endaoment is a public, tax-exempt 501(c)(3) charity providing smart contract pow
 
 The solidity contracts in this repository govern the creation, operation and flow-of-funds of Endaoment's Donor-Advised Funds and Nonprofit Organization Escrow Contracts. 
 <br />
+<br />
 
 ## Table of Contents
 - [Usage](#usage)
@@ -42,6 +43,7 @@ After installation, you can run:
 
 Launches the test runner and runs the associated test suite.
 <br />
+<br />
 
 ## Contracts
 The Endaoment ecosystem uses serveral contracts to govern the movement of finances between DAFs and organizations:
@@ -72,6 +74,7 @@ Provides all methods for the administration of any specific Org in the Endaoment
 
 Includes a `Claims` mapping that allows for any address to create a new `Claim` data struct whereby they provide a `orgWallet` address and contact info. If a `Claim` is approved, a subset of Admin accounts can release granted funds from the Org contract to the desired wallet via the `cashOutOrg()` method.
 <br />
+<br />
 
 ## Additional Documentation
 Full technical documentation of our contracts can be found in our doucmentation repository: 
@@ -81,8 +84,8 @@ Full technical documentation of our contracts can be found in our doucmentation 
 ### Other Resources
 - Website: [endaoment.org](https://endaoment.org)
 - Twitter: [@endaomentdotorg](https://twitter.com/endaomentdotorg)
-- Discord: [Join Server >](https://discord.gg/9xZCgca)
-<br/>
+- Discord: [Join Server](https://discord.gg/9xZCgca)
+<br />
 
 ## License
 [BSD 3-Clause](LICENSE)
