@@ -4,13 +4,12 @@ Endaoment is a public, tax-exempt 501(c)(3) charity providing smart contract pow
 The solidity contracts in this repository govern the creation, operation and flow-of-funds of Endaoment's Donor-Advised Funds and Nonprofit Organization Escrow Contracts. <br/>
 
 ## Table of Contents
-- [Usage](#Usage)
-- [Installation](#Installation)
-- [Testing](#Testing)
-- [Testing](#Testing)
-- [Contracts](#Contracts)
-- [Additional Documentation](#Additional_Documentation)
-- [License](#License)
+- [Usage](#usage)
+- [Installation](#installation)
+- [Contracts](#contracts)
+- [Testing](#testing)
+- [Additional Documentation](#additional_documentation)
+- [License](#license)
 
 ## Usage
 These contracts should be used exclusively in conjunction with the Endaoment Client (repo) and Endaoment API (repo), in order to replicate proper behavior.  
