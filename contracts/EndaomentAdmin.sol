@@ -161,7 +161,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * owner may unpause functionality. Additionally, the owner may call paused
    * functions directly.
    * @param role The role to check the pause status on.
-   * @return A boolean to indicate if the functionalitfy associated with
+   * @return A boolean to indicate if the functionality associated with
    * the role in question is currently paused.
    */
   function isPaused(Role role) external override view returns (bool) {
