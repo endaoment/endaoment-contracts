@@ -19,6 +19,7 @@ import "./OrgFactory.sol";
  */
 contract Fund is Administratable {
   using SafeMath for uint256;
+  using SafeERC20 for IERC20;
 
   // ========== STATE VARIABLES ==========
   struct Grant {
@@ -102,7 +103,7 @@ contract Fund is Administratable {
       address
     )
   {
-    ERC20 tokenContract = ERC20(tokenAddress);
+    IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
     return (balance, address(this).balance, grants.length, manager);
@@ -133,7 +134,6 @@ contract Fund is Administratable {
       complete: false
     });
     emit GrantCreated(newGrant);
-        emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
@@ -153,14 +153,14 @@ contract Fund is Administratable {
     Grant storage grant = grants[index];
     require(grant.complete == false, "Fund: Grant is already finalized.");
     emit GrantFinalized(grant);
-    ERC20 tokenContract = ERC20(tokenAddress);
+    IERC20 tokenContract = IERC20(tokenAddress);
 
     // Process fees:
     uint256 fee = grant.value.div(100);
     uint256 finalGrant = grant.value.mul(99).div(100);
-    tokenContract.transfer(admin, fee);
+    tokenContract.safeTransfer(admin, fee);
 
-    tokenContract.transfer(grant.recipient, finalGrant);
+    tokenContract.safeTransfer(grant.recipient, finalGrant);
 
     grant.complete = true;
   }
