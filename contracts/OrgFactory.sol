@@ -49,20 +49,4 @@ contract OrgFactory is Administratable {
   function countDeployedOrgs() public view returns (uint256) {
     return deployedOrgs.length;
   }
-
-  /**
-   * @notice Returns address of given index postiion in deployedOrgs[].
-   * @param index Array position of requested org
-   */
-  function getDeployedOrg(uint256 index) public view returns (address) {
-    return address(deployedOrgs[index]);
-  }
-
-  /**
-   * @notice Returns boolean if provided address is present in allowedOrgs[].
-   * @param org address of the organization contract requested.
-   */
-  function getAllowedOrg(address org) public view returns (bool) {
-    return allowedOrgs[org];
-  }
 }

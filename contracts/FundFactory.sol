@@ -47,12 +47,4 @@ contract FundFactory is Administratable {
   function countFunds() public view returns (uint256) {
     return createdFunds.length;
   }
-
-  /**
-   * @notice Returns address of a specific fund in createdFunds[]
-   * @param index The index position of the Fund
-   */
-  function getFund(uint256 index) public view returns (address) {
-    return address(createdFunds[index]);
-  }
 }

@@ -85,7 +85,7 @@ contract Fund is Administratable {
   {
     OrgFactory orgFactory = OrgFactory(orgFactoryContractAddress);
 
-    return orgFactory.getAllowedOrg(recipient);
+    return orgFactory.allowedOrgs(recipient);
   }
 
   /**
@@ -133,7 +133,7 @@ contract Fund is Administratable {
       complete: false
     });
     emit GrantCreated(newGrant);
-        emit GrantCreated(newGrant);
+    emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
