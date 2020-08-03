@@ -42,6 +42,13 @@ contract TwoStepOwnable {
   }
 
   /**
+   * @dev Returns the address of the current potential new owner.
+   */
+  function getNewPotentialOwner() public view returns (address) {
+    return _newPotentialOwner;
+  }
+
+  /**
    * @dev Throws if called by any account other than the owner.
    */
   modifier onlyOwner() {

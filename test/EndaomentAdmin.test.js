@@ -27,6 +27,11 @@ describe("EndaomentAdmin", function () {
     assert.equal(owner, admin);
   });
 
+  it("leaves zero addr as new potential Owner, retrieves new potential Owner address", async function () {
+    const newPotentialOwner = await this.endaomentAdmin.getNewPotentialOwner();
+    assert.equal(newPotentialOwner, constants.ZERO_ADDRESS, "Unexpected new potential owner");
+  });
+
   it("returns correct boolean for Owner based on provided address", async function () {
     const isOwner = await this.endaomentAdmin.isOwner({ from: admin });
     assert.isTrue(isOwner);
@@ -39,7 +44,10 @@ describe("EndaomentAdmin", function () {
       newOwner,
       { from: admin }
     );
+    const newPotentialOwner = await this.endaomentAdmin.getNewPotentialOwner();
+
     expectEvent(transferReceipt, "TransferInitiated", { newOwner });
+    assert.equal(newOwner, newPotentialOwner, "Unexpected potential owner");
   });
 
   it("denies non-Owner to intiate ownership transfer", async function () {
@@ -58,10 +66,12 @@ describe("EndaomentAdmin", function () {
     await this.endaomentAdmin.transferOwnership(newOwner, { from: admin });
 
     const cancelReceipt = await this.endaomentAdmin.cancelOwnershipTransfer({ from: admin });
+    const newPotentialOwner = await this.endaomentAdmin.getNewPotentialOwner();
 
     expectEvent(cancelReceipt, "TransferCancelled", {
       newPotentialOwner: newOwner,
     });
+    assert.equal(newPotentialOwner, constants.ZERO_ADDRESS, "Unexpected new potential owner");
   });
 
   it("denies non-Owner from cancelling ownership transfer", async function () {
@@ -95,8 +105,10 @@ describe("EndaomentAdmin", function () {
       newOwner,
     });
     const updatedOwner = await this.endaomentAdmin.getOwner({ from: newOwner });
+    const newPotentialOwner = await this.endaomentAdmin.getNewPotentialOwner();
 
     assert.equal(newOwner, updatedOwner);
+    assert.equal(newPotentialOwner, constants.ZERO_ADDRESS, "Unexpected new potential owner");
   });
 
   it("denies non-Owner from setting a role", async function () {
