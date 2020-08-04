@@ -285,7 +285,7 @@ describe("Fund", function () {
         grant.description,
         "100",
         grant.recipient,
-        grant.complete,
+        true,
       ]}
     );
 
@@ -324,7 +324,7 @@ describe("Fund", function () {
         grant.description,
         "100",
         grant.recipient,
-        grant.complete,
+        true,
       ]}
     );
 

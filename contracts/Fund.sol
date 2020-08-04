@@ -151,18 +151,17 @@ contract Fund is Administratable {
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
     admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     Grant storage grant = grants[index];
+    // Checks
     require(grant.complete == false, "Fund: Grant is already finalized.");
-    emit GrantFinalized(grant);
+    // Effects
     IERC20 tokenContract = IERC20(tokenAddress);
-
-    // Process fees:
     uint256 fee = grant.value.div(100);
     uint256 finalGrant = grant.value.mul(99).div(100);
-    tokenContract.transfer(admin, fee);
-
-    tokenContract.transfer(grant.recipient, finalGrant);
-
     grant.complete = true;
+    emit GrantFinalized(grant);
+    // Interactions
+    tokenContract.transfer(admin, fee);
+    tokenContract.transfer(grant.recipient, finalGrant);
   }
 
   /**
