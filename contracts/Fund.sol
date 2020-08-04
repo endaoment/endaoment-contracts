@@ -85,7 +85,7 @@ contract Fund is Administratable {
   {
     OrgFactory orgFactory = OrgFactory(orgFactoryContractAddress);
 
-    return orgFactory.getAllowedOrg(recipient);
+    return orgFactory.allowedOrgs(recipient);
   }
 
   /**
