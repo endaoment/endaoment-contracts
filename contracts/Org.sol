@@ -148,7 +148,7 @@ contract Org is Administratable {
    * @param tokenAddress Address of desired token to query for balance
    * @return Balance of conract in token base unit of provided tokenAddress
    */
-  function getTokenBalance(address tokenAddress) public view returns (uint256) {
+  function getTokenBalance(address tokenAddress) external view returns (uint256) {
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
