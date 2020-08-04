@@ -132,6 +132,14 @@ describe("Fund", function () {
     );
   });
 
+  it("does not allow manager to be changed to the zero address", async function () {
+    const fundContract = await Fund.at(this.fund.address);
+    await expectRevert(
+      fundContract.changeManager(constants.ZERO_ADDRESS, this.endaomentAdmin.address, { from: admin }),
+      "Fund: New manager cannot be the zero address"
+    );
+  });
+
   it("checks the recipeint of a grant with the OrgFactory", async function () {
     //Open a new OrgFacotry using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
@@ -156,13 +164,18 @@ describe("Fund", function () {
     assert.isTrue(orgChecked);
 
     //Check that a zero address doesn't pass the checkRecipient() function
-    const failingOrg = await this.fund.checkRecipient(
-      constants.ZERO_ADDRESS,
-      orgFactory.address,
-      { from: admin }
+    await expectRevert(
+      this.fund.checkRecipient(constants.ZERO_ADDRESS, orgFactory.address, {
+        from: admin,
+      }),
+      "Fund: Recipient cannot be the zero address"
     );
-
-    assert.isFalse(failingOrg);
+    await expectRevert(
+      this.fund.checkRecipient(org.logs[0].args.newAddress, constants.ZERO_ADDRESS, {
+        from: admin,
+      }),
+      "Fund: OrgFactory cannot be the zero address"
+    );
   });
 
 
@@ -219,14 +232,15 @@ describe("Fund", function () {
       }
     );
 
-    await expectRevert.unspecified(
-      this.fund.createGrant(
-        "test grant",
-        1,
-        org.logs[0].args.newAddress,
-        orgFactory.address,
-        { from: admin }
-      )
+    // Should revert if anyone besides the manager calls the function
+    await expectRevert(
+      this.fund.createGrant( "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: admin } ),
+      "Fund: This method is only callable by the fund manager."
+    );
+    // Should revert if no description is given
+    await expectRevert(
+      this.fund.createGrant( "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
+      "Fund: Must provide a description"
     );
   });
 
@@ -358,6 +372,39 @@ describe("Fund", function () {
     await expectRevert.unspecified(fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: manager }));
   });
 
+  it("blocks finalizing grant with invalid inputs", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
+
+    const org = await orgFactory.createOrg(
+      123456789,
+      this.endaomentAdmin.address,
+      { from: accountant }
+    );
+
+    await this.token.transfer(fund.address, 100, { from: initHolder });
+
+    await fund.createGrant(
+      "test grant",
+      100,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+
+    const grant = await fund.grants(0);
+    
+    await expectRevert(
+      fund.finalizeGrant(1, this.token.address, this.endaomentAdmin.address, { from: admin }),
+      "Fund: Index out of range"
+    );
+    await expectRevert(
+      fund.finalizeGrant( 0, constants.ZERO_ADDRESS, this.endaomentAdmin.address, { from: admin } ),
+      "Fund: Token address cannot be the zero address"
+    );
+  });
+
   it("gets fund summary", async function () {
     const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
     await this.token.transfer(fund.address, 1, { from: initHolder });
@@ -365,5 +412,14 @@ describe("Fund", function () {
     assert(fundSummary[0].eq(new BN(1)));
     assert(fundSummary[1].eq(new BN(0)));
     assert.equal(fundSummary[2], await fund.manager());
+  });
+
+  it("does not allow zero address to be used with getSummary", async function () {
+    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    await this.token.transfer(fund.address, 1, { from: initHolder });
+    await expectRevert(
+      fund.getSummary(constants.ZERO_ADDRESS),
+      "Fund: Token address cannot be the zero address"
+    );
   });
 });

@@ -76,6 +76,13 @@ describe("FundFactory", function () {
     );
   });
 
+  it("does not allow the manager of a new fund to be the zero address", async function () {
+    await expectRevert(
+      this.fundFactory.createFund(constants.ZERO_ADDRESS, this.endaomentAdmin.address, { from: admin } ),
+      "FundFactory: Manager cannot be the zero address"
+    );
+  });
+
   it("returns count of total funds", async function () {
     const before_count = await this.fundFactory.countFunds();
     assert.equal(before_count, 0);

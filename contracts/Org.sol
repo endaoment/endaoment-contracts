@@ -47,6 +47,7 @@ contract Org is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ORG_FACTORY)
   {
+    require(ein >= 10000000 && ein <= 999999999, "Org: Must provide a valid EIN");
     taxId = ein;
   }
 
@@ -65,6 +66,10 @@ contract Org is Administratable {
     string memory eMail,
     address orgAdminWalletAddress
   ) public {
+    require(!isEqual(fName, ""), "Org: Must provide the first name of the administrator");
+    require(!isEqual(lName, ""), "Org: Must provide the last name of the administrator");
+    require(!isEqual(eMail, ""), "Org: Must provide the email address of the administrator");
+    require(orgAdminWalletAddress != address(0), "Org: Wallet address cannot be the zero address");
     Claim memory newClaim = Claim({
       firstName: fName,
       lastName: lName,
@@ -85,6 +90,7 @@ contract Org is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
   {
+    require(index < claims.length, "Org: Index out of range");
     Claim storage claim = claims[index];
     emit ClaimApproved(claim);
     orgWallet = claim.desiredWallet;
@@ -99,6 +105,7 @@ contract Org is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
   {
+    require(tokenAddress != address(0), "Org: Token address cannot be the zero address");
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 

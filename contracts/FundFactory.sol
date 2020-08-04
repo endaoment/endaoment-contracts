@@ -36,6 +36,7 @@ contract FundFactory is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
   {
+    require(managerAddress != address(0), "FundFactory: Manager cannot be the zero address");
     Fund newFund = new Fund(managerAddress, adminContractAddress);
     createdFunds.push(newFund);
     emit FundCreated(address(newFund));

@@ -79,6 +79,24 @@ describe("OrgFactory", function () {
     );
   });
 
+  it ('does not allow orgs to be created with invalid EINs', async function() {
+    const invalidEins = [0, 1, 9999999, 1000000000];
+    invalidEins.forEach(async (ein) => {
+      await expectRevert(
+        this.orgFactory.createOrg(ein, this.endaomentAdmin.address, { from: accountant }),
+        "Org: Must provide a valid EIN"
+      );
+    })
+  });
+
+  it ('allows orgs to be created with valid EINs', async function() {
+    const validEins = [10000000, 999999999];
+    validEins.forEach(async (ein) => {
+      const org =  await this.orgFactory.createOrg(ein, this.endaomentAdmin.address, { from: accountant });
+      assert.isDefined(org.logs[0].args.newAddress);
+    })
+  });
+
   it("returns count of total orgs", async function () {
     assert.isDefined(this.orgFactory.address);
 
