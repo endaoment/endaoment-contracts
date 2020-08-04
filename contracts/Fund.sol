@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: BSD 3-Clause
 
 pragma solidity ^0.6.10;
+pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
@@ -31,28 +32,32 @@ contract Fund is Administratable {
   address public admin;
   Grant[] public grants;
 
+  event ManagerChanged(address newManager);
+  event GrantCreated(Grant grant);
+  event GrantFinalized(Grant grant);
+
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund
-   * @param admin Address of the Fund's Primary Advisor
+   * @param fundManager Address of the Fund's Primary Advisor
    * @param adminContractAddress Address of the EndaomentAdmin contract.
    */
-  constructor(address admin, address adminContractAddress)
+  constructor(address fundManager, address adminContractAddress)
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY)
   {
-    require(admin != address(0), "Fund: Creator cannot be null address.");
-    manager = admin;
+    require(fundManager != address(0), "Fund: Creator cannot be null address.");
+    manager = fundManager;
   }
 
-// ========== Admin Management ==========
-    /**
-    * @notice Restricts method access to fund's manager
-    */
-    modifier restricted() {
-      require(msg.sender == manager, "Fund: This method is only callable by the fund manager.");
-      _;
-    }
+  // ========== Admin Management ==========
+  /**
+   * @notice Restricts method access to fund's manager
+   */
+  modifier restricted() {
+    require(msg.sender == manager, "Fund: This method is only callable by the fund manager.");
+    _;
+  }
 
   // ========== Fund Management & Info ==========
   /**
@@ -64,6 +69,7 @@ contract Fund is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
   {
+    emit ManagerChanged(newManager);
     manager = newManager;
   }
 
@@ -83,7 +89,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Returns summary of details about the fund [tokenBalance, ethBlance, number of grants, managerAddress].
+   * @notice Returns summary of details about the fund [tokenBalance, number of grants, managerAddress].
    * @param  tokenAddress The token address of the stablecoin being used by the web-server.
    */
   function getSummary(address tokenAddress)
@@ -92,14 +98,13 @@ contract Fund is Administratable {
     returns (
       uint256,
       uint256,
-      uint256,
       address
     )
   {
     ERC20 tokenContract = ERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
-    return (balance, address(this).balance, grants.length, manager);
+    return (balance, grants.length, manager);
   }
 
   /**
@@ -115,7 +120,10 @@ contract Fund is Administratable {
     address recipient,
     address orgFactoryContractAddress
   ) public restricted {
-    require(checkRecipient(recipient, orgFactoryContractAddress) == true, "Fund: Recipient contract was not created by the OrgFactory and is not allowed.");
+    require(
+      checkRecipient(recipient, orgFactoryContractAddress) == true,
+      "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
+    );
 
     Grant memory newGrant = Grant({
       description: description,
@@ -123,7 +131,8 @@ contract Fund is Administratable {
       recipient: recipient,
       complete: false
     });
-
+    emit GrantCreated(newGrant);
+    emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
@@ -142,12 +151,13 @@ contract Fund is Administratable {
     admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     Grant storage grant = grants[index];
     require(grant.complete == false, "Fund: Grant is already finalized.");
+    emit GrantFinalized(grant);
     ERC20 tokenContract = ERC20(tokenAddress);
 
-        // Process fees:
-        uint256 fee = grant.value.div(100);
-        uint256 finalGrant = grant.value.mul(99).div(100);
-        tokenContract.transfer(admin, fee);
+    // Process fees:
+    uint256 fee = grant.value.div(100);
+    uint256 finalGrant = grant.value.mul(99).div(100);
+    tokenContract.transfer(admin, fee);
 
     tokenContract.transfer(grant.recipient, finalGrant);
 
