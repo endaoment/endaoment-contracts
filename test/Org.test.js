@@ -189,6 +189,13 @@ describe("Org", function() {
     assertEqualClaims(pendingClaim, EmptyClaim, "Pending claim not deleted");
   });
 
+  it("does not allow approval of empty claims", async function() {
+    await expectRevert(
+        this.org.approveClaim(claimId, { from: admin }),
+        "Org: claim does not exist",
+      );
+  });
+
   it("denies USER to approve claims", async function() {
     const claimRequestReceipt = await this.org.claimRequest(claimId, "John", "Doe", "john@doe.com", user, { from: user });
 
