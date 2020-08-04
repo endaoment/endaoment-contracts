@@ -244,6 +244,17 @@ describe("Org", function() {
     assert((await this.token.balanceOf(other_user)).eq(new BN(1)));
   });
 
+  it("denies cash out to an org with no claim", async function() {
+    await this.token.transfer(this.org.address, 1, { from: initHolder });
+    const orgTokenBalance0 = await this.org.getTokenBalance(this.token.address, { from: other_user });
+    assert(orgTokenBalance0.eq(new BN(1)));
+
+    await expectRevert(
+        this.org.cashOutOrg(this.token.address, {from: accountant}),
+        "Org: Cannot cashout unclaimed Org",
+      );
+  });
+
   it("denies USER to cash out org", async function() {
     await this.token.transfer(this.org.address, 1, { from: initHolder });
     await expectRevert.unspecified(this.org.cashOutOrg(this.token.address, { from: user }));

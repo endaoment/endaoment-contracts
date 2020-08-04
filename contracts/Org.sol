@@ -117,6 +117,9 @@ contract Org is Administratable {
     onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
   {
     require(tokenAddress != address(0), "Org: Token address cannot be the zero address");
+    address payoutAddr = orgWallet();
+    require(payoutAddr != address(0), "Org: Cannot cashout unclaimed Org");
+
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 
