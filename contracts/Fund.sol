@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // FUND CONTRACT
 /**
@@ -40,15 +41,15 @@ contract Fund is Administratable {
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund
-   * @param admin Address of the Fund's Primary Advisor
+   * @param fundManager Address of the Fund's Primary Advisor
    * @param adminContractAddress Address of the EndaomentAdmin contract.
    */
-  constructor(address admin, address adminContractAddress)
+  constructor(address fundManager, address adminContractAddress)
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY)
   {
-    require(admin != address(0), "Fund: Creator cannot be null address.");
-    manager = admin;
+    require(fundManager != address(0), "Fund: Creator cannot be null address.");
+    manager = fundManager;
   }
 
   // ========== Admin Management ==========
@@ -86,18 +87,17 @@ contract Fund is Administratable {
   {
     OrgFactory orgFactory = OrgFactory(orgFactoryContractAddress);
 
-    return orgFactory.getAllowedOrg(recipient);
+    return orgFactory.allowedOrgs(recipient);
   }
 
   /**
-   * @notice Returns summary of details about the fund [tokenBalance, ethBlance, number of grants, managerAddress].
+   * @notice Returns summary of details about the fund [tokenBalance, number of grants, managerAddress].
    * @param  tokenAddress The token address of the stablecoin being used by the web-server.
    */
   function getSummary(address tokenAddress)
-    public
+    external
     view
     returns (
-      uint256,
       uint256,
       uint256,
       address
@@ -106,7 +106,7 @@ contract Fund is Administratable {
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
-    return (balance, address(this).balance, grants.length, manager);
+    return (balance, grants.length, manager);
   }
 
   /**
@@ -151,24 +151,25 @@ contract Fund is Administratable {
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
     admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     Grant storage grant = grants[index];
+    // Checks
     require(grant.complete == false, "Fund: Grant is already finalized.");
-    emit GrantFinalized(grant);
+    // Effects
     IERC20 tokenContract = IERC20(tokenAddress);
 
     // Process fees:
     uint256 fee = grant.value.div(100);
     uint256 finalGrant = grant.value.mul(99).div(100);
-    tokenContract.safeTransfer(admin, fee);
-
-    tokenContract.safeTransfer(grant.recipient, finalGrant);
-
     grant.complete = true;
+    emit GrantFinalized(grant);
+    // Interactions
+    tokenContract.safeTransfer(admin, fee);
+    tokenContract.safeTransfer(grant.recipient, finalGrant);
   }
 
   /**
    * @notice Returns total number of grants submitted to the fund.
    */
-  function getGrantsCount() public view returns (uint256) {
+  function getGrantsCount() external view returns (uint256) {
     return grants.length;
   }
 }

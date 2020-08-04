@@ -46,7 +46,7 @@ describe("Org", function() {
   
   it("registers valid claim requests", async function() {
     const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", true, "john@doe.com", user, { from: user });
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
     const claimCount = await org.getClaimsCount({ from: user });
     assert.equal(claimCount, 1);
     const claim = await org.claims(0, {from: user});
@@ -66,17 +66,9 @@ describe("Org", function() {
     assert.equal(claim.filesSubmitted, true);
   });
   
-  it("rejects invalid claim requests", async function() {
-    const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    await expectRevert.unspecified(org.claimRequest("John", "Doe", false, "john@doe.com", user, { from: user }));
-    await expectRevert.unspecified(org.claimRequest("John", "Doe", true, "john@doe.com", other_user, { from: user }));
-    const claimCount = await org.getClaimsCount({ from: user });
-    assert.equal(claimCount, 0);
-  });
-
   it("allows ADMIN to approve claims", async function() {
     const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", true, "john@doe.com", user, { from: user });
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
     
     const claim = await org.claims(0, {from: user});
     const claimEventData = { claim: [
@@ -95,7 +87,7 @@ describe("Org", function() {
   
   it("allows REVIEWER to approve claims", async function() {
     const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", true, "john@doe.com", user, { from: user });
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
     const claim = await org.claims(0, {from: user});
     const claimEventData = { claim: [
         claim.firstName,
@@ -112,7 +104,7 @@ describe("Org", function() {
   
   it("denies USER to approve claims", async function() {
     const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", true, "john@doe.com", user, { from: user });
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
     const claim = await org.claims(0, {from: user});
     await expectRevert.unspecified(org.approveClaim(0, this.endaomentAdmin.address, { from: user }));
   });
@@ -133,7 +125,10 @@ describe("Org", function() {
     const orgTokenBalance0 = await org.getTokenBalance(this.token.address, { from: other_user });
     assert(orgTokenBalance0.eq(new BN(1)));
 
-    const cashOutOrgReceipt = await org.cashOutOrg(other_user, this.token.address, this.endaomentAdmin.address, { from: admin });
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", other_user, { from: user });
+    const approveClaimReceipt = await org.approveClaim(0, this.endaomentAdmin.address, { from: admin });
+
+    const cashOutOrgReceipt = await org.cashOutOrg(this.token.address, this.endaomentAdmin.address, { from: admin });
     expectEvent(cashOutOrgReceipt, "CashOutComplete", { cashOutAmount: new BN(1) });
     const orgTokenBalance1 = await org.getTokenBalance(this.token.address, { from: other_user });
     
@@ -147,8 +142,11 @@ describe("Org", function() {
     await this.token.transfer(org.address, 1, { from: initHolder });
     const orgTokenBalance0 = await org.getTokenBalance(this.token.address, { from: other_user });
     assert(orgTokenBalance0.eq(new BN(1)));
+
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", other_user, { from: user });
+    const approveClaimReceipt = await org.approveClaim(0, this.endaomentAdmin.address, { from: admin });
     
-    const cashOutOrgReceipt = await org.cashOutOrg(other_user, this.token.address, this.endaomentAdmin.address, { from: accountant });
+    const cashOutOrgReceipt = await org.cashOutOrg(this.token.address, this.endaomentAdmin.address, { from: accountant });
     expectEvent(cashOutOrgReceipt, "CashOutComplete", { cashOutAmount: new BN(1) });
     const orgTokenBalance1 = await org.getTokenBalance(this.token.address, { from: other_user });
     
@@ -161,14 +159,14 @@ describe("Org", function() {
     
     await this.token.transfer(org.address, 1, { from: initHolder });
     
-    await expectRevert.unspecified(org.cashOutOrg(other_user, this.token.address, this.endaomentAdmin.address, { from: user }));
+    await expectRevert.unspecified(org.cashOutOrg(this.token.address, this.endaomentAdmin.address, { from: user }));
   });
 
   it("gets claim count", async function() {
     const org = await Org.new(123, this.endaomentAdmin.address, { from: admin });
     const claimCount0 = await org.getClaimsCount({ from: user });
     assert.equal(claimCount0, 0);
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", true, "john@doe.com", user, { from: user });
+    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
     const claimCount1 = await org.getClaimsCount({ from: user });
     assert.equal(claimCount1, 1);
   });
