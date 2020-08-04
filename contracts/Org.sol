@@ -4,7 +4,7 @@ pragma solidity ^0.6.10;
 pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 //ORG CONTRACT
 /**
@@ -97,7 +97,7 @@ contract Org is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
   {
-    ERC20 tokenContract = ERC20(tokenAddress);
+    IERC20 tokenContract = IERC20(tokenAddress);
     uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 
     tokenContract.transfer(orgWallet, cashOutAmount);
@@ -107,10 +107,11 @@ contract Org is Administratable {
   /**
    * @notice Retrieves Token Balance of Org Contract
    * @param tokenAddress Address of desired token to query for balance
-   * @return Balance of conract in token base unit of provided tokenAddress  
-   */  
+   * @return Balance of conract in token base unit of provided tokenAddress
+   */
+
   function getTokenBalance(address tokenAddress) external view returns (uint256) {
-    ERC20 tokenContract = ERC20(tokenAddress);
+    IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
     return balance;
