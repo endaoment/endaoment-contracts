@@ -101,4 +101,3 @@ What we promise:
  - In the public information concerning the problem reported, we will give your name as the discoverer of the problem (unless you desire otherwise), and
  - As a token of our gratitude for your assistance, we offer a reward for every report of a security problem that was not yet known to us. The amount of the reward will be determined based on the severity of the leak and the quality of the report. 
  - We strive to resolve all problems as quickly as possible, and we would like to play an active role in the ultimate publication on the problem after it is resolved.
- 
