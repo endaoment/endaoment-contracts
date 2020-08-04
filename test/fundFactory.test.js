@@ -95,7 +95,7 @@ describe("FundFactory", function () {
       { from: accountant }
     );
 
-    const getFundAddress = await this.fundFactory.getFund(0);
+    const getFundAddress = await this.fundFactory.createdFunds(0);
 
     assert.equal(fund.logs[0].args.newAddress, getFundAddress);
   });

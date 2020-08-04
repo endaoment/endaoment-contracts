@@ -285,7 +285,7 @@ describe("Fund", function () {
         grant.description,
         "100",
         grant.recipient,
-        grant.complete,
+        true,
       ]}
     );
 
@@ -324,7 +324,7 @@ describe("Fund", function () {
         grant.description,
         "100",
         grant.recipient,
-        grant.complete,
+        true,
       ]}
     );
 
@@ -364,7 +364,6 @@ describe("Fund", function () {
     const fundSummary = await fund.getSummary(this.token.address);
     assert(fundSummary[0].eq(new BN(1)));
     assert(fundSummary[1].eq(new BN(0)));
-    assert(fundSummary[2].eq(new BN(0)));
-    assert.equal(fundSummary[3], await fund.manager());
+    assert.equal(fundSummary[2], await fund.manager());
   });
 });
