@@ -39,15 +39,15 @@ contract Fund is Administratable {
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund
-   * @param admin Address of the Fund's Primary Advisor
+   * @param fundManager Address of the Fund's Primary Advisor
    * @param adminContractAddress Address of the EndaomentAdmin contract.
    */
-  constructor(address admin, address adminContractAddress)
+  constructor(address fundManager, address adminContractAddress)
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY)
   {
-    require(admin != address(0), "Fund: Creator cannot be null address.");
-    manager = admin;
+    require(fundManager != address(0), "Fund: Creator cannot be null address.");
+    manager = fundManager;
   }
 
   // ========== Admin Management ==========
@@ -133,7 +133,7 @@ contract Fund is Administratable {
       complete: false
     });
     emit GrantCreated(newGrant);
-        emit GrantCreated(newGrant);
+    emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
