@@ -55,7 +55,7 @@ contract Org is Administratable {
    * @param  fName First name of Administrator
    * @param  lName Last name of Administrator
    * @param  eMail Email contact for Organization Administrator.
-   * @param  orgAdminAddress Wallet address of Organization's Administrator.
+   * @param  orgAdminWalletAddress Wallet address of Organization's Administrator.
    */
   function claimRequest(
     string memory fName,
