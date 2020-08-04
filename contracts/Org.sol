@@ -37,7 +37,7 @@ contract Org is Administratable {
   
   IFactory public orgFactoryContract;
   uint256 public taxId;
-  mapping(string => Claim) public pendingClaims;
+  mapping(string => Claim) public pendingClaims; // claim UUID to Claim
   Claim public activeClaim;
 
   // ========== CONSTRUCTOR ==========
