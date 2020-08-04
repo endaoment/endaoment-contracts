@@ -158,7 +158,7 @@ contract Fund is Administratable {
 
     // Process fees:
     uint256 fee = grant.value.div(100);
-    uint256 finalGrant = grant.value.mul(99).div(100);
+    uint256 finalGrant = grant.value.sub(fee);
     grant.complete = true;
     emit GrantFinalized(grant);
     // Interactions
