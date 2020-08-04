@@ -30,14 +30,13 @@ contract Administratable {
    * @param role The role to require unless the caller is the owner. Permitted
    * roles are admin (0), accountant (2), and reviewer (3).
    */
-
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
     bool isAdmin = ( msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN) );
 
     if (!isAdmin) {
       if (endaomentAdmin.isPaused(role)) {
-        revert("Administratable: requrested role is paused");
+        revert("Administratable: requested role is paused");
       }
 
       if (role == IEndaomentAdmin.Role.ACCOUNTANT) {
