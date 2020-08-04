@@ -30,48 +30,41 @@ contract Administratable {
    * @param role The role to require unless the caller is the owner. Permitted
    * roles are admin (0), accountant (2), and reviewer (3).
    */
-
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
+    bool isAdmin = ( msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN) );
 
-    if (msg.sender != endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN)) {
-      if (!endaomentAdmin.isPaused(role)) {
-        if (role == IEndaomentAdmin.Role.ACCOUNTANT) {
-          require(
-            msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ACCOUNTANT),
-            "Administratable: only ACCOUNTANT can access"
-          );
-        }
-        if (role == IEndaomentAdmin.Role.REVIEWER) {
-          require(
-            msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.REVIEWER),
-            "Administratable: only REVIEWER can access"
-          );
-        }
-        if (role == IEndaomentAdmin.Role.FUND_FACTORY) {
-          require(
-            msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.FUND_FACTORY),
-            "Administratable: only FUND_FACTORY can access"
-          );
-        }
-        if (role == IEndaomentAdmin.Role.ORG_FACTORY) {
-          require(
-            msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY),
-            "Administratable: only ORG_FACTORY can access"
-          );
-        }
-      } else {
+    if (!isAdmin) {
+      if (endaomentAdmin.isPaused(role)) {
+        revert("Administratable: requested role is paused");
+      }
+
+      if (role == IEndaomentAdmin.Role.ACCOUNTANT) {
         require(
-          msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN),
-          "Administratable: only ADMIN can access"
+          msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ACCOUNTANT),
+          "Administratable: only ACCOUNTANT can access"
         );
       }
-    } else {
-      require(
-        msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN),
-        "Administratable: only ADMIN can access"
-      );
+      if (role == IEndaomentAdmin.Role.REVIEWER) {
+        require(
+          msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.REVIEWER),
+          "Administratable: only REVIEWER can access"
+        );
+      }
+      if (role == IEndaomentAdmin.Role.FUND_FACTORY) {
+        require(
+          msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.FUND_FACTORY),
+          "Administratable: only FUND_FACTORY can access"
+        );
+      }
+      if (role == IEndaomentAdmin.Role.ORG_FACTORY) {
+        require(
+          msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY),
+          "Administratable: only ORG_FACTORY can access"
+        );
+      }
     }
+
     _;
   }
 }
