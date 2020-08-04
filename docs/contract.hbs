@@ -1,0 +1,47 @@
+## Contract: `{{name}}.sol`
+{{{natspec.userdoc}}}
+{{{natspec.devdoc}}}
+
+{{#each ownModifiers}}
+### `{{name}}({{args}})`
+{{#if natspec.userdoc}}
+{{{natspec.userdoc}}}
+
+{{/if}}
+
+{{#if natspec.params}}_Parameters:_{{/if}}
+{{#each natspec.params}}
+
+- `{{param}}`: {{description}}
+
+{{/each}}
+{{/each}}
+
+{{#each ownFunctions}}
+### `{{name}}({{args}}){{#if outputs}} → {{outputs}}{{/if}}` ({{visibility}})
+{{#if natspec.userdoc}}
+{{{natspec.userdoc}}}
+
+{{/if}}
+
+{{#if natspec.params}}_Parameters:_{{/if}}
+{{#each natspec.params}}
+- `{{param}}`: {{description}}
+{{/each}}
+
+{{/each}}
+
+{{#each ownEvents}}
+### `{{name}}({{args}})`
+{{#if natspec.userdoc}}
+{{{natspec.userdoc}}}
+
+{{/if}}
+
+{{#if natspec.params}}_Parameters:_{{/if}}
+{{#each natspec.params}}
+
+- `{{param}}`: {{description}}
+
+{{/each}}
+{{/each}}
