@@ -89,7 +89,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Returns summary of details about the fund [tokenBalance, ethBlance, number of grants, managerAddress].
+   * @notice Returns summary of details about the fund [tokenBalance, number of grants, managerAddress].
    * @param  tokenAddress The token address of the stablecoin being used by the web-server.
    */
   function getSummary(address tokenAddress)
@@ -98,14 +98,13 @@ contract Fund is Administratable {
     returns (
       uint256,
       uint256,
-      uint256,
       address
     )
   {
     ERC20 tokenContract = ERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
-    return (balance, address(this).balance, grants.length, manager);
+    return (balance, grants.length, manager);
   }
 
   /**
