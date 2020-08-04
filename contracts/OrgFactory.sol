@@ -46,7 +46,23 @@ contract OrgFactory is Administratable {
   /**
    * @notice Returns total number Org contracts created by the factory.
    */
-  function countDeployedOrgs() public view returns (uint256) {
+  function countDeployedOrgs() external view returns (uint256) {
     return deployedOrgs.length;
+  }
+
+  /**
+   * @notice Returns address of given index postiion in deployedOrgs[].
+   * @param index Array position of requested org
+   */
+  function getDeployedOrg(uint256 index) external view returns (address) {
+    return address(deployedOrgs[index]);
+  }
+
+  /**
+   * @notice Returns boolean if provided address is present in allowedOrgs[].
+   * @param org address of the organization contract requested.
+   */
+  function getAllowedOrg(address org) external view returns (bool) {
+    return allowedOrgs[org];
   }
 }
