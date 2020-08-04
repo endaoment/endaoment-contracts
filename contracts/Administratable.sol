@@ -16,6 +16,10 @@ contract Administratable {
    * @param adminContractAddress is the supplied EndaomentAdmin contract address
    */
   modifier onlyAdmin(address adminContractAddress) {
+    require(
+      adminContractAddress != address(0),
+      "Administratable: Admin must not be the zero address"
+    );
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
 
     require(
@@ -32,6 +36,10 @@ contract Administratable {
    * roles are admin (0), accountant (2), and reviewer (3).
    */
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
+    require(
+      adminContractAddress != address(0),
+      "Administratable: Admin must not be the zero address"
+    );
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
     bool isAdmin = (msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN));
 
