@@ -20,6 +20,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
  */
 contract Fund is Administratable {
   using SafeMath for uint256;
+  using SafeERC20 for IERC20;
 
   // ========== STATE VARIABLES ==========
   struct Grant {
@@ -133,7 +134,6 @@ contract Fund is Administratable {
       complete: false
     });
     emit GrantCreated(newGrant);
-    emit GrantCreated(newGrant);
     grants.push(newGrant);
   }
 
@@ -155,13 +155,15 @@ contract Fund is Administratable {
     require(grant.complete == false, "Fund: Grant is already finalized.");
     // Effects
     IERC20 tokenContract = IERC20(tokenAddress);
+
+    // Process fees:
     uint256 fee = grant.value.div(100);
     uint256 finalGrant = grant.value.mul(99).div(100);
     grant.complete = true;
     emit GrantFinalized(grant);
     // Interactions
-    tokenContract.transfer(admin, fee);
-    tokenContract.transfer(grant.recipient, finalGrant);
+    tokenContract.safeTransfer(admin, fee);
+    tokenContract.safeTransfer(grant.recipient, finalGrant);
   }
 
   /**

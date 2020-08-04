@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
 //ORG CONTRACT
 /**
@@ -16,6 +17,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * the organization can directly receive grant awards from Endaoment Funds.
  */
 contract Org is Administratable {
+  using SafeERC20 for IERC20;
   // ========== STATE VARIABLES ==========
 
   struct Claim {
@@ -100,7 +102,7 @@ contract Org is Administratable {
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 
-    tokenContract.transfer(orgWallet, cashOutAmount);
+    tokenContract.safeTransfer(orgWallet, cashOutAmount);
     emit CashOutComplete(cashOutAmount);
   }
 
