@@ -150,13 +150,13 @@ describe("Org", function() {
     const claimRequestReceipt = await this.org.claimRequest(claimId, "John", "Doe", "john@doe.com", user, { from: user });
 
     const claimEventData = { claimId,
-                              claim: [
-                                "John",
-                                "Doe",
-                                "john@doe.com",
-                                user,
-                              ],
-                          };
+      claim: [
+        "John",
+        "Doe",
+        "john@doe.com",
+        user,
+      ],
+    };
     expectEvent(claimRequestReceipt, "ClaimCreated", claimEventData);
 
     const approveClaimReceipt = await this.org.approveClaim(claimId, { from: admin });
