@@ -4,7 +4,7 @@ pragma solidity ^0.6.10;
 pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 //ORG CONTRACT
 /**
@@ -54,25 +54,20 @@ contract Org is Administratable {
    * @notice Create Organization Claim
    * @param  fName First name of Administrator
    * @param  lName Last name of Administrator
-   * @param  fSub Information Submitted successfully.
    * @param  eMail Email contact for Organization Administrator.
-   * @param  orgAdminAddress Wallet address of Organization's Administrator.
+   * @param  orgAdminWalletAddress Wallet address of Organization's Administrator.
    */
   function claimRequest(
     string memory fName,
     string memory lName,
-    bool fSub,
     string memory eMail,
-    address orgAdminAddress
+    address orgAdminWalletAddress
   ) public {
-    require(fSub == true, "Org: Information was not submitted successfully.");
-    require(msg.sender == orgAdminAddress, "Org: Only callable by organization's administrator.");
-
     Claim memory newClaim = Claim({
       firstName: fName,
       lastName: lName,
       eMail: eMail,
-      desiredWallet: msg.sender,
+      desiredWallet: orgAdminWalletAddress,
       filesSubmitted: true
     });
     emit ClaimCreated(newClaim);
@@ -95,29 +90,28 @@ contract Org is Administratable {
 
   /**
    * @notice Cashing out Organization Contract
-   * @param  desiredWithdrawalAddress Destination for withdrawal
    * @param tokenAddress Stablecoin address of desired token withdrawal
    * @param adminContractAddress Contract Address for Endaoment Admin
    */
-  function cashOutOrg(
-    address desiredWithdrawalAddress,
-    address tokenAddress,
-    address adminContractAddress
-  ) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT) {
-    ERC20 tokenContract = ERC20(tokenAddress);
+  function cashOutOrg(address tokenAddress, address adminContractAddress)
+    public
+    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+  {
+    IERC20 tokenContract = IERC20(tokenAddress);
     uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 
-    tokenContract.transfer(desiredWithdrawalAddress, cashOutAmount);
+    tokenContract.transfer(orgWallet, cashOutAmount);
     emit CashOutComplete(cashOutAmount);
   }
 
   /**
    * @notice Retrieves Token Balance of Org Contract
    * @param tokenAddress Address of desired token to query for balance
-   * @return Balance of conract in token base unit of provided tokenAddress  
-   */  
-  function getTokenBalance(address tokenAddress) public view returns (uint256) {
-    ERC20 tokenContract = ERC20(tokenAddress);
+   * @return Balance of conract in token base unit of provided tokenAddress
+   */
+
+  function getTokenBalance(address tokenAddress) external view returns (uint256) {
+    IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
     return balance;
@@ -127,7 +121,7 @@ contract Org is Administratable {
    * @notice Retrieves Count of Claims Made
    * @return Length of Claims[] as uint
    */
-  function getClaimsCount() public view returns (uint256) {
+  function getClaimsCount() external view returns (uint256) {
     return claims.length;
   }
 }
