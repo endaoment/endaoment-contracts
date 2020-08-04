@@ -31,6 +31,7 @@ contract Org is Administratable {
   event CashOutComplete(uint256 cashOutAmount);
   event ClaimCreated(string claimId, Claim claim);
   event ClaimApproved(string claimId, Claim claim);
+  event ClaimRejected(string claimId, Claim claim);
 
   // ========== STATE VARIABLES ==========
   
@@ -105,6 +106,21 @@ contract Org is Administratable {
     );
     emit ClaimApproved(claimId, claim);
     activeClaim = claim;
+    delete pendingClaims[claimId];
+  }
+
+  /**
+   * @notice Rejecting Organization Claim
+   * @param claimId UUID of the claim being rejected
+   */
+  function rejectClaim(string calldata claimId)
+    public
+    onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
+  {
+    Claim storage claim = pendingClaims[claimId];
+
+    emit ClaimRejected(claimId, claim);
+
     delete pendingClaims[claimId];
   }
 

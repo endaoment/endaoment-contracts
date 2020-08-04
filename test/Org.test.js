@@ -190,9 +190,11 @@ describe("Org", function() {
   });
 
   it("denies USER to approve claims", async function() {
+    const claimRequestReceipt = await this.org.claimRequest(claimId, "John", "Doe", "john@doe.com", user, { from: user });
+
     await expectRevert(
         this.org.approveClaim(claimId, { from: user }),
-        "Administratable: only REVIEWER can access -- Reason given: Administratable: only REVIEWER can access.",
+        "Administratable: only REVIEWER can access",
       );
   });
 
@@ -202,6 +204,61 @@ describe("Org", function() {
       this.org.approveClaim(badUuid, {from: admin}),
       "Org: claim does not exist"
     );
+  });
+  
+  it("allows ADMIN to reject claims", async function() {
+    const claimRequestReceipt = await this.org.claimRequest(claimId, "John", "Doe", "john@doe.com", user, { from: user });
+
+    const claimEventData = { claimId,
+      claim: [
+        "John",
+        "Doe",
+        "john@doe.com",
+        user,
+      ],
+    };
+    expectEvent(claimRequestReceipt, "ClaimCreated", claimEventData);
+
+    const rejectReceipt = await this.org.rejectClaim(claimId, {from: admin});
+    expectEvent(rejectReceipt, "ClaimRejected", claimEventData);
+
+    const activeClaim = await this.org.activeClaim();
+    assertEqualClaims(activeClaim, EmptyClaim, "Active Claim should be empty");
+
+    const pendingClaim = await this.org.pendingClaims(claimId);
+    assertEqualClaims(pendingClaim, EmptyClaim, "Pending Claim should have been deleted");
+  });
+
+  it("allows REVIEWER to reject claims", async function() {
+    const claimRequestReceipt = await this.org.claimRequest(claimId, "John", "Doe", "john@doe.com", user, { from: user });
+
+    const claimEventData = { claimId,
+      claim: [
+        "John",
+        "Doe",
+        "john@doe.com",
+        user,
+      ],
+    };
+    expectEvent(claimRequestReceipt, "ClaimCreated", claimEventData);
+
+    const rejectReceipt = await this.org.rejectClaim(claimId, {from: reviewer});
+    expectEvent(rejectReceipt, "ClaimRejected", claimEventData);
+
+    const activeClaim = await this.org.activeClaim();
+    assertEqualClaims(activeClaim, EmptyClaim, "Active Claim should be empty");
+
+    const pendingClaim = await this.org.pendingClaims(claimId);
+    assertEqualClaims(pendingClaim, EmptyClaim, "Pending Claim should have been deleted");
+  });
+
+  it("denies USER to reject claims", async function() {
+    const claimRequestReceipt = await this.org.claimRequest(claimId, "John", "Doe", "john@doe.com", user, { from: user });
+
+    await expectRevert(
+        this.org.approveClaim(claimId, { from: other_user }),
+        "Administratable: only REVIEWER can access",
+      );
   });
 
   it("checks token balance", async function() {
