@@ -23,6 +23,13 @@ describe("FundFactory", function () {
     await this.endaomentAdmin.setRole(4, this.fundFactory.address, { from: admin });
   });
 
+  it('does not allow deployments when admin address is the zero address', async function() {
+    await expectRevert(
+      FundFactory.new(constants.ZERO_ADDRESS, { from: admin }),
+      "Administratable: Admin must not be the zero address"
+    );
+  });
+
   it("has defined contract address post-init", async function () {
     assert.isDefined(this.fundFactory.address);
   });
@@ -73,6 +80,21 @@ describe("FundFactory", function () {
 
     await expectRevert.unspecified(
       this.fundFactory.createFund(manager, this.endaomentAdmin.address, { from: accountant })
+    );
+  });
+
+  // Test onlyAdminOrRole modifier
+  it("does not allow fund to be created if admin address is zero address", async function () {
+    await expectRevert(
+      this.fundFactory.createFund(manager, constants.ZERO_ADDRESS, { from: admin }), 
+      "Administratable: Admin must not be the zero address"
+    );
+  });
+
+  it("does not allow the manager of a new fund to be the zero address", async function () {
+    await expectRevert(
+      this.fundFactory.createFund(constants.ZERO_ADDRESS, this.endaomentAdmin.address, { from: admin } ),
+      "FundFactory: Manager cannot be the zero address"
     );
   });
 

@@ -71,6 +71,7 @@ contract Fund is Administratable {
     public
     onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
   {
+    require(newManager != address(0), "Fund: New manager cannot be the zero address");
     emit ManagerChanged(newManager);
     manager = newManager;
   }
@@ -85,6 +86,8 @@ contract Fund is Administratable {
     view
     returns (bool)
   {
+    require(recipient != address(0), "Fund: Recipient cannot be the zero address");
+    require(orgFactoryContractAddress != address(0), "Fund: OrgFactory cannot be the zero address");
     OrgFactory orgFactory = OrgFactory(orgFactoryContractAddress);
 
     return orgFactory.allowedOrgs(recipient);
@@ -103,6 +106,7 @@ contract Fund is Administratable {
       address
     )
   {
+    require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
@@ -122,6 +126,7 @@ contract Fund is Administratable {
     address recipient,
     address orgFactoryContractAddress
   ) public restricted {
+    require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
       checkRecipient(recipient, orgFactoryContractAddress) == true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
@@ -148,6 +153,8 @@ contract Fund is Administratable {
     address tokenAddress,
     address adminContractAddress
   ) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT) {
+    require(index < grants.length, "Fund: Index out of range");
+    require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
     admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     Grant storage grant = grants[index];

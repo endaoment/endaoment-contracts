@@ -7,7 +7,8 @@ import "./EndaomentAdmin.sol";
 /**
  * @dev Provides two modifiers allowing contracts administered
  * by the EndaomentAdmin contract to properly restrict method calls
- * based on the a given role.
+ * based on the a given role. Also provides a utility function for
+ * validating string input arguments.
  */
 contract Administratable {
   /**
@@ -15,6 +16,10 @@ contract Administratable {
    * @param adminContractAddress is the supplied EndaomentAdmin contract address
    */
   modifier onlyAdmin(address adminContractAddress) {
+    require(
+      adminContractAddress != address(0),
+      "Administratable: Admin must not be the zero address"
+    );
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
 
     require(
@@ -31,8 +36,12 @@ contract Administratable {
    * roles are admin (0), accountant (2), and reviewer (3).
    */
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
+    require(
+      adminContractAddress != address(0),
+      "Administratable: Admin must not be the zero address"
+    );
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
-    bool isAdmin = ( msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN) );
+    bool isAdmin = (msg.sender == endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN));
 
     if (!isAdmin) {
       if (endaomentAdmin.isPaused(role)) {
@@ -66,5 +75,14 @@ contract Administratable {
     }
 
     _;
+  }
+
+  /**
+   * @notice Returns true if two strings are equal, false otherwise
+   * @param s1 First string to compare
+   * @param s2 Second string to compare
+   */
+  function isEqual(string memory s1, string memory s2) internal pure returns (bool) {
+    return keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2));
   }
 }
