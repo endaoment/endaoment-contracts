@@ -23,7 +23,8 @@ contract Fund is Administratable {
   using SafeMath for uint256;
   using SafeERC20 for IERC20;
 
-  // ========== STATE VARIABLES ==========
+  // ========== STRUCTS & EVENTS ==========
+  
   struct Grant {
     string description;
     uint256 value;
@@ -31,13 +32,16 @@ contract Fund is Administratable {
     bool complete;
   }
 
+  event ManagerChanged(address newManager);
+  event GrantCreated(string grantId, Grant grant);
+  event GrantFinalized(string grantId, Grant grant);
+
+  // ========== STATE VARIABLES ==========
+
   address public manager;
   IFactory public fundFactoryContract;
-  Grant[] public grants;
-
-  event ManagerChanged(address newManager);
-  event GrantCreated(Grant grant);
-  event GrantFinalized(Grant grant);
+  string[] public grantIds;
+  mapping(string => Grant) public pendingGrants; // grant UUID to Grant
 
   // ========== CONSTRUCTOR ==========
   /**
@@ -109,17 +113,19 @@ contract Fund is Administratable {
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
-    return (balance, grants.length, manager);
+    return (balance, grantIds.length, manager);
   }
 
   /**
    * @notice Create new Grant Recommendation
+   * @param  grantId UUID representing this grant
    * @param  description The address of the Owner.
    * @param  value The value of the grant in base units.
    * @param  recipient The address of the recieving organization's contract.
    * @param  orgFactoryContractAddress Address of the orgFactory Contract.
    */
   function createGrant(
+    string memory grantId,
     string memory description,
     uint256 value,
     address recipient,
@@ -137,23 +143,23 @@ contract Fund is Administratable {
       recipient: recipient,
       complete: false
     });
-    emit GrantCreated(newGrant);
-    grants.push(newGrant);
+    emit GrantCreated(grantId, newGrant);
+    pendingGrants[grantId] = newGrant;
+    grantIds.push(grantId);
   }
 
   /**
    * @notice Approve Grant Recommendation
-   * @param  index This Grant's index position
+   * @param  grantId UUID of the grant being finalized
    * @param  tokenAddress The stablecoin's token address.
    */
-  function finalizeGrant(uint256 index, address tokenAddress)
-    public
-    onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
-  {
-    require(index < grants.length, "Fund: Index out of range");
+  function finalizeGrant(
+    string calldata grantId,
+    address tokenAddress
+  ) public onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT) {
     require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
-    EndaomentAdmin endaomentAdmin = EndaomentAdmin(fundFactoryContract.endaomentAdmin());
-    Grant storage grant = grants[index];
+    Grant storage grant = pendingGrants[grantId];
+    require(grant.recipient != address(0), "Fund: Grant does not exist");
     // Checks
     require(grant.complete == false, "Fund: Grant is already finalized.");
     // Effects
@@ -163,9 +169,10 @@ contract Fund is Administratable {
     uint256 fee = grant.value.div(100);
     uint256 finalGrant = grant.value.sub(fee);
     grant.complete = true;
-    emit GrantFinalized(grant);
+    emit GrantFinalized(grantId, grant);
     // Interactions
-    tokenContract.safeTransfer(endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN), fee);
+    address endaomentAdminAdminAddress = EndaomentAdmin(fundFactoryContract.endaomentAdmin()).getRoleAddress(IEndaomentAdmin.Role.ADMIN);
+    tokenContract.safeTransfer(endaomentAdminAdminAddress, fee);
     tokenContract.safeTransfer(grant.recipient, finalGrant);
   }
 
@@ -173,6 +180,6 @@ contract Fund is Administratable {
    * @notice Returns total number of grants submitted to the fund.
    */
   function getGrantsCount() external view returns (uint256) {
-    return grants.length;
+    return grantIds.length;
   }
 }
