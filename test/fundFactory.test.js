@@ -26,7 +26,7 @@ describe("FundFactory", function () {
   it('does not allow deployments when admin address is the zero address', async function() {
     await expectRevert(
       FundFactory.new(constants.ZERO_ADDRESS, { from: admin }),
-      "Administratable: Admin must not be the zero address"
+      "FundFactory: Admin cannot be the zero address"
     );
   });
 
@@ -40,11 +40,8 @@ describe("FundFactory", function () {
   });
 
   it("ADMIN can create funds with correct manager", async function () {
-    const fund = await this.fundFactory.createFund(
-      manager,
-      { from: admin }
-      );
-      const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
+    const fund = await this.fundFactory.createFund(manager, {from: admin});
+    const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
     const fund_manager = await fund_contract.manager();
 
     assert.equal(fund_manager, manager);
@@ -52,10 +49,7 @@ describe("FundFactory", function () {
   });
 
   it("ACCOUNTANT can create funds with correct manager, only if not paused", async function () {
-    const fund = await this.fundFactory.createFund(
-      manager,
-      { from: accountant }
-    );
+    const fund = await this.fundFactory.createFund(manager, {from: accountant});
     const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
     const fund_manager = await fund_contract.manager();
 
@@ -69,17 +63,9 @@ describe("FundFactory", function () {
     );
   });
 
-  // Test onlyAdminOrRole modifier
-  it("does not allow fund to be created if admin address is zero address", async function () {
-    await expectRevert(
-      this.fundFactory.createFund(manager, constants.ZERO_ADDRESS, { from: admin }), 
-      "Administratable: Admin must not be the zero address"
-    );
-  });
-
   it("does not allow the manager of a new fund to be the zero address", async function () {
     await expectRevert(
-      this.fundFactory.createFund(constants.ZERO_ADDRESS, this.endaomentAdmin.address, { from: admin } ),
+      this.fundFactory.createFund(constants.ZERO_ADDRESS, { from: admin } ),
       "FundFactory: Manager cannot be the zero address"
     );
   });
@@ -97,10 +83,7 @@ describe("FundFactory", function () {
   });
 
   it("gets fund address via index", async function () {
-    const fund = await this.fundFactory.createFund(
-      manager,
-      { from: accountant }
-    );
+    const fund = await this.fundFactory.createFund(manager, {from: accountant});
 
     const getFundAddress = await this.fundFactory.createdFunds(0);
 

@@ -27,6 +27,7 @@ contract FundFactory is Administratable {
    * @param adminContractAddress Address of EndaomentAdmin contract.
    */
   constructor(address adminContractAddress) public {
+    require(adminContractAddress != address(0), "FundFactory: Admin cannot be the zero address");
     endaomentAdmin = adminContractAddress;
     emit EndaomentAdminChanged(address(0), adminContractAddress);
   }
@@ -37,6 +38,7 @@ contract FundFactory is Administratable {
    */
   function updateEndaomentAdmin(address newAdmin) public onlyAdmin(endaomentAdmin) {
     // Validate that contract has a valid admin address set
+    require(newAdmin != address(0), "FundFactory: New admin cannot be the zero address");
     EndaomentAdmin endaomentAdminContract = EndaomentAdmin(newAdmin);
     address admin = endaomentAdminContract.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     require(admin != address(0), "FundFactory: Admin cannot be the zero address");

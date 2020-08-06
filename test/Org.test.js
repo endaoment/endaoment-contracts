@@ -14,8 +14,6 @@ const Org = contract.fromArtifact("Org");
 const OrgFactory = contract.fromArtifact("OrgFactory");
 const ERC20Mock = contract.fromArtifact('ERC20Mock');
 
-const ein = 999999999;
-
 describe("Org", function() {
   const name = 'TestToken';
   const symbol = 'TTKN';
@@ -39,28 +37,26 @@ describe("Org", function() {
   });
 
   it("allows ADMIN to construct", async function() {
-    const org = await Org.new(ein, this.endaomentAdmin.address, { from: admin });
+    const org = await Org.new(ein, this.orgFactory.address, { from: admin });
     assert.isDefined(org.address);
   });
 
-  it ('does not allow invalid EINs', async function() {
+  it("does not allow invalid EINs", async function () {
     const invalidEins = [0, 1, 9999999, 1000000000];
     invalidEins.forEach(async (ein) => {
       await expectRevert(
-        Org.new(ein, this.endaomentAdmin.address, { from: orgFactory }),
+        this.orgFactory.createOrg(ein, {from: admin}),
         "Org: Must provide a valid EIN"
       );
-    })
+    });
   });
 
-  it ('allows valid EINs', async function() {
+  it("allows valid EINs", async function () {
     const validEins = [10000000, 999999999];
     validEins.forEach(async (ein) => {
-      const org = await Org.new(ein, this.endaomentAdmin.address, {
-        from: orgFactory,
-      });
-      assert.isDefined(org.address);
-    })
+      const orgReceipt = await this.orgFactory.createOrg(ein, {from: admin});
+      assert.isDefined(orgReceipt.logs[0].args.newAddress);
+    });
   });
   
   it("registers valid claim requests", async function() {
@@ -85,17 +81,16 @@ describe("Org", function() {
   });
 
   it("blocks claim requests that are missing parameters", async function() {
-    const org = await Org.new(ein, this.endaomentAdmin.address, { from: admin });
     await expectRevert(
-      org.claimRequest("", "Doe", "john@doe.com", user, {from: user}),
+      this.org.claimRequest("", "Doe", "john@doe.com", user, {from: user}),
       "Org: Must provide the first name of the administrator"
     );
     await expectRevert(
-      org.claimRequest("John", "", "john@doe.com", user, {from: user}),
+      this.org.claimRequest("John", "", "john@doe.com", user, {from: user}),
       "Org: Must provide the last name of the administrator"
     );
     await expectRevert(
-      org.claimRequest("John", "Doe", "", user, {from: user}),
+      this.org.claimRequest("John", "Doe", "", user, {from: user}),
       "Org: Must provide the email address of the administrator"
     );
   });
@@ -141,11 +136,10 @@ describe("Org", function() {
   });
 
   it('blocks claim approval if an invalid index is provided', async function() {
-    const org = await Org.new(ein, this.endaomentAdmin.address, { from: admin });
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
-    const claim = await org.claims(0, {from: user});
+    const claimRequestReceipt = await this.org.claimRequest("John", "Doe", "john@doe.com", user, { from: user });
+    const claim = await this.org.claims(0, {from: user});
     await expectRevert(
-      org.approveClaim(1, this.endaomentAdmin.address, {from: admin}),
+      this.org.approveClaim(1, {from: admin}),
       "Org: Index out of range"
     );
   });
@@ -196,16 +190,14 @@ describe("Org", function() {
   });
   
   it("prevents cashing out org if token address is the zero address", async function() {
-    const org = await Org.new(ein, this.endaomentAdmin.address, { from: admin });
-   
-    await this.token.transfer(org.address, 1, { from: initHolder });
-    const orgTokenBalance0 = await org.getTokenBalance(this.token.address, { from: other_user });
+    await this.token.transfer(this.org.address, 1, { from: initHolder });
+    const orgTokenBalance0 = await this.org.getTokenBalance(this.token.address, { from: other_user });
 
-    const claimRequestReceipt = await org.claimRequest("John", "Doe", "john@doe.com", other_user, { from: user });
-    const approveClaimReceipt = await org.approveClaim(0, this.endaomentAdmin.address, { from: admin });
+    const claimRequestReceipt = await this.org.claimRequest("John", "Doe", "john@doe.com", other_user, { from: user });
+    const approveClaimReceipt = await this.org.approveClaim(0, { from: admin });
 
     await expectRevert(
-      org.cashOutOrg(constants.ZERO_ADDRESS, this.endaomentAdmin.address, { from: admin }),
+      this.org.cashOutOrg(constants.ZERO_ADDRESS, { from: admin }),
       "Org: Token address cannot be the zero address"
     );
   });
