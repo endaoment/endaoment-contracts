@@ -32,26 +32,10 @@ describe("OrgFactory", function () {
     assert.isDefined(org_factory.address);
   });
 
-  it("denies invalid admin contract to construct", async function () {
-    await expectRevert.unspecified(
-      OrgFactory.new(constants.ZERO_ADDRESS, { from: admin })
-    );
-  });
-
-  it("denies invalid non-admin wallet to construct", async function () {
-    await expectRevert.unspecified(
-      OrgFactory.new(this.endaomentAdmin.address, { from: manager })
-    );
-  });
-
   it("admin can create orgs", async function () {
     assert.isDefined(this.orgFactory.address);
 
-    const org = await this.orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await this.orgFactory.createOrg(123456789, {from: accountant});
     const org_contract = await Org.at(org.logs[0].args.newAddress);
     const org_EIN = await org_contract.taxId();
 
@@ -62,18 +46,12 @@ describe("OrgFactory", function () {
   it("accountant can create orgs, only if not paused", async function () {
     assert.isDefined(this.orgFactory.address);
 
-    const org = await this.orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
-
+    const org = await this.orgFactory.createOrg(123456789, {from: accountant});
     assert.isDefined(org.logs[0].args.newAddress);
 
     await this.endaomentAdmin.pause(2, { from: pauser });
-
     await expectRevert.unspecified(
-      this.orgFactory.createOrg(123456789, this.endaomentAdmin.address, {
+      this.orgFactory.createOrg(123456789, {
         from: accountant,
       })
     );
@@ -99,41 +77,22 @@ describe("OrgFactory", function () {
 
   it("returns count of total orgs", async function () {
     assert.isDefined(this.orgFactory.address);
-
-    await this.orgFactory.createOrg(123456789, this.endaomentAdmin.address, { from: admin });
-
-    const count = await this.orgFactory.countDeployedOrgs();
-
+    await this.orgFactory.createOrg(123456789, { from: admin });
+    const count = await this.orgFactory.countDeployedOrgs(); 
     assert.equal(count, 1);
   });
 
   it("grabs a org address using getDeployedOrg()", async function () {
     assert.isDefined(this.orgFactory.address);
-
-    const org = await this.orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
-
+    const org = await this.orgFactory.createOrg(123456789, {from: accountant});
     const getFundAddress = await this.orgFactory.deployedOrgs(0);
-
     assert.equal(org.logs[0].args.newAddress, getFundAddress);
   });
 
   it("returns if an address is an existing org or not", async function () {
     assert.isDefined(this.orgFactory.address);
-
-    const org = await this.orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
-
-    const getOrgExistence = await this.orgFactory.deployedOrgs(
-      0, { from: admin }
-    );
-
+    const org = await this.orgFactory.createOrg(123456789, {from: accountant});
+    const getOrgExistence = await this.orgFactory.deployedOrgs(0, { from: admin });
     assert.equal(getOrgExistence, org.logs[0].args.newAddress);
   });
 });

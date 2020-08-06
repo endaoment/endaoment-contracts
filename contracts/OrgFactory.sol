@@ -16,8 +16,11 @@ import "./Org.sol";
  */
 contract OrgFactory is Administratable {
   // ========== STATE VARIABLES==========
+  address public endaomentAdmin;
   Org[] public deployedOrgs;
   mapping(address => bool) public allowedOrgs;
+
+  event EndaomentAdminChanged(address indexed oldAddress, address indexed newAddress);
   event OrgCreated(address indexed newAddress);
 
   // ========== CONSTRUCTOR ==========
@@ -25,19 +28,35 @@ contract OrgFactory is Administratable {
    * @notice Create new Org Factory
    * @param adminContractAddress Address of EndaomentAdmin contract.
    */
-  constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {}
+  constructor(address adminContractAddress) public {
+    endaomentAdmin = adminContractAddress;
+    emit EndaomentAdminChanged(address(0), adminContractAddress);
+  }
+
+  /**
+   * @notice Update address of the endaomentAdmin contract
+   * @param newAdmin New address of the endaomentAdmin contract
+   */
+  function updateEndaomentAdmin(address newAdmin) public onlyAdmin(endaomentAdmin) {
+    // Validate that contract has a valid admin address set
+    EndaomentAdmin endaomentAdminContract = EndaomentAdmin(newAdmin);
+    address admin = endaomentAdminContract.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
+    require(admin != address(0), "OrgFactory: Admin cannot be the zero address");
+
+    emit EndaomentAdminChanged(endaomentAdmin, newAdmin);
+    endaomentAdmin = newAdmin;
+  }
 
   // ========== Org Creation & Management ==========
   /**
    * @notice  Create new Org Contract
    * @param ein The U.S. Tax Identification Number for the Organization
-   * @param adminContractAddress Contract address for Endaoment Admin
    */
-  function createOrg(uint256 ein, address adminContractAddress)
+  function createOrg(uint256 ein)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
   {
-    Org newOrg = new Org(ein, adminContractAddress);
+    Org newOrg = new Org(ein, address(this));
     deployedOrgs.push(newOrg);
     allowedOrgs[address(newOrg)] = true;
     emit OrgCreated(address(newOrg));

@@ -7,6 +7,10 @@ import "./Administratable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
+interface IOrgFactory {
+  function endaomentAdmin() external view returns (address);
+}
+
 //ORG CONTRACT
 /**
  * @title Org
@@ -28,6 +32,7 @@ contract Org is Administratable {
     bool filesSubmitted;
   }
 
+  IOrgFactory public orgFactoryContract;
   uint256 public taxId;
   address public orgWallet;
   Claim[] public claims;
@@ -41,14 +46,13 @@ contract Org is Administratable {
   /**
    * @notice Create new Organization Contract
    * @param ein The U.S. Tax Identification Number for the Organization
-   * @param adminContractAddress Contract Address for Endaoment Admin
+   * @param orgFactory Address of the Factory contract.
    */
-  constructor(uint256 ein, address adminContractAddress)
-    public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ORG_FACTORY)
-  {
+  constructor(uint256 ein, address orgFactory) public {
     require(ein >= 10000000 && ein <= 999999999, "Org: Must provide a valid EIN");
+    require(orgFactory != address(0), "Org: Factory cannot be null address.");
     taxId = ein;
+    orgFactoryContract = IOrgFactory(orgFactory);
   }
 
   // ========== Org Management & Info ==========
@@ -84,11 +88,10 @@ contract Org is Administratable {
   /**
    * @notice Approving Organization Claim
    * @param  index Index value of Claim.
-   * @param adminContractAddress Contract Address for Endaoment Admin
    */
-  function approveClaim(uint256 index, address adminContractAddress)
+  function approveClaim(uint256 index)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
+    onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
   {
     require(index < claims.length, "Org: Index out of range");
     Claim storage claim = claims[index];
@@ -99,11 +102,10 @@ contract Org is Administratable {
   /**
    * @notice Cashing out Organization Contract
    * @param tokenAddress Stablecoin address of desired token withdrawal
-   * @param adminContractAddress Contract Address for Endaoment Admin
    */
-  function cashOutOrg(address tokenAddress, address adminContractAddress)
+  function cashOutOrg(address tokenAddress)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
   {
     require(tokenAddress != address(0), "Org: Token address cannot be the zero address");
     IERC20 tokenContract = IERC20(tokenAddress);

@@ -151,11 +151,7 @@ describe("Fund", function () {
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
     //Deploy an org contract using the OrgFactory
-    const org = await orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await orgFactory.createOrg(123456789, {from: accountant});
 
     //Check that the new org's address passes the checkRecipient() function on the Fund contract
     const orgChecked = await this.fund.checkRecipient(
@@ -194,11 +190,7 @@ describe("Fund", function () {
     });
 
     //Deploy an org contract using the OrgFactory
-    const org = await orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await orgFactory.createOrg(123456789, {from: accountant});
 
     //Create new grant on the Fund contract
     const createGrantReceipt = await this.fund.createGrant(
@@ -255,11 +247,7 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await orgFactory.createOrg(123456789, {from: accountant});
 
     await this.fund.createGrant(
       "test grant",
@@ -278,11 +266,7 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await orgFactory.createOrg(123456789, {from: accountant});
 
     await this.token.transfer(fund.address, 100, { from: initHolder });
 
@@ -317,11 +301,7 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await orgFactory.createOrg(123456789, {from: accountant});
 
     await this.token.transfer(fund.address, 100, { from: initHolder });
 
@@ -356,11 +336,7 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(
-      123456789,
-      this.endaomentAdmin.address,
-      { from: accountant }
-    );
+    const org = await orgFactory.createOrg(123456789, {from: accountant});
 
     await this.token.transfer(fund.address, 100, { from: initHolder });
 
