@@ -2,7 +2,7 @@
 
 pragma solidity ^0.6.10;
 
-import "./Administratable.sol";
+import "./EndaomentAdminStorage.sol";
 import "./Fund.sol";
 
 // FUND FACTORY CONTRACT
@@ -14,12 +14,10 @@ import "./Fund.sol";
  * individual Org contract addresses as well as a list of all
  * allowedOrgs.
  */
-contract FundFactory is Administratable {
+contract FundFactory is EndaomentAdminStorage {
   // ========== STATE VARIABLES ==========
-  address public endaomentAdmin;
   Fund[] public createdFunds;
   event FundCreated(address indexed newAddress);
-  event EndaomentAdminChanged(address indexed oldAddress, address indexed newAddress);
 
   // ========== CONSTRUCTOR ==========
   /**
@@ -30,21 +28,6 @@ contract FundFactory is Administratable {
     require(adminContractAddress != address(0), "FundFactory: Admin cannot be the zero address");
     endaomentAdmin = adminContractAddress;
     emit EndaomentAdminChanged(address(0), adminContractAddress);
-  }
-
-  /**
-   * @notice Update address of the endaomentAdmin contract
-   * @param newAdmin New address of the endaomentAdmin contract
-   */
-  function updateEndaomentAdmin(address newAdmin) public onlyAdmin(endaomentAdmin) {
-    // Validate that contract has a valid admin address set
-    require(newAdmin != address(0), "FundFactory: New admin cannot be the zero address");
-    EndaomentAdmin endaomentAdminContract = EndaomentAdmin(newAdmin);
-    address admin = endaomentAdminContract.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
-    require(admin != address(0), "FundFactory: Admin cannot be the zero address");
-
-    emit EndaomentAdminChanged(endaomentAdmin, newAdmin);
-    endaomentAdmin = newAdmin;
   }
 
   // ========== Fund Creation & Management ==========

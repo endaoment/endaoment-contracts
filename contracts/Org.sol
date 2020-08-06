@@ -4,12 +4,9 @@ pragma solidity ^0.6.10;
 pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
+import "./IFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-
-interface IOrgFactory {
-  function endaomentAdmin() external view returns (address);
-}
 
 //ORG CONTRACT
 /**
@@ -32,7 +29,7 @@ contract Org is Administratable {
     bool filesSubmitted;
   }
 
-  IOrgFactory public orgFactoryContract;
+  IFactory public orgFactoryContract;
   uint256 public taxId;
   address public orgWallet;
   Claim[] public claims;
@@ -52,7 +49,7 @@ contract Org is Administratable {
     require(ein >= 10000000 && ein <= 999999999, "Org: Must provide a valid EIN");
     require(orgFactory != address(0), "Org: Factory cannot be null address.");
     taxId = ein;
-    orgFactoryContract = IOrgFactory(orgFactory);
+    orgFactoryContract = IFactory(orgFactory);
   }
 
   // ========== Org Management & Info ==========

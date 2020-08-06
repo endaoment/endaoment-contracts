@@ -24,6 +24,10 @@ describe("OrgFactory", function () {
     await this.endaomentAdmin.setRole(5, this.orgFactory.address, { from: admin });
   });
 
+  it('sets the endaomentAdmin address when deployed', async function() {
+    assert.equal(await this.orgFactory.endaomentAdmin(), this.endaomentAdmin.address)
+  });
+
   it('does not allow deployments when admin address is the zero address', async function() {
     await expectRevert(
       OrgFactory.new(constants.ZERO_ADDRESS, { from: admin }),

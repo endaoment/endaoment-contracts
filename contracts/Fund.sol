@@ -5,11 +5,8 @@ pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
+import "./IFactory.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-
-interface IFundFactory {
-  function endaomentAdmin() external view returns (address);
-}
 
 // FUND CONTRACT
 /**
@@ -35,7 +32,7 @@ contract Fund is Administratable {
   }
 
   address public manager;
-  IFundFactory public fundFactoryContract;
+  IFactory public fundFactoryContract;
   Grant[] public grants;
 
   event ManagerChanged(address newManager);
@@ -52,7 +49,7 @@ contract Fund is Administratable {
     require(fundManager != address(0), "Fund: Creator cannot be null address.");
     require(fundFactory != address(0), "Fund: Factory cannot be null address.");
     manager = fundManager;
-    fundFactoryContract = IFundFactory(fundFactory);
+    fundFactoryContract = IFactory(fundFactory);
   }
 
   // ========== Admin Management ==========

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.6.10;
 
-import "./Administratable.sol";
+import "./EndaomentAdminStorage.sol";
 import "./Org.sol";
 
 //ORG FACTORY CONTRACT
@@ -14,13 +14,11 @@ import "./Org.sol";
  * individual Org contract addresses as well as a list of all
  * allowedOrgs.
  */
-contract OrgFactory is Administratable {
+contract OrgFactory is EndaomentAdminStorage {
   // ========== STATE VARIABLES==========
-  address public endaomentAdmin;
   Org[] public deployedOrgs;
   mapping(address => bool) public allowedOrgs;
 
-  event EndaomentAdminChanged(address indexed oldAddress, address indexed newAddress);
   event OrgCreated(address indexed newAddress);
 
   // ========== CONSTRUCTOR ==========
@@ -32,21 +30,6 @@ contract OrgFactory is Administratable {
     require(adminContractAddress != address(0), "OrgFactory: Admin cannot be the zero address");
     endaomentAdmin = adminContractAddress;
     emit EndaomentAdminChanged(address(0), adminContractAddress);
-  }
-
-  /**
-   * @notice Update address of the endaomentAdmin contract
-   * @param newAdmin New address of the endaomentAdmin contract
-   */
-  function updateEndaomentAdmin(address newAdmin) public onlyAdmin(endaomentAdmin) {
-    // Validate that contract has a valid admin address set
-    require(newAdmin != address(0), "FundFactory: New admin cannot be the zero address");
-    EndaomentAdmin endaomentAdminContract = EndaomentAdmin(newAdmin);
-    address admin = endaomentAdminContract.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
-    require(admin != address(0), "OrgFactory: Admin cannot be the zero address");
-
-    emit EndaomentAdminChanged(endaomentAdmin, newAdmin);
-    endaomentAdmin = newAdmin;
   }
 
   // ========== Org Creation & Management ==========

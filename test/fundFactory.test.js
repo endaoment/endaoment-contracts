@@ -23,6 +23,10 @@ describe("FundFactory", function () {
     await this.endaomentAdmin.setRole(4, this.fundFactory.address, { from: admin });
   });
 
+  it('sets the endaomentAdmin address when deployed', async function() {
+    assert.equal(await this.fundFactory.endaomentAdmin(), this.endaomentAdmin.address)
+  });
+
   it('does not allow deployments when admin address is the zero address', async function() {
     await expectRevert(
       FundFactory.new(constants.ZERO_ADDRESS, { from: admin }),
