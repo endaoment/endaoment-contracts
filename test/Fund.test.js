@@ -15,17 +15,6 @@ const Org = contract.fromArtifact("Org");
 const Fund = contract.fromArtifact("Fund");
 const ERC20Mock = contract.fromArtifact('ERC20Mock');
 
-const EmptyGrant = {
-
-}
-
-function assertEqualGrants(claim1, claim2, message = "Invalid grant") {
-  assert.equal(claim1.firstName, claim2.firstName, message);
-  assert.equal(claim1.lastName, claim2.lastName, message);
-  assert.equal(claim1.eMail, claim2.eMail, message);
-  assert.equal(claim1.desiredWallet, claim2.desiredWallet, message);
-}
-
 describe("Fund", function () {
   const name = 'TestToken';
   const symbol = 'TTKN';

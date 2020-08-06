@@ -34,6 +34,7 @@ contract Fund is Administratable {
 
   event ManagerChanged(address newManager);
   event GrantCreated(string grantId, Grant grant);
+  event GrantUpdated(string grantId, Grant grant);
   event GrantFinalized(string grantId, Grant grant);
 
   // ========== STATE VARIABLES ==========
@@ -136,6 +137,10 @@ contract Fund is Administratable {
       checkRecipient(recipient, orgFactoryContractAddress) == true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
+    require(
+      pendingGrants[grantId].recipient == address(0),
+      "Fund: Grant was already created."
+    );
 
     Grant memory newGrant = Grant({
       description: description,
@@ -146,6 +151,29 @@ contract Fund is Administratable {
     emit GrantCreated(grantId, newGrant);
     pendingGrants[grantId] = newGrant;
     grantIds.push(grantId);
+  } 
+
+  function updateGrant(
+    string memory grantId,
+    string memory description,
+    uint256 value,
+    address recipient
+  ) public restricted {
+    require(
+      pendingGrants[grantId].recipient != address(0),
+      "Fund: Grant does not exist."
+    );
+    require(pendingGrants[grantId].complete == false,
+    "Fund: Grant is already finalized."
+    );
+    Grant memory replacementGrant = Grant({
+      description: description,
+      value: value,
+      recipient: recipient,
+      complete: false
+    });
+    pendingGrants[grantId] = replacementGrant;
+    emit GrantUpdated(grantId, replacementGrant);
   }
 
   /**

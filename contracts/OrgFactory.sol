@@ -47,6 +47,18 @@ contract OrgFactory is EndaomentAdminStorage {
     emit OrgCreated(address(newOrg));
   }
 
+  function disallowOrg(address orgAddress)
+    public
+    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    {
+      require(
+        allowedOrgs[orgAddress] == true,
+        "OrgFactory: Org already disallowed."
+      );
+      allowedOrgs[orgAddress] = false;
+      emit OrgDisallowed(orgAddress);
+    } 
+
   /**
    * @notice Returns total number Org contracts created by the factory.
    */
