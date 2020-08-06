@@ -39,25 +39,12 @@ describe("FundFactory", function () {
     assert.isDefined(fund_factory.address);
   });
 
-  it("denies invalid admin contract to construct factory", async function () {
-    await expectRevert.unspecified(
-      FundFactory.new(constants.ZERO_ADDRESS, { from: admin })
-    );
-  });
-
-  it("denies invalid non-ADMIN wallet to construct factory", async function () {
-    await expectRevert.unspecified(
-      FundFactory.new(this.endaomentAdmin.address, { from: manager })
-    );
-  });
-
   it("ADMIN can create funds with correct manager", async function () {
     const fund = await this.fundFactory.createFund(
       manager,
-      this.endaomentAdmin.address,
       { from: admin }
-    );
-    const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
+      );
+      const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
     const fund_manager = await fund_contract.manager();
 
     assert.equal(fund_manager, manager);
@@ -67,7 +54,6 @@ describe("FundFactory", function () {
   it("ACCOUNTANT can create funds with correct manager, only if not paused", async function () {
     const fund = await this.fundFactory.createFund(
       manager,
-      this.endaomentAdmin.address,
       { from: accountant }
     );
     const fund_contract = await Fund.at(fund.logs[0].args.newAddress);
@@ -79,7 +65,7 @@ describe("FundFactory", function () {
     await this.endaomentAdmin.pause(2, { from: pauser });
 
     await expectRevert.unspecified(
-      this.fundFactory.createFund(manager, this.endaomentAdmin.address, { from: accountant })
+      this.fundFactory.createFund(manager, { from: accountant })
     );
   });
 
@@ -102,7 +88,7 @@ describe("FundFactory", function () {
     const before_count = await this.fundFactory.countFunds();
     assert.equal(before_count, 0);
 
-    await this.fundFactory.createFund(manager, this.endaomentAdmin.address, {
+    await this.fundFactory.createFund(manager, {
       from: admin,
     });
 
@@ -113,7 +99,6 @@ describe("FundFactory", function () {
   it("gets fund address via index", async function () {
     const fund = await this.fundFactory.createFund(
       manager,
-      this.endaomentAdmin.address,
       { from: accountant }
     );
 

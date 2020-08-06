@@ -16,28 +16,46 @@ import "./Fund.sol";
  */
 contract FundFactory is Administratable {
   // ========== STATE VARIABLES ==========
+  address public endaomentAdmin;
   Fund[] public createdFunds;
   event FundCreated(address indexed newAddress);
+  event EndaomentAdminChanged(address indexed oldAddress, address indexed newAddress);
 
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund Factory
    * @param adminContractAddress Address of EndaomentAdmin contract.
    */
-  constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {}
+  constructor(address adminContractAddress) public {
+    endaomentAdmin = adminContractAddress;
+    emit EndaomentAdminChanged(address(0), adminContractAddress);
+  }
+
+  /**
+   * @notice Update address of the endaomentAdmin contract
+   * @param newAdmin New address of the endaomentAdmin contract
+   */
+  function updateEndaomentAdmin(address newAdmin) public onlyAdmin(endaomentAdmin) {
+    // Validate that contract has a valid admin address set
+    EndaomentAdmin endaomentAdminContract = EndaomentAdmin(newAdmin);
+    address admin = endaomentAdminContract.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
+    require(admin != address(0), "FundFactory: Admin cannot be the zero address");
+
+    emit EndaomentAdminChanged(endaomentAdmin, newAdmin);
+    endaomentAdmin = newAdmin;
+  }
 
   // ========== Fund Creation & Management ==========
   /**
    * @notice Creates new Fund and emits FundCreated event.
    * @param managerAddress The address of the Fund's Primary Advisor
-   * @param adminContractAddress Address of EndaomentAdmin contract.
    */
-  function createFund(address managerAddress, address adminContractAddress)
+  function createFund(address managerAddress)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
   {
     require(managerAddress != address(0), "FundFactory: Manager cannot be the zero address");
-    Fund newFund = new Fund(managerAddress, adminContractAddress);
+    Fund newFund = new Fund(managerAddress, address(this));
     createdFunds.push(newFund);
     emit FundCreated(address(newFund));
   }

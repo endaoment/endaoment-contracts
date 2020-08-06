@@ -29,9 +29,13 @@ describe("Fund", function () {
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
     await this.endaomentAdmin.setRole(3, reviewer, { from: admin });
-    this.fund = await Fund.new(manager, this.endaomentAdmin.address, {
+    
+    this.fundFactory = await FundFactory.new(this.endaomentAdmin.address, { from: admin });
+    await this.endaomentAdmin.setRole(4, this.fundFactory.address, { from: admin });
+    const receipt = await this.fundFactory.createFund(manager, {
       from: admin,
     });
+    this.fund = await Fund.at(receipt.logs[0].args.newAddress)
   });
 
   it("has defined fund contract address post-init", async function () {
@@ -48,7 +52,6 @@ describe("Fund", function () {
     await this.endaomentAdmin.setRole(4, fundFactory.address, { from: admin });
     const fund = await fundFactory.createFund(
       manager,
-      this.endaomentAdmin.address,
       {
         from: accountant,
       }
@@ -61,12 +64,6 @@ describe("Fund", function () {
       Fund.new(constants.ZERO_ADDRESS, this.endaomentAdmin.address, {
         from: admin,
       })
-    );
-  });
-
-  it("denies invalid non-ADMIN wallet to construct fund contract", async function () {
-    await expectRevert.unspecified(
-      Fund.new(manager, this.endaomentAdmin.address, { from: manager })
     );
   });
 
@@ -84,7 +81,13 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    const changeManagerReceipt = await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: admin });
+    // console.log('admin: ', admin);
+    // console.log('newManager: ', newManager);
+    // console.log('fundFactoryContract: ', await fundContract.fundFactoryContract());
+    // const a = await FundFactory.at(await fundContract.fundFactoryContract());
+    // console.log(await a.endaomentAdmin.call());
+    // console.log('admin2: ', await this.endaomentAdmin.getRoleAddress(6, { from: admin }))
+    const changeManagerReceipt = await fundContract.changeManager(newManager, { from: admin });
     expectEvent(changeManagerReceipt, "ManagerChanged", { newManager: newManager });
     const newFundManager = await fundContract.manager();
     await assert.equal(newFundManager, newManager);
@@ -96,7 +99,7 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    const changeManagerReceipt = await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
+    const changeManagerReceipt = await fundContract.changeManager(newManager, { from: reviewer });
     expectEvent(changeManagerReceipt, "ManagerChanged", { newManager: newManager });
     const newFundManager = await fundContract.manager();
 
@@ -109,7 +112,7 @@ describe("Fund", function () {
 
     assert.equal(fundManager, manager);
 
-    await fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer });
+    await fundContract.changeManager(newManager, { from: reviewer });
     const newFundManager = await fundContract.manager();
 
     await assert.equal(newFundManager, newManager);
@@ -117,7 +120,7 @@ describe("Fund", function () {
     await this.endaomentAdmin.pause(3, { from: pauser });
 
     await expectRevert.unspecified(
-      fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: reviewer })
+      fundContract.changeManager(newManager, { from: reviewer })
     );
   });
 
@@ -128,7 +131,7 @@ describe("Fund", function () {
     assert.equal(fundManager, manager);
 
     await expectRevert.unspecified(
-      fundContract.changeManager(newManager, this.endaomentAdmin.address, { from: accountant })
+      fundContract.changeManager(newManager, { from: accountant })
     );
   });
 
@@ -271,7 +274,7 @@ describe("Fund", function () {
   });
 
   it("allows ADMIN to finalize grant", async function () {
-    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const fund = this.fund; // await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
@@ -293,7 +296,7 @@ describe("Fund", function () {
 
     const grant = await fund.grants(0);
     
-    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: admin });
+    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, { from: admin });
     expectEvent(finalizeGrantReceipt, "GrantFinalized",
       { grant: [
         grant.description,
@@ -310,7 +313,7 @@ describe("Fund", function () {
   });
 
   it("allows ACCOUNTANT to finalize grant", async function () {
-    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const fund = this.fund; // await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
@@ -332,7 +335,7 @@ describe("Fund", function () {
     
     const grant = await fund.grants(0);
     
-    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: accountant });
+    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, { from: accountant });
     expectEvent(finalizeGrantReceipt, "GrantFinalized",
       { grant: [
         grant.description,
@@ -369,7 +372,7 @@ describe("Fund", function () {
       { from: manager }
     );
 
-    await expectRevert.unspecified(fund.finalizeGrant(0, this.token.address, this.endaomentAdmin.address, { from: manager }));
+    await expectRevert.unspecified(fund.finalizeGrant(0, this.token.address, { from: manager }));
   });
 
   it("blocks finalizing grant with invalid inputs", async function () {
