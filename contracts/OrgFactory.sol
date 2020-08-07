@@ -15,12 +15,15 @@ import "./Org.sol";
  * allowedOrgs.
  */
 contract OrgFactory is EndaomentAdminStorage {
-  // ========== STATE VARIABLES==========
-  Org[] public deployedOrgs;
-  mapping(address => bool) public allowedOrgs;
+  // ========== EVENTS===================
 
   event OrgCreated(address indexed newAddress);
+  event OrgAllowed(address indexed orgAddress);
   event OrgDisallowed(address indexed orgAddress);
+
+  // ========== STATE VARIABLES==========
+  
+  mapping(address => bool) public allowedOrgs;
 
   // ========== CONSTRUCTOR ==========
   /**
@@ -43,27 +46,39 @@ contract OrgFactory is EndaomentAdminStorage {
     onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
   {
     Org newOrg = new Org(ein, address(this));
-    deployedOrgs.push(newOrg);
     allowedOrgs[address(newOrg)] = true;
     emit OrgCreated(address(newOrg));
   }
 
-  function disallowOrg(address orgAddress)
-    public
-    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
-    {
-      require(
-        allowedOrgs[orgAddress] == true,
-        "OrgFactory: Org already disallowed."
-      );
-      allowedOrgs[orgAddress] = false;
-      emit OrgDisallowed(orgAddress);
-    } 
+  // function allowOrg(address orgAddress)
+  //   public
+  //   onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
+  //   {
+  //     require(
+  //       Org(orgAddress).taxId() != 0,
+  //       "OrgFactory: Not a valid org."
+  //     );
+  //     require(
+  //       allowedOrgs[orgAddress] == false,
+  //       "OrgFactory: Org already allowed."
+  //     );
+  //     allowedOrgs[orgAddress] = true;
+  //     emit OrgAllowed(orgAddress);
+  //   }
 
-  /**
-   * @notice Returns total number Org contracts created by the factory.
-   */
-  function countDeployedOrgs() external view returns (uint256) {
-    return deployedOrgs.length;
-  }
+  // function disallowOrg(address orgAddress)
+  //   public
+  //   onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
+  //   {
+  //     require(
+  //       Org(orgAddress).taxId() != 0,
+  //       "OrgFactory: Not a valid org."
+  //     );
+  //     require(
+  //       allowedOrgs[orgAddress] == true,
+  //       "OrgFactory: Org already disallowed."
+  //     );
+  //     allowedOrgs[orgAddress] = false;
+  //     emit OrgDisallowed(orgAddress);
+  //   } 
 }

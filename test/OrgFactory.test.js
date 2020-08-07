@@ -87,24 +87,10 @@ describe("OrgFactory", function () {
     })
   });
 
-  it("returns count of total orgs", async function () {
-    assert.isDefined(this.orgFactory.address);
-    await this.orgFactory.createOrg(123456789, { from: admin });
-    const count = await this.orgFactory.countDeployedOrgs(); 
-    assert.equal(count, 1);
-  });
-
-  it("grabs a org address using getDeployedOrg()", async function () {
-    assert.isDefined(this.orgFactory.address);
-    const org = await this.orgFactory.createOrg(123456789, {from: accountant});
-    const getFundAddress = await this.orgFactory.deployedOrgs(0);
-    assert.equal(org.logs[0].args.newAddress, getFundAddress);
-  });
-
-  it("returns if an address is an existing org or not", async function () {
-    assert.isDefined(this.orgFactory.address);
-    const org = await this.orgFactory.createOrg(123456789, {from: accountant});
-    const getOrgExistence = await this.orgFactory.deployedOrgs(0, { from: admin });
-    assert.equal(getOrgExistence, org.logs[0].args.newAddress);
-  });
+  // it("returns if an address is an existing org or not", async function () {
+  //   assert.isDefined(this.orgFactory.address);
+  //   const org = await this.orgFactory.createOrg(ein, {from: accountant});
+  //   const getOrgExistence = await this.orgFactory.deployedOrgs(0, { from: admin });
+  //   assert.equal(getOrgExistence, org.logs[0].args.newAddress);
+  // });
 });
