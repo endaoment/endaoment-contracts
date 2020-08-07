@@ -232,30 +232,6 @@ describe("Fund", function () {
     );
   });
 
-
-  it("returns correct count of total grants", async function () {
-    const before_count = await this.fund.getGrantsCount();
-    const grantId = uuidv4();
-    assert.equal(before_count, 0);
-
-    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
-    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
-
-    const org = await orgFactory.createOrg(ein, {from: accountant});
-
-    await this.fund.createGrant(
-      grantId,
-      "test grant",
-      1,
-      org.logs[0].args.newAddress,
-      orgFactory.address,
-      { from: manager }
-    );
-
-    const after_count = await this.fund.getGrantsCount();
-    assert.equal(after_count, 1);
-  });
-
   it("allows ADMIN to finalize grant", async function () {
     const fund = this.fund; 
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
@@ -385,8 +361,7 @@ describe("Fund", function () {
     await this.token.transfer(fund.address, 1, { from: initHolder });
     const fundSummary = await fund.getSummary(this.token.address);
     assert(fundSummary[0].eq(new BN(1)));
-    assert(fundSummary[1].eq(new BN(0)));
-    assert.equal(fundSummary[2], await fund.manager());
+    assert.equal(fundSummary[1], await fund.manager());
   });
 
   it("does not allow zero address to be used with getSummary", async function () {

@@ -35,13 +35,13 @@ contract Fund is Administratable {
   event ManagerChanged(address newManager);
   event GrantCreated(string grantId, Grant grant);
   event GrantUpdated(string grantId, Grant grant);
+  event GrantRemoved(string grantId);
   event GrantFinalized(string grantId, Grant grant);
 
   // ========== STATE VARIABLES ==========
 
   address public manager;
   IFactory public fundFactoryContract;
-  string[] public grantIds;
   mapping(string => Grant) public pendingGrants; // grant UUID to Grant
 
   // ========== CONSTRUCTOR ==========
@@ -106,7 +106,6 @@ contract Fund is Administratable {
     view
     returns (
       uint256,
-      uint256,
       address
     )
   {
@@ -114,7 +113,7 @@ contract Fund is Administratable {
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
 
-    return (balance, grantIds.length, manager);
+    return (balance, manager);
   }
 
   /**
@@ -150,7 +149,6 @@ contract Fund is Administratable {
     });
     emit GrantCreated(grantId, newGrant);
     pendingGrants[grantId] = newGrant;
-    grantIds.push(grantId);
   } 
 
   function updateGrant(
@@ -166,6 +164,7 @@ contract Fund is Administratable {
     require(pendingGrants[grantId].complete == false,
     "Fund: Grant is already finalized."
     );
+
     Grant memory replacementGrant = Grant({
       description: description,
       value: value,
@@ -174,6 +173,21 @@ contract Fund is Administratable {
     });
     pendingGrants[grantId] = replacementGrant;
     emit GrantUpdated(grantId, replacementGrant);
+  }
+
+  function removeGrant(
+    string memory grantId
+  ) public restricted {
+    require(
+      pendingGrants[grantId].recipient != address(0),
+      "Fund: Grant does not exist."
+    );
+    require(pendingGrants[grantId].complete == false,
+    "Fund: Grant is already finalized."
+    );
+    
+    delete pendingGrants[grantId];
+    emit GrantRemoved(grantId);
   }
 
   /**
@@ -202,12 +216,5 @@ contract Fund is Administratable {
     address endaomentAdminAdminAddress = EndaomentAdmin(fundFactoryContract.endaomentAdmin()).getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     tokenContract.safeTransfer(endaomentAdminAdminAddress, fee);
     tokenContract.safeTransfer(grant.recipient, finalGrant);
-  }
-
-  /**
-   * @notice Returns total number of grants submitted to the fund.
-   */
-  function getGrantsCount() external view returns (uint256) {
-    return grantIds.length;
   }
 }

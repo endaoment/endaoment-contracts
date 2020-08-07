@@ -20,6 +20,7 @@ contract OrgFactory is EndaomentAdminStorage {
   mapping(address => bool) public allowedOrgs;
 
   event OrgCreated(address indexed newAddress);
+  event OrgDisallowed(address indexed orgAddress);
 
   // ========== CONSTRUCTOR ==========
   /**
@@ -49,7 +50,7 @@ contract OrgFactory is EndaomentAdminStorage {
 
   function disallowOrg(address orgAddress)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
     {
       require(
         allowedOrgs[orgAddress] == true,
