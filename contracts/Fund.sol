@@ -35,7 +35,7 @@ contract Fund is Administratable {
   event ManagerChanged(address newManager);
   event GrantCreated(string grantId, Grant grant);
   event GrantUpdated(string grantId, Grant grant);
-  event GrantRemoved(string grantId);
+  event GrantRejected(string grantId);
   event GrantFinalized(string grantId, Grant grant);
 
   // ========== STATE VARIABLES ==========
@@ -151,12 +151,25 @@ contract Fund is Administratable {
     pendingGrants[grantId] = newGrant;
   } 
 
+  /**
+   * @notice Update Grant Recommendation
+   * @param  grantId UUID representing this grant
+   * @param  description The address of the Owner.
+   * @param  value The value of the grant in base units.
+   * @param  recipient The address of the recieving organization's contract.
+   */
   function updateGrant(
     string memory grantId,
     string memory description,
     uint256 value,
-    address recipient
+    address recipient,
+    address orgFactoryContractAddress
   ) public restricted {
+    require(!isEqual(description, ""), "Fund: Must provide a description");
+    require(
+      checkRecipient(recipient, orgFactoryContractAddress) == true,
+      "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
+    );
     require(
       pendingGrants[grantId].recipient != address(0),
       "Fund: Grant does not exist."
@@ -164,7 +177,6 @@ contract Fund is Administratable {
     require(pendingGrants[grantId].complete == false,
     "Fund: Grant is already finalized."
     );
-
     Grant memory replacementGrant = Grant({
       description: description,
       value: value,
@@ -175,7 +187,11 @@ contract Fund is Administratable {
     emit GrantUpdated(grantId, replacementGrant);
   }
 
-  function removeGrant(
+  /**
+   * @notice Reject Grant Recommendation
+   * @param  grantId UUID representing this grant
+   */
+  function rejectGrant(
     string memory grantId
   ) public restricted {
     require(
@@ -187,7 +203,7 @@ contract Fund is Administratable {
     );
     
     delete pendingGrants[grantId];
-    emit GrantRemoved(grantId);
+    emit GrantRejected(grantId);
   }
 
   /**

@@ -22,6 +22,8 @@ describe("OrgFactory", function () {
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
     this.orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, this.orgFactory.address, { from: admin });
+    const receipt = await this.orgFactory.createOrg(ein, {from: admin});
+    this.org = await Org.at(receipt.logs[0].args.newAddress)
   });
 
   it('sets the endaomentAdmin address when deployed', async function() {
@@ -87,10 +89,24 @@ describe("OrgFactory", function () {
     })
   });
 
-  // it("returns if an address is an existing org or not", async function () {
-  //   assert.isDefined(this.orgFactory.address);
-  //   const org = await this.orgFactory.createOrg(ein, {from: accountant});
-  //   const getOrgExistence = await this.orgFactory.deployedOrgs(0, { from: admin });
-  //   assert.equal(getOrgExistence, org.logs[0].args.newAddress);
-  // });
+  it("allows admin to toggle whether org is allowed", async function () {
+    const initialStatus = await this.orgFactory.allowedOrgs(this.org.address);
+    await this.orgFactory.toggleOrg(this.org.address, { from: admin });
+    const finalStatus = await this.orgFactory.allowedOrgs(this.org.address);
+    assert.equal(initialStatus, !finalStatus);
+  });
+
+  it("allows accountant to toggle whether org is allowed", async function () {
+    const initialStatus = await this.orgFactory.allowedOrgs(this.org.address);
+    await this.orgFactory.toggleOrg(this.org.address, { from: accountant });
+    const finalStatus = await this.orgFactory.allowedOrgs(this.org.address);
+    assert.equal(initialStatus, !finalStatus);
+  });
+
+  it("does not allow anyone else to toggle whether org is allowed", async function () {
+    await expectRevert(
+      this.orgFactory.toggleOrg(this.org.address, { from: manager }),
+      "Administratable: only ACCOUNTANT can access"
+    );
+  });
 });

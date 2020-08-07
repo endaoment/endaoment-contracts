@@ -51,7 +51,7 @@ contract OrgFactory is EndaomentAdminStorage {
 
   /**
    * @notice  Toggle whether Org is allowed
-   * @param address THe address of the Org contract.
+   * @param orgAddress THe address of the Org contract.
    */
   function toggleOrg(address orgAddress)
     public

@@ -232,6 +232,132 @@ describe("Fund", function () {
     );
   });
 
+
+  it("allows only MANAGER to update grant", async function () {
+    //Open a new OrgFactory using EndaomentAdmin
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
+
+    //Set the new OrgFactory as the ORG_FACTORY role
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
+
+    //Deploy an org contract using the OrgFactory
+    const org = await orgFactory.createOrg(ein, {from: accountant});
+
+    //Create new grant on the Fund contract
+    const createGrantReceipt = await this.fund.createGrant(
+      grantId,
+      "test grant",
+      1,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+
+    const grantBefore = await this.fund.pendingGrants(grantId);
+    const grantAfterReceipt = await this.fund.updateGrant(
+      grantId,
+      "update to grant",
+      3, 
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    )
+    
+    const grantAfter = await this.fund.pendingGrants(grantId);
+
+    expectEvent(grantAfterReceipt, "GrantUpdated", 
+    { grantId, grant: [
+      grantAfter.description,
+      "3",
+      grantAfter.recipient,
+      grantAfter.complete,
+    ]}
+  );
+
+    assert.deepEqual(
+      {
+        description: grantAfter.description,
+        value: grantAfter.value.words[0],
+        recipient: grantAfter.recipient,
+        complete: grantAfter.complete,
+      },
+      {
+        description: "update to grant",
+        value: 3,
+        recipient: org.logs[0].args.newAddress,
+        complete: false,
+      }
+    );
+
+    // Should revert if anyone besides the manager calls the function
+    await expectRevert(
+      this.fund.updateGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: admin } ),
+      "Fund: This method is only callable by the fund manager."
+    );
+    // Should revert if no description is given
+    await expectRevert(
+      this.fund.updateGrant(grantId, "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
+      "Fund: Must provide a description"
+    );
+  });
+
+  it("allows only MANAGER to reject grant", async function () {
+    //Open a new OrgFactory using EndaomentAdmin
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
+
+    //Set the new OrgFactory as the ORG_FACTORY role
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
+
+    //Deploy an org contract using the OrgFactory
+    const org = await orgFactory.createOrg(ein, {from: accountant});
+
+    //Create new grant on the Fund contract
+    const createGrantReceipt = await this.fund.createGrant(
+      grantId,
+      "test grant",
+      1,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+
+    const createRejectedReceipt = await this.fund.rejectGrant(grantId, { from: manager });
+    const grant = await this.fund.pendingGrants(grantId);
+
+    expectEvent(createRejectedReceipt, "GrantRejected", 
+      { grantId }
+    );
+
+    assert.deepEqual(
+      {
+        description: grant.description,
+        value: grant.value.words[0],
+        recipient: grant.recipient,
+        complete: grant.complete,
+      },
+      {
+        description: "",
+        value: 0,
+        recipient: constants.ZERO_ADDRESS,
+        complete: false,
+      }
+    );
+
+    // Should revert if anyone besides the manager calls the function
+    await expectRevert(
+      this.fund.rejectGrant(grantId, { from: admin } ),
+      "Fund: This method is only callable by the fund manager."
+    );
+  });
+
   it("allows ADMIN to finalize grant", async function () {
     const fund = this.fund; 
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
@@ -372,4 +498,5 @@ describe("Fund", function () {
       "Fund: Token address cannot be the zero address"
     );
   });
+
 });
