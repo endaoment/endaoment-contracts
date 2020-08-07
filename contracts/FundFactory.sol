@@ -2,7 +2,7 @@
 
 pragma solidity ^0.6.10;
 
-import "./Administratable.sol";
+import "./EndaomentAdminStorage.sol";
 import "./Fund.sol";
 
 // FUND FACTORY CONTRACT
@@ -14,7 +14,7 @@ import "./Fund.sol";
  * individual Org contract addresses as well as a list of all
  * allowedOrgs.
  */
-contract FundFactory is Administratable {
+contract FundFactory is EndaomentAdminStorage {
   // ========== STATE VARIABLES ==========
   Fund[] public createdFunds;
   event FundCreated(address indexed newAddress);
@@ -24,20 +24,23 @@ contract FundFactory is Administratable {
    * @notice Create new Fund Factory
    * @param adminContractAddress Address of EndaomentAdmin contract.
    */
-  constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {}
+  constructor(address adminContractAddress) public {
+    require(adminContractAddress != address(0), "FundFactory: Admin cannot be the zero address");
+    endaomentAdmin = adminContractAddress;
+    emit EndaomentAdminChanged(address(0), adminContractAddress);
+  }
 
   // ========== Fund Creation & Management ==========
   /**
    * @notice Creates new Fund and emits FundCreated event.
    * @param managerAddress The address of the Fund's Primary Advisor
-   * @param adminContractAddress Address of EndaomentAdmin contract.
    */
-  function createFund(address managerAddress, address adminContractAddress)
+  function createFund(address managerAddress)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
   {
     require(managerAddress != address(0), "FundFactory: Manager cannot be the zero address");
-    Fund newFund = new Fund(managerAddress, adminContractAddress);
+    Fund newFund = new Fund(managerAddress, address(this));
     createdFunds.push(newFund);
     emit FundCreated(address(newFund));
   }

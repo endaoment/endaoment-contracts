@@ -2,7 +2,7 @@
 
 pragma solidity ^0.6.10;
 
-import "./Administratable.sol";
+import "./EndaomentAdminStorage.sol";
 import "./Org.sol";
 
 //ORG FACTORY CONTRACT
@@ -14,10 +14,11 @@ import "./Org.sol";
  * individual Org contract addresses as well as a list of all
  * allowedOrgs.
  */
-contract OrgFactory is Administratable {
+contract OrgFactory is EndaomentAdminStorage {
   // ========== STATE VARIABLES==========
   Org[] public deployedOrgs;
   mapping(address => bool) public allowedOrgs;
+
   event OrgCreated(address indexed newAddress);
 
   // ========== CONSTRUCTOR ==========
@@ -25,19 +26,22 @@ contract OrgFactory is Administratable {
    * @notice Create new Org Factory
    * @param adminContractAddress Address of EndaomentAdmin contract.
    */
-  constructor(address adminContractAddress) public onlyAdmin(adminContractAddress) {}
+  constructor(address adminContractAddress) public {
+    require(adminContractAddress != address(0), "OrgFactory: Admin cannot be the zero address");
+    endaomentAdmin = adminContractAddress;
+    emit EndaomentAdminChanged(address(0), adminContractAddress);
+  }
 
   // ========== Org Creation & Management ==========
   /**
    * @notice  Create new Org Contract
    * @param ein The U.S. Tax Identification Number for the Organization
-   * @param adminContractAddress Contract address for Endaoment Admin
    */
-  function createOrg(uint256 ein, address adminContractAddress)
+  function createOrg(uint256 ein)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
   {
-    Org newOrg = new Org(ein, adminContractAddress);
+    Org newOrg = new Org(ein, address(this));
     deployedOrgs.push(newOrg);
     allowedOrgs[address(newOrg)] = true;
     emit OrgCreated(address(newOrg));

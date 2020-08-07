@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
+import "./IFactory.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // FUND CONTRACT
@@ -31,7 +32,7 @@ contract Fund is Administratable {
   }
 
   address public manager;
-  address public admin;
+  IFactory public fundFactoryContract;
   Grant[] public grants;
 
   event ManagerChanged(address newManager);
@@ -42,14 +43,13 @@ contract Fund is Administratable {
   /**
    * @notice Create new Fund
    * @param fundManager Address of the Fund's Primary Advisor
-   * @param adminContractAddress Address of the EndaomentAdmin contract.
+   * @param fundFactory Address of the Factory contract.
    */
-  constructor(address fundManager, address adminContractAddress)
-    public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.FUND_FACTORY)
-  {
+  constructor(address fundManager, address fundFactory) public {
     require(fundManager != address(0), "Fund: Creator cannot be null address.");
+    require(fundFactory != address(0), "Fund: Factory cannot be null address.");
     manager = fundManager;
+    fundFactoryContract = IFactory(fundFactory);
   }
 
   // ========== Admin Management ==========
@@ -65,11 +65,10 @@ contract Fund is Administratable {
   /**
    * @notice Change Fund Primary Advisor
    * @param  newManager The address of the new PrimaryAdvisor.
-   * @param  adminContractAddress Address of the EndaomentAdmin contract.
    */
-  function changeManager(address newManager, address adminContractAddress)
+  function changeManager(address newManager)
     public
-    onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.REVIEWER)
+    onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
   {
     require(newManager != address(0), "Fund: New manager cannot be the zero address");
     emit ManagerChanged(newManager);
@@ -146,17 +145,14 @@ contract Fund is Administratable {
    * @notice Approve Grant Recommendation
    * @param  index This Grant's index position
    * @param  tokenAddress The stablecoin's token address.
-   * @param  adminContractAddress Address of the EndaomentAdmin contract.
    */
-  function finalizeGrant(
-    uint256 index,
-    address tokenAddress,
-    address adminContractAddress
-  ) public onlyAdminOrRole(adminContractAddress, IEndaomentAdmin.Role.ACCOUNTANT) {
+  function finalizeGrant(uint256 index, address tokenAddress)
+    public
+    onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
+  {
     require(index < grants.length, "Fund: Index out of range");
     require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
-    EndaomentAdmin endaomentAdmin = EndaomentAdmin(adminContractAddress);
-    admin = endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN);
+    EndaomentAdmin endaomentAdmin = EndaomentAdmin(fundFactoryContract.endaomentAdmin());
     Grant storage grant = grants[index];
     // Checks
     require(grant.complete == false, "Fund: Grant is already finalized.");
@@ -169,7 +165,7 @@ contract Fund is Administratable {
     grant.complete = true;
     emit GrantFinalized(grant);
     // Interactions
-    tokenContract.safeTransfer(admin, fee);
+    tokenContract.safeTransfer(endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ADMIN), fee);
     tokenContract.safeTransfer(grant.recipient, finalGrant);
   }
 
