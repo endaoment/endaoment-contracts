@@ -125,12 +125,13 @@ contract Fund is Administratable {
    * @param  orgFactoryContractAddress Address of the orgFactory Contract.
    */
   function createGrant(
-    string memory grantId,
-    string memory description,
+    string calldata grantId,
+    string calldata description,
     uint256 value,
     address recipient,
     address orgFactoryContractAddress
   ) public restricted {
+    require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
       checkRecipient(recipient, orgFactoryContractAddress) == true,
@@ -159,12 +160,13 @@ contract Fund is Administratable {
    * @param  recipient The address of the recieving organization's contract.
    */
   function updateGrant(
-    string memory grantId,
-    string memory description,
+    string calldata grantId,
+    string calldata description,
     uint256 value,
     address recipient,
     address orgFactoryContractAddress
   ) public restricted {
+    require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
       checkRecipient(recipient, orgFactoryContractAddress) == true,
@@ -192,8 +194,9 @@ contract Fund is Administratable {
    * @param  grantId UUID representing this grant
    */
   function rejectGrant(
-    string memory grantId
+    string calldata grantId
   ) public restricted {
+    require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(
       pendingGrants[grantId].recipient != address(0),
       "Fund: Grant does not exist."
@@ -215,6 +218,7 @@ contract Fund is Administratable {
     string calldata grantId,
     address tokenAddress
   ) public onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT) {
+    require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
     Grant storage grant = pendingGrants[grantId];
     require(grant.recipient != address(0), "Fund: Grant does not exist");

@@ -65,10 +65,10 @@ contract Org is Administratable {
    * @param  orgAdminWalletAddress Wallet address of Organization's Administrator.
    */
   function claimRequest(
-    string memory claimId,
-    string memory fName,
-    string memory lName,
-    string memory eMail,
+    string calldata claimId,
+    string calldata fName,
+    string calldata lName,
+    string calldata eMail,
     address orgAdminWalletAddress
   ) public {
     require(!isEqual(claimId, ""), "Org: Must provide claimId");
@@ -100,6 +100,7 @@ contract Org is Administratable {
     public
     onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
   {
+    require(!isEqual(claimId, ""), "Fund: Must provide a claimId");
     Claim storage claim = pendingClaims[claimId];
     require(claim.desiredWallet != address(0),
       "Org: claim does not exist"
@@ -117,7 +118,11 @@ contract Org is Administratable {
     public
     onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
   {
+    require(!isEqual(claimId, ""), "Fund: Must provide a claimId");
     Claim storage claim = pendingClaims[claimId];
+    require(claim.desiredWallet != address(0),
+      "Org: claim does not exist"
+    );
 
     emit ClaimRejected(claimId, claim);
 
