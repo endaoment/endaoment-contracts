@@ -18,8 +18,7 @@ contract OrgFactory is EndaomentAdminStorage {
   // ========== EVENTS===================
 
   event OrgCreated(address indexed newAddress);
-  event OrgAllowed(address indexed orgAddress);
-  event OrgDisallowed(address indexed orgAddress);
+  event OrgStatusChanged(address indexed orgAddress, bool indexed isAllowed);
 
   // ========== STATE VARIABLES==========
   
@@ -50,35 +49,19 @@ contract OrgFactory is EndaomentAdminStorage {
     emit OrgCreated(address(newOrg));
   }
 
-  // function allowOrg(address orgAddress)
-  //   public
-  //   onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
-  //   {
-  //     require(
-  //       Org(orgAddress).taxId() != 0,
-  //       "OrgFactory: Not a valid org."
-  //     );
-  //     require(
-  //       allowedOrgs[orgAddress] == false,
-  //       "OrgFactory: Org already allowed."
-  //     );
-  //     allowedOrgs[orgAddress] = true;
-  //     emit OrgAllowed(orgAddress);
-  //   }
-
-  // function disallowOrg(address orgAddress)
-  //   public
-  //   onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
-  //   {
-  //     require(
-  //       Org(orgAddress).taxId() != 0,
-  //       "OrgFactory: Not a valid org."
-  //     );
-  //     require(
-  //       allowedOrgs[orgAddress] == true,
-  //       "OrgFactory: Org already disallowed."
-  //     );
-  //     allowedOrgs[orgAddress] = false;
-  //     emit OrgDisallowed(orgAddress);
-  //   } 
+  /**
+   * @notice  Toggle whether Org is allowed
+   * @param address THe address of the Org contract.
+   */
+  function toggleOrg(address orgAddress)
+    public
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
+    {
+      require(
+        Org(orgAddress).taxId() != 0,
+        "OrgFactory: Not a valid org."
+      );
+      allowedOrgs[orgAddress] = !allowedOrgs[orgAddress];
+      emit OrgStatusChanged(orgAddress, allowedOrgs[orgAddress]);
+    }
 }
