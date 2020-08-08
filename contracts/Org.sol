@@ -4,7 +4,7 @@ pragma solidity ^0.6.10;
 pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
-import "./IFactory.sol";
+import "./interfaces/IFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
@@ -57,7 +57,7 @@ contract Org is Administratable {
   // ========== Org Management & Info ==========
 
   /**
-   * @notice Create Organization Claim
+   * @notice Creates Organization Claim and emits a `ClaimCreated` event
    * @param  claimId UUID representing this claim
    * @param  fName First name of Administrator
    * @param  lName Last name of Administrator
@@ -93,7 +93,7 @@ contract Org is Administratable {
   }
 
   /**
-   * @notice Approving Organization Claim
+   * @notice Approves an Organization Claim and emits a `ClaimApproved` event
    * @param claimId UUID of the claim being approved
    */
   function approveClaim(string calldata claimId)
@@ -109,7 +109,7 @@ contract Org is Administratable {
   }
 
   /**
-   * @notice Rejecting Organization Claim
+   * @notice Rejects an Organization Claim and emits a 'ClaimRejected` event
    * @param claimId UUID of the claim being rejected
    */
   function rejectClaim(string calldata claimId)
@@ -126,7 +126,7 @@ contract Org is Administratable {
   }
 
   /**
-   * @notice Cashing out Organization Contract
+   * @notice Cashes out Organization Contract and emits a `CashOutComplete` event
    * @param tokenAddress ERC20 address of desired token withdrawal
    */
   function cashOutOrg(address tokenAddress)

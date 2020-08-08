@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import "./Administratable.sol";
 import "./OrgFactory.sol";
-import "./IFactory.sol";
+import "./interfaces/IFactory.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 // FUND CONTRACT
@@ -114,12 +114,20 @@ contract Fund is Administratable {
     string calldata description,
     uint256 value,
     address recipient
-  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
+  )
+    public
+    onlyAddressOrAdminOrRole(
+      manager,
+      fundFactoryContract.endaomentAdmin(),
+      IEndaomentAdmin.Role.REVIEWER
+    )
+  {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(fundFactoryContract.endaomentAdmin());
     require(
-      checkRecipient(recipient, endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY)) == true,
+      checkRecipient(recipient, endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY)) ==
+        true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
     require(pendingGrants[grantId].recipient == address(0), "Fund: Grant was already created.");
@@ -135,7 +143,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Updates Grant Recommendation and emits GrantUpdated event.
+   * @notice Updates Grant Recommendation and emits a `GrantUpdated` event.
    * @param  grantId UUID representing this grant
    * @param  description The address of the Owner.
    * @param  value The value of the grant in base units.
@@ -146,12 +154,20 @@ contract Fund is Administratable {
     string calldata description,
     uint256 value,
     address recipient
-  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
+  )
+    public
+    onlyAddressOrAdminOrRole(
+      manager,
+      fundFactoryContract.endaomentAdmin(),
+      IEndaomentAdmin.Role.REVIEWER
+    )
+  {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     EndaomentAdmin endaomentAdmin = EndaomentAdmin(fundFactoryContract.endaomentAdmin());
     require(
-      checkRecipient(recipient, endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY)) == true,
+      checkRecipient(recipient, endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY)) ==
+        true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
     require(pendingGrants[grantId].recipient != address(0), "Fund: Grant does not exist.");
@@ -167,7 +183,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Rejects Grant Recommendation and emits GrantRejected event.
+   * @notice Rejects Grant Recommendation and emits a `GrantRejected` event.
    * @param  grantId UUID representing this grant
    */
   function rejectGrant(string calldata grantId)
@@ -187,7 +203,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Approves Grant Recommendation and emits GrantFinalized event.
+   * @notice Approves Grant Recommendation and emits a `GrantFinalized` event.
    * @param  grantId UUID of the grant being finalized
    * @param  tokenAddress The ERC20 token address of the token prescribed by the web-server.
    */
@@ -203,7 +219,6 @@ contract Fund is Administratable {
     require(grant.complete == false, "Fund: Grant is already finalized.");
     // Effects
     IERC20 tokenContract = IERC20(tokenAddress);
-
     // Process fees:
     uint256 fee = grant.value.div(100);
     uint256 finalGrant = grant.value.sub(fee);

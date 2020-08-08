@@ -29,7 +29,7 @@ contract FundFactory is EndaomentAdminStorage {
 
   // ========== Fund Creation & Management ==========
   /**
-   * @notice Creates new Fund and emits FundCreated event.
+   * @notice Creates new Fund and emits a `FundCreated` event.
    * @param managerAddress The address of the Fund's Primary Advisor
    */
   function createFund(address managerAddress)
