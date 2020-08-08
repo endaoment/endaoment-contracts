@@ -59,7 +59,7 @@ contract Fund is Administratable {
 
   // ========== Fund Management & Info ==========
   /**
-   * @notice Change Fund Primary Advisor
+   * @notice Changes Fund Primary Advisor and emits a `ManagerChanged` event
    * @param  newManager The address of the new PrimaryAdvisor.
    */
   function changeManager(address newManager)
@@ -103,7 +103,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Creates new Grant Recommendation and emits GrantCreated event.
+   * @notice Creates new Grant Recommendation and emits a `GrantCreated` event.
    * @param  grantId UUID representing this grant
    * @param  description The address of the Owner.
    * @param  value The value of the grant in base units.
