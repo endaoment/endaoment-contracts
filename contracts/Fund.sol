@@ -113,19 +113,18 @@ contract Fund is Administratable {
    * @param  description The address of the Owner.
    * @param  value The value of the grant in base units.
    * @param  recipient The address of the recieving organization's contract.
-   * @param  orgFactoryContractAddress Address of the orgFactory Contract.
    */
   function createGrant(
     string calldata grantId,
     string calldata description,
     uint256 value,
-    address recipient,
-    address orgFactoryContractAddress
+    address recipient
   ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
+    EndaomentAdmin endaomentAdmin = EndaomentAdmin(fundFactoryContract.endaomentAdmin());
     require(
-      checkRecipient(recipient, orgFactoryContractAddress) == true,
+      checkRecipient(recipient, endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY)) == true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
     require(
@@ -154,13 +153,13 @@ contract Fund is Administratable {
     string calldata grantId,
     string calldata description,
     uint256 value,
-    address recipient,
-    address orgFactoryContractAddress
+    address recipient
   ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
+    EndaomentAdmin endaomentAdmin = EndaomentAdmin(fundFactoryContract.endaomentAdmin());
     require(
-      checkRecipient(recipient, orgFactoryContractAddress) == true,
+      checkRecipient(recipient, endaomentAdmin.getRoleAddress(IEndaomentAdmin.Role.ORG_FACTORY)) == true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
     require(
