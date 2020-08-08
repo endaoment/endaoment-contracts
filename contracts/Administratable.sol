@@ -76,7 +76,22 @@ contract Administratable {
 
     _;
   }
+  
+  // TODO(rheeger): write docs in audit-l05
+  modifier onlyAddressOrAdminOrRole(address allowedAddress, address adminContractAddress, IEndaomentAdmin.Role role) {
+    require(
+      allowedAddress != address(0),
+      "Administratable: Allowed address must not be the zero address"
+    );
+   
+    bool isAllowed = (msg.sender == allowedAddress);
 
+    if (!isAllowed) {
+        onlyAdminOrRole(adminContractAddress, role);      
+    }
+    _;
+  }
+  
   /**
    * @notice Returns true if two strings are equal, false otherwise
    * @param s1 First string to compare

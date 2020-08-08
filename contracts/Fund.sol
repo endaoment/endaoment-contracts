@@ -57,15 +57,6 @@ contract Fund is Administratable {
     fundFactoryContract = IFactory(fundFactory);
   }
 
-  // ========== Admin Management ==========
-  /**
-   * @notice Restricts method access to fund's manager
-   */
-  modifier restricted() {
-    require(msg.sender == manager, "Fund: This method is only callable by the fund manager.");
-    _;
-  }
-
   // ========== Fund Management & Info ==========
   /**
    * @notice Change Fund Primary Advisor
@@ -130,7 +121,7 @@ contract Fund is Administratable {
     uint256 value,
     address recipient,
     address orgFactoryContractAddress
-  ) public restricted {
+  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
@@ -165,7 +156,7 @@ contract Fund is Administratable {
     uint256 value,
     address recipient,
     address orgFactoryContractAddress
-  ) public restricted {
+  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
@@ -195,7 +186,7 @@ contract Fund is Administratable {
    */
   function rejectGrant(
     string calldata grantId
-  ) public restricted {
+  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(
       pendingGrants[grantId].recipient != address(0),
