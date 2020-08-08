@@ -36,6 +36,15 @@ contract Administratable {
    * roles are admin (0), accountant (2), and reviewer (3).
    */
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
+    _onlyAdminOrRole(adminContractAddress, role);
+    _;
+  }
+  
+  function _onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) 
+    private
+    view
+  {
+
     require(
       adminContractAddress != address(0),
       "Administratable: Admin must not be the zero address"
@@ -73,8 +82,6 @@ contract Administratable {
         );
       }
     }
-
-    _;
   }
   
   // TODO(rheeger): write docs in audit-l05
@@ -87,7 +94,7 @@ contract Administratable {
     bool isAllowed = (msg.sender == allowedAddress);
 
     if (!isAllowed) {
-        onlyAdminOrRole(adminContractAddress, role);      
+        _onlyAdminOrRole(adminContractAddress, role);      
     }
     _;
   }

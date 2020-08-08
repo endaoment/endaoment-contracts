@@ -171,7 +171,7 @@ describe("Fund", function () {
   });
 
 
-  it("allows only MANAGER to create a grant", async function () {
+  it("allows MANAGER to create a grant", async function () {
     //Open a new OrgFactory using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
@@ -220,10 +220,14 @@ describe("Fund", function () {
       }
     );
 
-    // Should revert if anyone besides the manager calls the function
+    // Should revert if anyone besides the manager, admin, or reviewer calls the function
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: admin } ),
-      "Fund: This method is only callable by the fund manager."
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      "Administratable: only REVIEWER can access"
+    );
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      "Administratable: only REVIEWER can access"
     );
     // Should revert if no description is given
     await expectRevert(
@@ -233,7 +237,7 @@ describe("Fund", function () {
   });
 
 
-  it("allows only MANAGER to update grant", async function () {
+  it("allows MANAGER to update grant", async function () {
     //Open a new OrgFactory using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
@@ -295,8 +299,12 @@ describe("Fund", function () {
 
     // Should revert if anyone besides the manager calls the function
     await expectRevert(
-      this.fund.updateGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: admin } ),
-      "Fund: This method is only callable by the fund manager."
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      "Administratable: only REVIEWER can access"
+    );
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      "Administratable: only REVIEWER can access"
     );
     // Should revert if no description is given
     await expectRevert(
@@ -305,7 +313,7 @@ describe("Fund", function () {
     );
   });
 
-  it("allows only MANAGER to reject grant", async function () {
+  it("allows MANAGER to reject grant", async function () {
     //Open a new OrgFactory using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
@@ -353,8 +361,12 @@ describe("Fund", function () {
 
     // Should revert if anyone besides the manager calls the function
     await expectRevert(
-      this.fund.rejectGrant(grantId, { from: admin } ),
-      "Fund: This method is only callable by the fund manager."
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      "Administratable: only REVIEWER can access"
+    );
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      "Administratable: only REVIEWER can access"
     );
   });
 
