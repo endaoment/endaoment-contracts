@@ -76,7 +76,7 @@ Includes a `Claims` mapping that allows for any address to create a new `Claim` 
 ## Additional Documentation
 Full technical documentation of our contracts can be found in our doucmentation repository: 
 
-### Full Docs: [endaoment-docs/developers](https://github.com/endaoment/endaoment-docs/tree/master/developers)
+### Full Docs: [endaoment-docs/developers](https://docs.endaoment.org/developers)
 
 ### Other Resources:
 - Website: [endaoment.org](https://endaoment.org)
