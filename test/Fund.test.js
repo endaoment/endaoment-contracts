@@ -191,7 +191,6 @@ describe("Fund", function () {
       "test grant",
       1,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
 
@@ -222,16 +221,16 @@ describe("Fund", function () {
 
     // Should revert if anyone besides the manager, admin, or reviewer calls the function
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, { from: pauser } ),
       "Administratable: only REVIEWER can access"
     );
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, { from: newManager } ),
       "Administratable: only REVIEWER can access"
     );
     // Should revert if no description is given
     await expectRevert(
-      this.fund.createGrant(grantId, "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
+      this.fund.createGrant(grantId, "", 1, org.logs[0].args.newAddress, { from: manager } ),
       "Fund: Must provide a description"
     );
   });
@@ -257,7 +256,6 @@ describe("Fund", function () {
       "test grant",
       1,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
 
@@ -267,7 +265,6 @@ describe("Fund", function () {
       "update to grant",
       3, 
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     )
     
@@ -299,16 +296,16 @@ describe("Fund", function () {
 
     // Should revert if anyone besides the manager calls the function
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, { from: pauser } ),
       "Administratable: only REVIEWER can access"
     );
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, { from: newManager } ),
       "Administratable: only REVIEWER can access"
     );
     // Should revert if no description is given
     await expectRevert(
-      this.fund.updateGrant(grantId, "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
+      this.fund.updateGrant(grantId, "", 1, org.logs[0].args.newAddress, { from: manager } ),
       "Fund: Must provide a description"
     );
   });
@@ -333,7 +330,6 @@ describe("Fund", function () {
       "test grant",
       1,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
 
@@ -361,11 +357,11 @@ describe("Fund", function () {
 
     // Should revert if anyone besides the manager calls the function
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, { from: pauser } ),
       "Administratable: only REVIEWER can access"
     );
     await expectRevert(
-      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, { from: newManager } ),
       "Administratable: only REVIEWER can access"
     );
   });
@@ -384,7 +380,6 @@ describe("Fund", function () {
       "test grant",
       100,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
 
@@ -420,7 +415,6 @@ describe("Fund", function () {
       "test grant",
       100,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
     
@@ -458,7 +452,6 @@ describe("Fund", function () {
       "test grant",
       100,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
 
@@ -480,7 +473,6 @@ describe("Fund", function () {
       "test grant",
       100,
       org.logs[0].args.newAddress,
-      orgFactory.address,
       { from: manager }
     );
     const badUuid = uuidv4();
