@@ -12,7 +12,7 @@ const OrgFactory = contract.fromArtifact("OrgFactory");
 const Org = contract.fromArtifact("Org");
 
 describe("OrgFactory", function () {
-  const [admin, manager, accountant, pauser] = accounts;
+  const [admin, manager, accountant, pauser, reviewer] = accounts;
   const ein = 999999999;
 
   beforeEach(async function () {
@@ -20,6 +20,7 @@ describe("OrgFactory", function () {
     await this.endaomentAdmin.setRole(6, admin, { from: admin });
     await this.endaomentAdmin.setRole(1, pauser, { from: admin });
     await this.endaomentAdmin.setRole(2, accountant, { from: admin });
+    await this.endaomentAdmin.setRole(3, reviewer, { from: admin });
     this.orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, this.orgFactory.address, { from: admin });
     const receipt = await this.orgFactory.createOrg(ein, {from: admin});
@@ -96,9 +97,9 @@ describe("OrgFactory", function () {
     assert.equal(initialStatus, !finalStatus);
   });
 
-  it("allows accountant to toggle whether org is allowed", async function () {
+  it("allows reviewer to toggle whether org is allowed", async function () {
     const initialStatus = await this.orgFactory.allowedOrgs(this.org.address);
-    await this.orgFactory.toggleOrg(this.org.address, { from: accountant });
+    await this.orgFactory.toggleOrg(this.org.address, { from: reviewer });
     const finalStatus = await this.orgFactory.allowedOrgs(this.org.address);
     assert.equal(initialStatus, !finalStatus);
   });
@@ -106,7 +107,7 @@ describe("OrgFactory", function () {
   it("does not allow anyone else to toggle whether org is allowed", async function () {
     await expectRevert(
       this.orgFactory.toggleOrg(this.org.address, { from: manager }),
-      "Administratable: only ACCOUNTANT can access"
+      "Administratable: only REVIEWER can access"
     );
   });
 });
