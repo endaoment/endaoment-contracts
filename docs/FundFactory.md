@@ -30,14 +30,6 @@ Returns total number of funds created by the factory.
 
 
 
-### `getFund(uint256 index) → address` (external)
-Returns address of a specific fund in createdFunds[]
-
-
-
-_Parameters:_
-- `index`: The index position of the Fund
-
 
 ### `FundCreated(address newAddress)`
 

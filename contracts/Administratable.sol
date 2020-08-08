@@ -4,8 +4,11 @@ pragma solidity ^0.6.10;
 
 import "./EndaomentAdmin.sol";
 
+//ADMINISTRATABLE
 /**
- * @dev Provides two modifiers allowing contracts administered
+ * @title Administratable
+ * @author rheeger
+ * @notice Provides two modifiers allowing contracts administered
  * by the EndaomentAdmin contract to properly restrict method calls
  * based on the a given role. Also provides a utility function for
  * validating string input arguments.
@@ -33,18 +36,14 @@ contract Administratable {
    * @notice onlyAdminOrRole checks that the caller is either the Admin or the provided role.
    * @param adminContractAddress supplied EndaomentAdmin address
    * @param role The role to require unless the caller is the owner. Permitted
-   * roles are admin (0), accountant (2), and reviewer (3).
+   * roles are ADMIN (6), ACCOUNTANT (2), REVIEWER (3), FUND_FACTORY (4) and ORG_FACTORY(5).
    */
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
     _onlyAdminOrRole(adminContractAddress, role);
     _;
   }
-  
-  function _onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) 
-    private
-    view
-  {
 
+  function _onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) private view {
     require(
       adminContractAddress != address(0),
       "Administratable: Admin must not be the zero address"
@@ -83,22 +82,31 @@ contract Administratable {
       }
     }
   }
-  
-  // TODO(rheeger): write docs in audit-l05
-  modifier onlyAddressOrAdminOrRole(address allowedAddress, address adminContractAddress, IEndaomentAdmin.Role role) {
+
+  /**
+   @notice Checks that the caller is either a provided adress, admin or role.
+   @param allowedAddress An exempt address provided that shall be allowed to proceed.  
+   @param adminContractAddress The EndaomentAdmin contract address.
+   @param role The desired IEndaomentAdmin.Role to check against.
+    */
+  modifier onlyAddressOrAdminOrRole(
+    address allowedAddress,
+    address adminContractAddress,
+    IEndaomentAdmin.Role role
+  ) {
     require(
       allowedAddress != address(0),
       "Administratable: Allowed address must not be the zero address"
     );
-   
+
     bool isAllowed = (msg.sender == allowedAddress);
 
     if (!isAllowed) {
-        _onlyAdminOrRole(adminContractAddress, role);      
+      _onlyAdminOrRole(adminContractAddress, role);
     }
     _;
   }
-  
+
   /**
    * @notice Returns true if two strings are equal, false otherwise
    * @param s1 First string to compare

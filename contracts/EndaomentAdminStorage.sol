@@ -4,6 +4,14 @@ pragma solidity ^0.6.10;
 
 import "./Administratable.sol";
 
+// ENDAOMENT ADMIN STORAGE CONTRACT
+/**
+ * @title EndaomentAdminStorage
+ * @author rheeger
+ * @notice Stores the contract address of the EndaomentAdmin,
+ * for use in references by the Org and Fund factories and
+ * subsequently deployed Org and Fund contracts.
+ */
 contract EndaomentAdminStorage is Administratable {
   address public endaomentAdmin;
   event EndaomentAdminChanged(address indexed oldAddress, address indexed newAddress);

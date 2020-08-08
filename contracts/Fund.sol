@@ -24,7 +24,7 @@ contract Fund is Administratable {
   using SafeERC20 for IERC20;
 
   // ========== STRUCTS & EVENTS ==========
-  
+
   struct Grant {
     string description;
     uint256 value;
@@ -75,6 +75,7 @@ contract Fund is Administratable {
    * @notice Checks recipient of a Grant is an address created by the OrgFactory
    * @param  recipient The address of the Grant recipient.
    * @param  orgFactoryContractAddress Address of the OrgFactory contract.
+   * @return Boolean of status of given recipient status.
    */
   function checkRecipient(address recipient, address orgFactoryContractAddress)
     public
@@ -90,16 +91,10 @@ contract Fund is Administratable {
 
   /**
    * @notice Returns summary of details about the fund [tokenBalance, number of grants, managerAddress].
-   * @param  tokenAddress The token address of the stablecoin being used by the web-server.
+   * @param  tokenAddress The token address of the ERC20 being used by the web-server.
+   * @return Returns the token balance of the given tokenAddress and the address of the Fund's manager.
    */
-  function getSummary(address tokenAddress)
-    external
-    view
-    returns (
-      uint256,
-      address
-    )
-  {
+  function getSummary(address tokenAddress) external view returns (uint256, address) {
     require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
@@ -108,7 +103,7 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Create new Grant Recommendation
+   * @notice Creates new Grant Recommendation and emits GrantCreated event.
    * @param  grantId UUID representing this grant
    * @param  description The address of the Owner.
    * @param  value The value of the grant in base units.
@@ -121,17 +116,21 @@ contract Fund is Administratable {
     uint256 value,
     address recipient,
     address orgFactoryContractAddress
-  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
+  )
+    public
+    onlyAddressOrAdminOrRole(
+      manager,
+      fundFactoryContract.endaomentAdmin(),
+      IEndaomentAdmin.Role.REVIEWER
+    )
+  {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
       checkRecipient(recipient, orgFactoryContractAddress) == true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
-    require(
-      pendingGrants[grantId].recipient == address(0),
-      "Fund: Grant was already created."
-    );
+    require(pendingGrants[grantId].recipient == address(0), "Fund: Grant was already created.");
 
     Grant memory newGrant = Grant({
       description: description,
@@ -141,10 +140,10 @@ contract Fund is Administratable {
     });
     emit GrantCreated(grantId, newGrant);
     pendingGrants[grantId] = newGrant;
-  } 
+  }
 
   /**
-   * @notice Update Grant Recommendation
+   * @notice Updates Grant Recommendation and emits GrantUpdated event.
    * @param  grantId UUID representing this grant
    * @param  description The address of the Owner.
    * @param  value The value of the grant in base units.
@@ -156,20 +155,22 @@ contract Fund is Administratable {
     uint256 value,
     address recipient,
     address orgFactoryContractAddress
-  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
+  )
+    public
+    onlyAddressOrAdminOrRole(
+      manager,
+      fundFactoryContract.endaomentAdmin(),
+      IEndaomentAdmin.Role.REVIEWER
+    )
+  {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(!isEqual(description, ""), "Fund: Must provide a description");
     require(
       checkRecipient(recipient, orgFactoryContractAddress) == true,
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
-    require(
-      pendingGrants[grantId].recipient != address(0),
-      "Fund: Grant does not exist."
-    );
-    require(pendingGrants[grantId].complete == false,
-    "Fund: Grant is already finalized."
-    );
+    require(pendingGrants[grantId].recipient != address(0), "Fund: Grant does not exist.");
+    require(pendingGrants[grantId].complete == false, "Fund: Grant is already finalized.");
     Grant memory replacementGrant = Grant({
       description: description,
       value: value,
@@ -181,34 +182,34 @@ contract Fund is Administratable {
   }
 
   /**
-   * @notice Reject Grant Recommendation
+   * @notice Rejects Grant Recommendation and emits GrantRejected event.
    * @param  grantId UUID representing this grant
    */
-  function rejectGrant(
-    string calldata grantId
-  ) public onlyAddressOrAdminOrRole(manager, fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER) {
+  function rejectGrant(string calldata grantId)
+    public
+    onlyAddressOrAdminOrRole(
+      manager,
+      fundFactoryContract.endaomentAdmin(),
+      IEndaomentAdmin.Role.REVIEWER
+    )
+  {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
-    require(
-      pendingGrants[grantId].recipient != address(0),
-      "Fund: Grant does not exist."
-    );
-    require(pendingGrants[grantId].complete == false,
-    "Fund: Grant is already finalized."
-    );
-    
+    require(pendingGrants[grantId].recipient != address(0), "Fund: Grant does not exist.");
+    require(pendingGrants[grantId].complete == false, "Fund: Grant is already finalized.");
+
     delete pendingGrants[grantId];
     emit GrantRejected(grantId);
   }
 
   /**
-   * @notice Approve Grant Recommendation
+   * @notice Approves Grant Recommendation and emits GrantFinalized event.
    * @param  grantId UUID of the grant being finalized
-   * @param  tokenAddress The stablecoin's token address.
+   * @param  tokenAddress The ERC20 token address of the token prescribed by the web-server.
    */
-  function finalizeGrant(
-    string calldata grantId,
-    address tokenAddress
-  ) public onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT) {
+  function finalizeGrant(string calldata grantId, address tokenAddress)
+    public
+    onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
+  {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
     Grant storage grant = pendingGrants[grantId];
@@ -224,7 +225,8 @@ contract Fund is Administratable {
     grant.complete = true;
     emit GrantFinalized(grantId, grant);
     // Interactions
-    address endaomentAdminAdminAddress = EndaomentAdmin(fundFactoryContract.endaomentAdmin()).getRoleAddress(IEndaomentAdmin.Role.ADMIN);
+    address endaomentAdminAdminAddress = EndaomentAdmin(fundFactoryContract.endaomentAdmin())
+      .getRoleAddress(IEndaomentAdmin.Role.ADMIN);
     tokenContract.safeTransfer(endaomentAdminAdminAddress, fee);
     tokenContract.safeTransfer(grant.recipient, finalGrant);
   }

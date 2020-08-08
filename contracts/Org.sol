@@ -34,7 +34,7 @@ contract Org is Administratable {
   event ClaimRejected(string claimId, Claim claim);
 
   // ========== STATE VARIABLES ==========
-  
+
   IFactory public orgFactoryContract;
   uint256 public taxId;
   mapping(string => Claim) public pendingClaims; // claim UUID to Claim
@@ -102,9 +102,7 @@ contract Org is Administratable {
   {
     require(!isEqual(claimId, ""), "Fund: Must provide a claimId");
     Claim storage claim = pendingClaims[claimId];
-    require(claim.desiredWallet != address(0),
-      "Org: claim does not exist"
-    );
+    require(claim.desiredWallet != address(0), "Org: claim does not exist");
     emit ClaimApproved(claimId, claim);
     activeClaim = claim;
     delete pendingClaims[claimId];
@@ -120,9 +118,7 @@ contract Org is Administratable {
   {
     require(!isEqual(claimId, ""), "Fund: Must provide a claimId");
     Claim storage claim = pendingClaims[claimId];
-    require(claim.desiredWallet != address(0),
-      "Org: claim does not exist"
-    );
+    require(claim.desiredWallet != address(0), "Org: claim does not exist");
 
     emit ClaimRejected(claimId, claim);
 
@@ -131,7 +127,7 @@ contract Org is Administratable {
 
   /**
    * @notice Cashing out Organization Contract
-   * @param tokenAddress Stablecoin address of desired token withdrawal
+   * @param tokenAddress ERC20 address of desired token withdrawal
    */
   function cashOutOrg(address tokenAddress)
     public

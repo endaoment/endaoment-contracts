@@ -104,6 +104,13 @@ contract TwoStepOwnable {
   }
 }
 
+/**
+ * @title EndaomentAdmin
+ * @author rheeger
+ * @notice Provides admin controls for the Endaoment contract ecosystem using
+ * a roles-based system. Available roles are PAUSER (1), ACCOUNTANT (2),
+ * REVIEWER (3), FUND_FACTORY (4), ORG_FACTORY (5), and ADMIN (6).
+ */
 contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   // Maintain a role status mapping with assigned accounts and paused states.
   mapping(uint256 => RoleStatus) private _roles;
@@ -181,7 +188,8 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
   /**
    * @notice External view function to check the account currently holding the
    * given role.
-   * @return The address of the current admin, or the null
+   * @param role The desired role to fetch the current address of.
+   * @return The address of the requested role, or the null
    * address if none is set.
    */
   function getRoleAddress(Role role) external override view returns (address) {
@@ -231,8 +239,7 @@ contract EndaomentAdmin is IEndaomentAdmin, TwoStepOwnable {
    * @notice Modifier that throws if called by any account other than the owner
    * or the supplied role, or if the caller is not the owner and the role in
    * question is paused.
-   * @param role The role to require unless the caller is the owner. Permitted
-   * roles are bot commander (0) and pauser (1).
+   * @param role The role to require unless the caller is the owner.
    */
   modifier onlyAdminOr(Role role) {
     if (!isOwner()) {

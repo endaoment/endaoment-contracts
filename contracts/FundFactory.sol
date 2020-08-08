@@ -9,10 +9,8 @@ import "./Fund.sol";
 /**
  * @title FundFactory
  * @author rheeger
- * @notice FundFactory is a contract that allows the EndaomentAdmin to
- * instantiate new Fund contracts. It also provides for fetching of
- * individual Org contract addresses as well as a list of all
- * allowedOrgs.
+ * @notice FundFactory is a contract that allows the Endaoment ADMIN or ACCOUNTANT to
+ * instantiate new Fund contracts.
  */
 contract FundFactory is EndaomentAdminStorage {
   // ========== EVENTS ==========
