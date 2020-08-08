@@ -36,6 +36,15 @@ contract Administratable {
    * roles are admin (0), accountant (2), and reviewer (3).
    */
   modifier onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) {
+    _onlyAdminOrRole(adminContractAddress, role);
+    _;
+  }
+  
+  function _onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) 
+    private
+    view
+  {
+
     require(
       adminContractAddress != address(0),
       "Administratable: Admin must not be the zero address"
@@ -73,10 +82,23 @@ contract Administratable {
         );
       }
     }
+  }
+  
+  // TODO(rheeger): write docs in audit-l05
+  modifier onlyAddressOrAdminOrRole(address allowedAddress, address adminContractAddress, IEndaomentAdmin.Role role) {
+    require(
+      allowedAddress != address(0),
+      "Administratable: Allowed address must not be the zero address"
+    );
+   
+    bool isAllowed = (msg.sender == allowedAddress);
 
+    if (!isAllowed) {
+        _onlyAdminOrRole(adminContractAddress, role);      
+    }
     _;
   }
-
+  
   /**
    * @notice Returns true if two strings are equal, false otherwise
    * @param s1 First string to compare

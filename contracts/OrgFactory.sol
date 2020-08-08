@@ -15,11 +15,14 @@ import "./Org.sol";
  * allowedOrgs.
  */
 contract OrgFactory is EndaomentAdminStorage {
-  // ========== STATE VARIABLES==========
-  Org[] public deployedOrgs;
-  mapping(address => bool) public allowedOrgs;
+  // ========== EVENTS===================
 
   event OrgCreated(address indexed newAddress);
+  event OrgStatusChanged(address indexed orgAddress, bool indexed isAllowed);
+
+  // ========== STATE VARIABLES==========
+  
+  mapping(address => bool) public allowedOrgs;
 
   // ========== CONSTRUCTOR ==========
   /**
@@ -42,15 +45,23 @@ contract OrgFactory is EndaomentAdminStorage {
     onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
   {
     Org newOrg = new Org(ein, address(this));
-    deployedOrgs.push(newOrg);
     allowedOrgs[address(newOrg)] = true;
     emit OrgCreated(address(newOrg));
   }
 
   /**
-   * @notice Returns total number Org contracts created by the factory.
+   * @notice  Toggle whether Org is allowed
+   * @param orgAddress THe address of the Org contract.
    */
-  function countDeployedOrgs() external view returns (uint256) {
-    return deployedOrgs.length;
-  }
+  function toggleOrg(address orgAddress)
+    public
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.REVIEWER)
+    {
+      require(
+        Org(orgAddress).taxId() != 0,
+        "OrgFactory: Not a valid org."
+      );
+      allowedOrgs[orgAddress] = !allowedOrgs[orgAddress];
+      emit OrgStatusChanged(orgAddress, allowedOrgs[orgAddress]);
+    }
 }

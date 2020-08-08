@@ -6,6 +6,7 @@ const {
   expectRevert,
 } = require("@openzeppelin/test-helpers");
 const { assert } = require("chai");
+const { v4: uuidv4 } = require('uuid');
 
 const EndaomentAdmin = contract.fromArtifact("EndaomentAdmin");
 const FundFactory = contract.fromArtifact("FundFactory");
@@ -14,11 +15,12 @@ const Org = contract.fromArtifact("Org");
 const Fund = contract.fromArtifact("Fund");
 const ERC20Mock = contract.fromArtifact('ERC20Mock');
 
-
 describe("Fund", function () {
   const name = 'TestToken';
   const symbol = 'TTKN';
   const initSupply = new BN(100);
+  const grantId = uuidv4();
+  const ein = 999999999;
 
   const [initHolder, admin, manager, newManager, accountant, pauser, reviewer] = accounts;
 
@@ -134,7 +136,7 @@ describe("Fund", function () {
     );
   });
 
-  it("checks the recipeint of a grant with the OrgFactory", async function () {
+  it("checks the recipient of a grant with the OrgFactory", async function () {
     //Open a new OrgFacotry using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
 
@@ -142,7 +144,7 @@ describe("Fund", function () {
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
     //Deploy an org contract using the OrgFactory
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    const org = await orgFactory.createOrg(ein, {from: accountant});
 
     //Check that the new org's address passes the checkRecipient() function on the Fund contract
     const orgChecked = await this.fund.checkRecipient(
@@ -169,8 +171,8 @@ describe("Fund", function () {
   });
 
 
-  it("allows only MANAGER to create a grant", async function () {
-    //Open a new OrgFacotry using EndaomentAdmin
+  it("allows MANAGER to create a grant", async function () {
+    //Open a new OrgFactory using EndaomentAdmin
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
       from: admin,
     });
@@ -181,10 +183,11 @@ describe("Fund", function () {
     });
 
     //Deploy an org contract using the OrgFactory
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    const org = await orgFactory.createOrg(ein, {from: accountant});
 
     //Create new grant on the Fund contract
     const createGrantReceipt = await this.fund.createGrant(
+      grantId,
       "test grant",
       1,
       org.logs[0].args.newAddress,
@@ -192,10 +195,9 @@ describe("Fund", function () {
       { from: manager }
     );
 
-    //Get Grant struct at position 0, confirm values
-    const grant = await this.fund.grants(0);
+    const grant = await this.fund.pendingGrants(grantId);
     expectEvent(createGrantReceipt, "GrantCreated", 
-      { grant: [
+      { grantId, grant: [
         grant.description,
         "1",
         grant.recipient,
@@ -218,29 +220,40 @@ describe("Fund", function () {
       }
     );
 
-    // Should revert if anyone besides the manager calls the function
+    // Should revert if anyone besides the manager, admin, or reviewer calls the function
     await expectRevert(
-      this.fund.createGrant( "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: admin } ),
-      "Fund: This method is only callable by the fund manager."
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      "Administratable: only REVIEWER can access"
+    );
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      "Administratable: only REVIEWER can access"
     );
     // Should revert if no description is given
     await expectRevert(
-      this.fund.createGrant( "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
+      this.fund.createGrant(grantId, "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
       "Fund: Must provide a description"
     );
   });
 
 
-  it("returns correct count of total grants", async function () {
-    const before_count = await this.fund.getGrantsCount();
-    assert.equal(before_count, 0);
+  it("allows MANAGER to update grant", async function () {
+    //Open a new OrgFactory using EndaomentAdmin
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
 
-    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
-    await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
+    //Set the new OrgFactory as the ORG_FACTORY role
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
 
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    //Deploy an org contract using the OrgFactory
+    const org = await orgFactory.createOrg(ein, {from: accountant});
 
-    await this.fund.createGrant(
+    //Create new grant on the Fund contract
+    const createGrantReceipt = await this.fund.createGrant(
+      grantId,
       "test grant",
       1,
       org.logs[0].args.newAddress,
@@ -248,8 +261,113 @@ describe("Fund", function () {
       { from: manager }
     );
 
-    const after_count = await this.fund.getGrantsCount();
-    assert.equal(after_count, 1);
+    const grantBefore = await this.fund.pendingGrants(grantId);
+    const grantAfterReceipt = await this.fund.updateGrant(
+      grantId,
+      "update to grant",
+      3, 
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    )
+    
+    const grantAfter = await this.fund.pendingGrants(grantId);
+
+    expectEvent(grantAfterReceipt, "GrantUpdated", 
+    { grantId, grant: [
+      grantAfter.description,
+      "3",
+      grantAfter.recipient,
+      grantAfter.complete,
+    ]}
+  );
+
+    assert.deepEqual(
+      {
+        description: grantAfter.description,
+        value: grantAfter.value.words[0],
+        recipient: grantAfter.recipient,
+        complete: grantAfter.complete,
+      },
+      {
+        description: "update to grant",
+        value: 3,
+        recipient: org.logs[0].args.newAddress,
+        complete: false,
+      }
+    );
+
+    // Should revert if anyone besides the manager calls the function
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      "Administratable: only REVIEWER can access"
+    );
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      "Administratable: only REVIEWER can access"
+    );
+    // Should revert if no description is given
+    await expectRevert(
+      this.fund.updateGrant(grantId, "", 1, org.logs[0].args.newAddress, orgFactory.address, { from: manager } ),
+      "Fund: Must provide a description"
+    );
+  });
+
+  it("allows MANAGER to reject grant", async function () {
+    //Open a new OrgFactory using EndaomentAdmin
+    const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, {
+      from: admin,
+    });
+
+    //Set the new OrgFactory as the ORG_FACTORY role
+    await this.endaomentAdmin.setRole(5, orgFactory.address, {
+      from: admin,
+    });
+
+    //Deploy an org contract using the OrgFactory
+    const org = await orgFactory.createOrg(ein, {from: accountant});
+
+    //Create new grant on the Fund contract
+    const createGrantReceipt = await this.fund.createGrant(
+      grantId,
+      "test grant",
+      1,
+      org.logs[0].args.newAddress,
+      orgFactory.address,
+      { from: manager }
+    );
+
+    const createRejectedReceipt = await this.fund.rejectGrant(grantId, { from: manager });
+    const grant = await this.fund.pendingGrants(grantId);
+
+    expectEvent(createRejectedReceipt, "GrantRejected", 
+      { grantId }
+    );
+
+    assert.deepEqual(
+      {
+        description: grant.description,
+        value: grant.value.words[0],
+        recipient: grant.recipient,
+        complete: grant.complete,
+      },
+      {
+        description: "",
+        value: 0,
+        recipient: constants.ZERO_ADDRESS,
+        complete: false,
+      }
+    );
+
+    // Should revert if anyone besides the manager calls the function
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: pauser } ),
+      "Administratable: only REVIEWER can access"
+    );
+    await expectRevert(
+      this.fund.createGrant(grantId, "test grant", 1, org.logs[0].args.newAddress, orgFactory.address, { from: newManager } ),
+      "Administratable: only REVIEWER can access"
+    );
   });
 
   it("allows ADMIN to finalize grant", async function () {
@@ -257,11 +375,12 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    const org = await orgFactory.createOrg(ein, {from: accountant});
 
     await this.token.transfer(fund.address, 100, { from: initHolder });
 
     await fund.createGrant(
+      grantId,
       "test grant",
       100,
       org.logs[0].args.newAddress,
@@ -269,11 +388,11 @@ describe("Fund", function () {
       { from: manager }
     );
 
-    const grant = await fund.grants(0);
+    const grant = await fund.pendingGrants(grantId);
     
-    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, { from: admin });
+    const finalizeGrantReceipt = await fund.finalizeGrant(grantId, this.token.address, { from: admin });
     expectEvent(finalizeGrantReceipt, "GrantFinalized",
-      { grant: [
+      { grantId, grant: [
         grant.description,
         "100",
         grant.recipient,
@@ -292,11 +411,12 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    const org = await orgFactory.createOrg(ein, {from: accountant});
 
     await this.token.transfer(fund.address, 100, { from: initHolder });
 
     await fund.createGrant(
+      grantId,
       "test grant",
       100,
       org.logs[0].args.newAddress,
@@ -304,17 +424,19 @@ describe("Fund", function () {
       { from: manager }
     );
     
-    const grant = await fund.grants(0);
+    const grant = await fund.pendingGrants(grantId);
     
-    const finalizeGrantReceipt = await fund.finalizeGrant(0, this.token.address, { from: accountant });
-    expectEvent(finalizeGrantReceipt, "GrantFinalized",
-      { grant: [
+    const finalizeGrantReceipt = await fund.finalizeGrant(grantId, this.token.address, { from: accountant });
+    const finalizeEventData = {
+      grantId,
+      grant: [
         grant.description,
         "100",
         grant.recipient,
         true,
-      ]}
-    );
+      ]
+    }
+    expectEvent(finalizeGrantReceipt, "GrantFinalized", finalizeEventData);
 
     const orgBalance = await this.token.balanceOf(org.logs[0].args.newAddress);
     const adminBalance = await this.token.balanceOf(admin);
@@ -323,15 +445,16 @@ describe("Fund", function () {
   });
 
   it("denies USER to finalize grant", async function () {
-    const fund = await Fund.new(manager, this.endaomentAdmin.address, { from: admin });
+    const fund = this.fund;
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    const org = await orgFactory.createOrg(ein, {from: accountant});
 
     await this.token.transfer(fund.address, 100, { from: initHolder });
 
     await fund.createGrant(
+      grantId,
       "test grant",
       100,
       org.logs[0].args.newAddress,
@@ -339,7 +462,10 @@ describe("Fund", function () {
       { from: manager }
     );
 
-    await expectRevert.unspecified(fund.finalizeGrant(0, this.token.address, { from: manager }));
+    await expectRevert(
+      fund.finalizeGrant(grantId, this.token.address, { from: manager }),
+      "Administratable: only ACCOUNTANT can access"
+    );
   });
 
   it("blocks finalizing grant with invalid inputs", async function () {
@@ -347,24 +473,23 @@ describe("Fund", function () {
     const orgFactory = await OrgFactory.new(this.endaomentAdmin.address, { from: admin });
     await this.endaomentAdmin.setRole(5, orgFactory.address, { from: admin });
 
-    const org = await orgFactory.createOrg(123456789, {from: accountant});
+    const org = await orgFactory.createOrg(ein, {from: accountant});
     await this.token.transfer(fund.address, 100, { from: initHolder });
     await fund.createGrant(
+      grantId,
       "test grant",
       100,
       org.logs[0].args.newAddress,
       orgFactory.address,
       { from: manager }
     );
-
-    const grant = await fund.grants(0);
-    
+    const badUuid = uuidv4();
     await expectRevert(
-      fund.finalizeGrant(1, this.token.address, { from: admin }),
-      "Fund: Index out of range"
+      fund.finalizeGrant(badUuid, this.token.address, { from: admin }),
+      "Fund: Grant does not exist"
     );
     await expectRevert(
-      fund.finalizeGrant( 0, constants.ZERO_ADDRESS, { from: admin } ),
+      fund.finalizeGrant(grantId, constants.ZERO_ADDRESS, { from: admin } ),
       "Fund: Token address cannot be the zero address"
     );
   });
@@ -374,8 +499,7 @@ describe("Fund", function () {
     await this.token.transfer(fund.address, 1, { from: initHolder });
     const fundSummary = await fund.getSummary(this.token.address);
     assert(fundSummary[0].eq(new BN(1)));
-    assert(fundSummary[1].eq(new BN(0)));
-    assert.equal(fundSummary[2], await fund.manager());
+    assert.equal(fundSummary[1], await fund.manager());
   });
 
   it("does not allow zero address to be used with getSummary", async function () {
@@ -386,4 +510,5 @@ describe("Fund", function () {
       "Fund: Token address cannot be the zero address"
     );
   });
+
 });

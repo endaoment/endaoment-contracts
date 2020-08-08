@@ -15,8 +15,7 @@ import "./Fund.sol";
  * allowedOrgs.
  */
 contract FundFactory is EndaomentAdminStorage {
-  // ========== STATE VARIABLES ==========
-  Fund[] public createdFunds;
+  // ========== EVENTS ==========
   event FundCreated(address indexed newAddress);
 
   // ========== CONSTRUCTOR ==========
@@ -41,14 +40,6 @@ contract FundFactory is EndaomentAdminStorage {
   {
     require(managerAddress != address(0), "FundFactory: Manager cannot be the zero address");
     Fund newFund = new Fund(managerAddress, address(this));
-    createdFunds.push(newFund);
     emit FundCreated(address(newFund));
-  }
-
-  /**
-   * @notice Returns total number of funds created by the factory.
-   */
-  function countFunds() external view returns (uint256) {
-    return createdFunds.length;
   }
 }

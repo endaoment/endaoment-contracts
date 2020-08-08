@@ -19,24 +19,26 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
  */
 contract Org is Administratable {
   using SafeERC20 for IERC20;
-  // ========== STATE VARIABLES ==========
+
+  // ========== STRUCTS & EVENTS ==========
 
   struct Claim {
     string firstName;
     string lastName;
     string eMail;
     address desiredWallet;
-    bool filesSubmitted;
   }
+  event CashOutComplete(uint256 cashOutAmount);
+  event ClaimCreated(string claimId, Claim claim);
+  event ClaimApproved(string claimId, Claim claim);
+  event ClaimRejected(string claimId, Claim claim);
 
+  // ========== STATE VARIABLES ==========
+  
   IFactory public orgFactoryContract;
   uint256 public taxId;
-  address public orgWallet;
-  Claim[] public claims;
-
-  event CashOutComplete(uint256 cashOutAmount);
-  event ClaimCreated(Claim claim);
-  event ClaimApproved(Claim claim);
+  mapping(string => Claim) public pendingClaims; // claim UUID to Claim
+  Claim public activeClaim;
 
   // ========== CONSTRUCTOR ==========
 
@@ -56,44 +58,75 @@ contract Org is Administratable {
 
   /**
    * @notice Create Organization Claim
+   * @param  claimId UUID representing this claim
    * @param  fName First name of Administrator
    * @param  lName Last name of Administrator
    * @param  eMail Email contact for Organization Administrator.
    * @param  orgAdminWalletAddress Wallet address of Organization's Administrator.
    */
   function claimRequest(
-    string memory fName,
-    string memory lName,
-    string memory eMail,
+    string calldata claimId,
+    string calldata fName,
+    string calldata lName,
+    string calldata eMail,
     address orgAdminWalletAddress
   ) public {
+    require(!isEqual(claimId, ""), "Org: Must provide claimId");
     require(!isEqual(fName, ""), "Org: Must provide the first name of the administrator");
     require(!isEqual(lName, ""), "Org: Must provide the last name of the administrator");
     require(!isEqual(eMail, ""), "Org: Must provide the email address of the administrator");
     require(orgAdminWalletAddress != address(0), "Org: Wallet address cannot be the zero address");
+    require(
+      pendingClaims[claimId].desiredWallet == address(0),
+      "Org: Pending Claim with Id already exists"
+    );
+
     Claim memory newClaim = Claim({
       firstName: fName,
       lastName: lName,
       eMail: eMail,
-      desiredWallet: orgAdminWalletAddress,
-      filesSubmitted: true
+      desiredWallet: orgAdminWalletAddress
     });
-    emit ClaimCreated(newClaim);
-    claims.push(newClaim);
+
+    emit ClaimCreated(claimId, newClaim);
+    pendingClaims[claimId] = newClaim;
   }
 
   /**
    * @notice Approving Organization Claim
-   * @param  index Index value of Claim.
+   * @param claimId UUID of the claim being approved
    */
-  function approveClaim(uint256 index)
+  function approveClaim(string calldata claimId)
     public
     onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
   {
-    require(index < claims.length, "Org: Index out of range");
-    Claim storage claim = claims[index];
-    emit ClaimApproved(claim);
-    orgWallet = claim.desiredWallet;
+    require(!isEqual(claimId, ""), "Fund: Must provide a claimId");
+    Claim storage claim = pendingClaims[claimId];
+    require(claim.desiredWallet != address(0),
+      "Org: claim does not exist"
+    );
+    emit ClaimApproved(claimId, claim);
+    activeClaim = claim;
+    delete pendingClaims[claimId];
+  }
+
+  /**
+   * @notice Rejecting Organization Claim
+   * @param claimId UUID of the claim being rejected
+   */
+  function rejectClaim(string calldata claimId)
+    public
+    onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
+  {
+    require(!isEqual(claimId, ""), "Fund: Must provide a claimId");
+    Claim storage claim = pendingClaims[claimId];
+    require(claim.desiredWallet != address(0),
+      "Org: claim does not exist"
+    );
+
+    emit ClaimRejected(claimId, claim);
+
+    delete pendingClaims[claimId];
   }
 
   /**
@@ -105,10 +138,13 @@ contract Org is Administratable {
     onlyAdminOrRole(orgFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
   {
     require(tokenAddress != address(0), "Org: Token address cannot be the zero address");
+    address payoutAddr = orgWallet();
+    require(payoutAddr != address(0), "Org: Cannot cashout unclaimed Org");
+
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 cashOutAmount = tokenContract.balanceOf(address(this));
 
-    tokenContract.safeTransfer(orgWallet, cashOutAmount);
+    tokenContract.safeTransfer(orgWallet(), cashOutAmount);
     emit CashOutComplete(cashOutAmount);
   }
 
@@ -117,7 +153,6 @@ contract Org is Administratable {
    * @param tokenAddress Address of desired token to query for balance
    * @return Balance of conract in token base unit of provided tokenAddress
    */
-
   function getTokenBalance(address tokenAddress) external view returns (uint256) {
     IERC20 tokenContract = IERC20(tokenAddress);
     uint256 balance = tokenContract.balanceOf(address(this));
@@ -126,10 +161,10 @@ contract Org is Administratable {
   }
 
   /**
-   * @notice Retrieves Count of Claims Made
-   * @return Length of Claims[] as uint
+   * @notice Org Wallet convenience accessor
+   * @return The wallet specified in the active, approved claim
    */
-  function getClaimsCount() external view returns (uint256) {
-    return claims.length;
+  function orgWallet() public view returns (address) {
+    return activeClaim.desiredWallet;
   }
 }
