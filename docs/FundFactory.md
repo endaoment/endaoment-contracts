@@ -5,21 +5,21 @@ instantiate new Fund contracts.
 
 
 ## Methods
-### `constructor(address adminContractAddress)` (public)
+### `constructor(address adminContractAddress)` - public
 Create new Fund Factory
 
 
 
 _Parameters:_
-- `adminContractAddress`: Address of EndaomentAdmin contract.
+ - `adminContractAddress`: Address of EndaomentAdmin contract.
 
-### `createFund(address managerAddress)` (public)
+### `createFund(address managerAddress)` - public
 Creates new Fund and emits a `FundCreated` event.
 
 
 
 _Parameters:_
-- `managerAddress`: The address of the Fund's Primary Advisor
+ - `managerAddress`: The address of the Fund's Primary Advisor
 
 
 ## Events

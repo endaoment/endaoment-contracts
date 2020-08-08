@@ -36,7 +36,7 @@ Checks that the caller is either a provided adress, admin or role.
 
 _Parameters:_
 
-- `allowedAddress`: An exempt address provided that shall be allowed to proceed.  
+- `allowedAddress`: An exempt address provided that shall be allowed to proceed.
 
 
 
@@ -49,14 +49,13 @@ roles are ADMIN (6), ACCOUNTANT (2), REVIEWER (3), FUND_FACTORY (4) and ORG_FACT
 
 
 ## Methods
-### `isEqual(string s1, string s2) → bool` (internal)
+### `isEqual(string s1, string s2) → bool` - internal
 Returns true if two strings are equal, false otherwise
 
 
 
 _Parameters:_
-- `s1`: First string to compare
-
-- `s2`: Second string to compare
+ - `s1`: First string to compare
+ - `s2`: Second string to compare
 
 

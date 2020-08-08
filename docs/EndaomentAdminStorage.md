@@ -6,13 +6,13 @@ subsequently deployed Org and Fund contracts.
 
 
 ## Methods
-### `updateEndaomentAdmin(address newAdmin)` (public)
+### `updateEndaomentAdmin(address newAdmin)` - public
 Updates address of the endaomentAdmin contract and emits `EndaomentAdminChanged` event.
 
 
 
 _Parameters:_
-- `newAdmin`: New address of the endaomentAdmin contract
+ - `newAdmin`: New address of the endaomentAdmin contract
 
 
 ## Events

@@ -4,7 +4,8 @@
 
 
 ## Methods
-### `endaomentAdmin() → address` (external)
+### `endaomentAdmin() → address` - external
+
 
 
 
