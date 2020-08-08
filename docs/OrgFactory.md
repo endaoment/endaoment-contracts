@@ -6,47 +6,32 @@ allowedOrgs.
 
 
 
-### `constructor(address adminContractAddress)` (public)
-Create new Org Factory
+## Methods
+### `constructor(address adminContractAddress)` - public
+Creates new Org Factory and emits a `EndaomentAdminChanged` event
 
 
 
 _Parameters:_
-- `adminContractAddress`: Address of EndaomentAdmin contract.
+ - `adminContractAddress`: Address of EndaomentAdmin contract.
 
-### `createOrg(uint256 ein, address adminContractAddress)` (public)
- Create new Org Contract
-
-
-
-_Parameters:_
-- `ein`: The U.S. Tax Identification Number for the Organization
-
-- `adminContractAddress`: Contract address for Endaoment Admin
-
-### `countDeployedOrgs() → uint256` (external)
-Returns total number Org contracts created by the factory.
-
-
-
-
-### `getDeployedOrg(uint256 index) → address` (external)
-Returns address of given index postiion in deployedOrgs[].
+### `createOrg(uint256 ein)` - public
+Creates new Org Contract and emits a `OrgCreated` event
 
 
 
 _Parameters:_
-- `index`: Array position of requested org
+ - `ein`: The U.S. Tax Identification Number for the Organization
 
-### `getAllowedOrg(address org) → bool` (external)
-Returns boolean if provided address is present in allowedOrgs[].
+### `toggleOrg(address orgAddress)` - public
+Toggles whether Org is allowed and emits a `OrgStatusChanged` event
 
 
 
 _Parameters:_
-- `org`: address of the organization contract requested.
+ - `orgAddress`: THe address of the Org contract.
 
 
-### `OrgCreated(address newAddress)`
-
-
+## Events
+- `OrgCreated(address newAddress)`
+- `OrgStatusChanged(address orgAddress, bool isAllowed)`

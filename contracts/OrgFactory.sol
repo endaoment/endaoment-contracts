@@ -21,12 +21,12 @@ contract OrgFactory is EndaomentAdminStorage {
   event OrgStatusChanged(address indexed orgAddress, bool indexed isAllowed);
 
   // ========== STATE VARIABLES==========
-  
+
   mapping(address => bool) public allowedOrgs;
 
   // ========== CONSTRUCTOR ==========
   /**
-   * @notice Create new Org Factory
+   * @notice Creates new Org Factory and emits a `EndaomentAdminChanged` event
    * @param adminContractAddress Address of EndaomentAdmin contract.
    */
   constructor(address adminContractAddress) public {
@@ -37,7 +37,7 @@ contract OrgFactory is EndaomentAdminStorage {
 
   // ========== Org Creation & Management ==========
   /**
-   * @notice  Create new Org Contract
+   * @notice Creates new Org Contract and emits a `OrgCreated` event
    * @param ein The U.S. Tax Identification Number for the Organization
    */
   function createOrg(uint256 ein)
@@ -50,18 +50,15 @@ contract OrgFactory is EndaomentAdminStorage {
   }
 
   /**
-   * @notice  Toggle whether Org is allowed
+   * @notice Toggles whether Org is allowed and emits a `OrgStatusChanged` event
    * @param orgAddress THe address of the Org contract.
    */
   function toggleOrg(address orgAddress)
     public
     onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.REVIEWER)
-    {
-      require(
-        Org(orgAddress).taxId() != 0,
-        "OrgFactory: Not a valid org."
-      );
-      allowedOrgs[orgAddress] = !allowedOrgs[orgAddress];
-      emit OrgStatusChanged(orgAddress, allowedOrgs[orgAddress]);
-    }
+  {
+    require(Org(orgAddress).taxId() != 0, "OrgFactory: Not a valid org.");
+    allowedOrgs[orgAddress] = !allowedOrgs[orgAddress];
+    emit OrgStatusChanged(orgAddress, allowedOrgs[orgAddress]);
+  }
 }

@@ -7,89 +7,87 @@ a SafeMath transfer of a 1% fee to the EndaomentAdmin and the remainder to the
 recipient Org contract.
 
 
-### `restricted()`
-Restricts method access to fund's manager
 
-
-
-
-### `constructor(address fundManager, address adminContractAddress)` (public)
+## Methods
+### `constructor(address fundManager, address fundFactory)` - public
 Create new Fund
 
 
 
 _Parameters:_
-- `fundManager`: Address of the Fund's Primary Advisor
+ - `fundManager`: Address of the Fund's Primary Advisor
+ - `fundFactory`: Address of the Factory contract.
 
-- `adminContractAddress`: Address of the EndaomentAdmin contract.
-
-### `changeManager(address newManager, address adminContractAddress)` (public)
-Change Fund Primary Advisor
+### `changeManager(address newManager)` - public
+Changes Fund Primary Advisor and emits a `ManagerChanged` event
 
 
 
 _Parameters:_
-- `newManager`: The address of the new PrimaryAdvisor.
+ - `newManager`: The address of the new PrimaryAdvisor.
 
-- `adminContractAddress`: Address of the EndaomentAdmin contract.
-
-### `checkRecipient(address recipient, address orgFactoryContractAddress) → bool` (public)
+### `checkRecipient(address recipient, address orgFactoryContractAddress) → bool` - public
 Checks recipient of a Grant is an address created by the OrgFactory
 
 
 
 _Parameters:_
-- `recipient`: The address of the Grant recipient.
+ - `recipient`: The address of the Grant recipient.
+ - `orgFactoryContractAddress`: Address of the OrgFactory contract.
 
-- `orgFactoryContractAddress`: Address of the OrgFactory contract.
 
-### `getSummary(address tokenAddress) → uint256, uint256, address` (external)
+### `getSummary(address tokenAddress) → uint256, address` - external
 Returns summary of details about the fund [tokenBalance, number of grants, managerAddress].
 
 
 
 _Parameters:_
-- `tokenAddress`: The token address of the stablecoin being used by the web-server.
-
-### `createGrant(string description, uint256 value, address recipient, address orgFactoryContractAddress)` (public)
-Create new Grant Recommendation
+ - `tokenAddress`: The token address of the ERC20 being used by the web-server.
 
 
-
-_Parameters:_
-- `description`: The address of the Owner.
-
-- `value`: The value of the grant in base units.
-
-- `recipient`: The address of the recieving organization's contract.
-
-- `orgFactoryContractAddress`: Address of the orgFactory Contract.
-
-### `finalizeGrant(uint256 index, address tokenAddress, address adminContractAddress)` (public)
-Approve Grant Recommendation
+### `createGrant(string grantId, string description, uint256 value, address recipient)` - public
+Creates new Grant Recommendation and emits a `GrantCreated` event.
 
 
 
 _Parameters:_
-- `index`: This Grant's index position
+ - `grantId`: UUID representing this grant
+ - `description`: The address of the Owner.
+ - `value`: The value of the grant in base units.
+ - `recipient`: The address of the recieving organization's contract.
 
-- `tokenAddress`: The stablecoin's token address.
-
-- `adminContractAddress`: Address of the EndaomentAdmin contract.
-
-### `getGrantsCount() → uint256` (external)
-Returns total number of grants submitted to the fund.
-
+### `updateGrant(string grantId, string description, uint256 value, address recipient)` - public
+Updates Grant Recommendation and emits a `GrantUpdated` event.
 
 
 
+_Parameters:_
+ - `grantId`: UUID representing this grant
+ - `description`: The address of the Owner.
+ - `value`: The value of the grant in base units.
+ - `recipient`: The address of the recieving organization's contract.
 
-### `ManagerChanged(address newManager)`
+### `rejectGrant(string grantId)` - public
+Rejects Grant Recommendation and emits a `GrantRejected` event.
 
 
-### `GrantCreated(struct Fund.Grant grant)`
+
+_Parameters:_
+ - `grantId`: UUID representing this grant
+
+### `finalizeGrant(string grantId, address tokenAddress)` - public
+Approves Grant Recommendation and emits a `GrantFinalized` event.
 
 
-### `GrantFinalized(struct Fund.Grant grant)`
+
+_Parameters:_
+ - `grantId`: UUID of the grant being finalized
+ - `tokenAddress`: The ERC20 token address of the token prescribed by the web-server.
 
 
+## Events
+- `ManagerChanged(address newManager)`
+- `GrantCreated(string grantId, struct Fund.Grant grant)`
+- `GrantUpdated(string grantId, struct Fund.Grant grant)`
+- `GrantRejected(string grantId)`
+- `GrantFinalized(string grantId, struct Fund.Grant grant)`
