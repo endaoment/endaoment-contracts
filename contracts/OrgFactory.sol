@@ -55,7 +55,7 @@ contract OrgFactory is EndaomentAdminStorage {
    */
   function toggleOrg(address orgAddress)
     public
-    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(endaomentAdmin, IEndaomentAdmin.Role.REVIEWER)
     {
       require(
         Org(orgAddress).taxId() != 0,
