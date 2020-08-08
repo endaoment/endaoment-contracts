@@ -50,6 +50,9 @@ The `EndaomentAdmin` contract creates the Roles necessary to execute the oversig
 
 Several "getter" functions are also available to allow for querying of current role status or holder. 
 
+### `EndaomentAdminStorage.sol`
+To prevent an attacker from deploying their own EndaomentAdmin contract and representing themselves as the EndaomentAdmin, both `FundFactory` and `OrgFactory` use `EndaomentAdminStorage` to allow `Fund` and `Org` contracts to keep a record of the current and correct `EndaomentAdmin` contract for overseeing actions. 
+
 ### `Administratable.sol`
 Provides an interface containing key modifiers for administering the `FundFactory` and `OrgFactory` that reference the `EndaomentAdmin` contract. 
 
