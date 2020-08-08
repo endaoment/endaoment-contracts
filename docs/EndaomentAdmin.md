@@ -1,7 +1,10 @@
 ## Contract: `EndaomentAdmin.sol`
+Provides admin controls for the Endaoment contract ecosystem using
+a roles-based system. Available roles are PAUSER (1), ACCOUNTANT (2),
+REVIEWER (3), FUND_FACTORY (4), ORG_FACTORY (5), and ADMIN (6).
 
 
-
+## Modifiers
 ### `onlyAdminOr(enum IEndaomentAdmin.Role role)`
 Modifier that throws if called by any account other than the owner
 or the supplied role, or if the caller is not the owner and the role in
@@ -11,10 +14,10 @@ question is paused.
 
 _Parameters:_
 
-- `role`: The role to require unless the caller is the owner. Permitted
-roles are bot commander (0) and pauser (1).
+- `role`: The role to require unless the caller is the owner.
 
 
+## Methods
 ### `setRole(enum IEndaomentAdmin.Role role, address account)` (public)
 Set a new account on a given role and emit a `RoleModified` event
 if the role holder has changed. Only the owner may call this function.
@@ -84,6 +87,8 @@ given role.
 
 
 
+_Parameters:_
+- `role`: The desired role to fetch the current address of.
 
 
 

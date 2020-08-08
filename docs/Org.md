@@ -6,7 +6,8 @@ the organization can directly receive grant awards from Endaoment Funds.
 
 
 
-### `constructor(uint256 ein, address adminContractAddress)` (public)
+## Methods
+### `constructor(uint256 ein, address orgFactory)` (public)
 Create new Organization Contract
 
 
@@ -14,14 +15,16 @@ Create new Organization Contract
 _Parameters:_
 - `ein`: The U.S. Tax Identification Number for the Organization
 
-- `adminContractAddress`: Contract Address for Endaoment Admin
+- `orgFactory`: Address of the Factory contract.
 
-### `claimRequest(string fName, string lName, string eMail, address orgAdminWalletAddress)` (public)
-Create Organization Claim
+### `claimRequest(string claimId, string fName, string lName, string eMail, address orgAdminWalletAddress)` (public)
+Creates Organization Claim and emits a `ClaimCreated` event
 
 
 
 _Parameters:_
+- `claimId`: UUID representing this claim
+
 - `fName`: First name of Administrator
 
 - `lName`: Last name of Administrator
@@ -30,25 +33,29 @@ _Parameters:_
 
 - `orgAdminWalletAddress`: Wallet address of Organization's Administrator.
 
-### `approveClaim(uint256 index, address adminContractAddress)` (public)
-Approving Organization Claim
+### `approveClaim(string claimId)` (public)
+Approves an Organization Claim and emits a `ClaimApproved` event
 
 
 
 _Parameters:_
-- `index`: Index value of Claim.
+- `claimId`: UUID of the claim being approved
 
-- `adminContractAddress`: Contract Address for Endaoment Admin
-
-### `cashOutOrg(address tokenAddress, address adminContractAddress)` (public)
-Cashing out Organization Contract
+### `rejectClaim(string claimId)` (public)
+Rejects an Organization Claim and emits a 'ClaimRejected` event
 
 
 
 _Parameters:_
-- `tokenAddress`: Stablecoin address of desired token withdrawal
+- `claimId`: UUID of the claim being rejected
 
-- `adminContractAddress`: Contract Address for Endaoment Admin
+### `cashOutOrg(address tokenAddress)` (public)
+Cashes out Organization Contract and emits a `CashOutComplete` event
+
+
+
+_Parameters:_
+- `tokenAddress`: ERC20 address of desired token withdrawal
 
 ### `getTokenBalance(address tokenAddress) → uint256` (external)
 Retrieves Token Balance of Org Contract
@@ -59,20 +66,16 @@ _Parameters:_
 - `tokenAddress`: Address of desired token to query for balance
 
 
-### `getClaimsCount() → uint256` (external)
-Retrieves Count of Claims Made
+### `orgWallet() → address` (public)
+Org Wallet convenience accessor
 
 
 
 
 
 
-### `CashOutComplete(uint256 cashOutAmount)`
-
-
-### `ClaimCreated(struct Org.Claim claim)`
-
-
-### `ClaimApproved(struct Org.Claim claim)`
-
-
+## Events
+- `CashOutComplete(uint256 cashOutAmount)`
+- `ClaimCreated(string claimId, struct Org.Claim claim)`
+- `ClaimApproved(string claimId, struct Org.Claim claim)`
+- `ClaimRejected(string claimId, struct Org.Claim claim)`

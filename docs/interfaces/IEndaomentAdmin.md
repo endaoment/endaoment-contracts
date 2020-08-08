@@ -3,6 +3,7 @@
 Interface of the EndaomentAdmin contract
 
 
+## Methods
 ### `setRole(enum IEndaomentAdmin.Role role, address account)` (external)
 
 
@@ -32,12 +33,7 @@ Interface of the EndaomentAdmin contract
 
 
 
-### `RoleModified(enum IEndaomentAdmin.Role role, address account)`
-
-
-### `RolePaused(enum IEndaomentAdmin.Role role)`
-
-
-### `RoleUnpaused(enum IEndaomentAdmin.Role role)`
-
-
+## Events
+- `RoleModified(enum IEndaomentAdmin.Role role, address account)`
+- `RolePaused(enum IEndaomentAdmin.Role role)`
+- `RoleUnpaused(enum IEndaomentAdmin.Role role)`

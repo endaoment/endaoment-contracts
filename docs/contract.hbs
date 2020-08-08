@@ -3,7 +3,7 @@
 {{{natspec.devdoc}}}
 
 {{#if ownModifiers}}
-##Modifiers
+## Modifiers
 {{/if}}
 {{#each ownModifiers}}
 ### `{{name}}({{args}})`
@@ -21,7 +21,7 @@
 {{/each}}
 
 {{#if ownFunctions}}
-##Methods
+## Methods
 {{/if}}
 {{#each ownFunctions}}
 ### `{{name}}({{args}}){{#if outputs}} → {{outputs}}{{/if}}` ({{visibility}})
@@ -38,19 +38,12 @@
 {{/each}}
 
 {{#if ownEvents}}
-##Events
+## Events
 {{/if}}
 {{#each ownEvents}}
-### `{{name}}({{args}})`
+- `{{name}}({{args}})`
 {{#if natspec.userdoc}}
 {{{natspec.userdoc}}}
 
 {{/if}}
-
-{{#if natspec.params}}_Parameters:_{{/if}}
-{{#each natspec.params}}
-
-- `{{param}}`: {{description}}
-
-{{/each}}
 {{/each}}

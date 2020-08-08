@@ -43,6 +43,12 @@ contract Administratable {
     _;
   }
 
+  /**
+   * @notice _onlyAdminOrRole checks that the caller is either the Admin or the provided role.
+   * @param adminContractAddress supplied EndaomentAdmin address
+   * @param role The role to require unless the caller is the owner. Permitted
+   * roles are ADMIN (6), ACCOUNTANT (2), REVIEWER (3), FUND_FACTORY (4) and ORG_FACTORY(5).
+   */
   function _onlyAdminOrRole(address adminContractAddress, IEndaomentAdmin.Role role) private view {
     require(
       adminContractAddress != address(0),
@@ -84,11 +90,12 @@ contract Administratable {
   }
 
   /**
-   @notice Checks that the caller is either a provided adress, admin or role.
-   @param allowedAddress An exempt address provided that shall be allowed to proceed.  
-   @param adminContractAddress The EndaomentAdmin contract address.
-   @param role The desired IEndaomentAdmin.Role to check against.
-    */
+   * @notice Checks that the caller is either a provided adress, admin or role.
+   * @param allowedAddress An exempt address provided that shall be allowed to proceed.
+   * @param adminContractAddress The EndaomentAdmin contract address.
+   * @param role The desired IEndaomentAdmin.Role to check against. Permitted
+   * roles are ADMIN (6), ACCOUNTANT (2), REVIEWER (3), FUND_FACTORY (4) and ORG_FACTORY(5).
+   */
   modifier onlyAddressOrAdminOrRole(
     address allowedAddress,
     address adminContractAddress,
