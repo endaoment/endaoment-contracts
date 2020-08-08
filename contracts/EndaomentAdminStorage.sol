@@ -17,7 +17,7 @@ contract EndaomentAdminStorage is Administratable {
   event EndaomentAdminChanged(address indexed oldAddress, address indexed newAddress);
 
   /**
-   * @notice Update address of the endaomentAdmin contract
+   * @notice Updates address of the endaomentAdmin contract and emits `EndaomentAdminChanged` event.
    * @param newAdmin New address of the endaomentAdmin contract
    */
   function updateEndaomentAdmin(address newAdmin) public onlyAdmin(endaomentAdmin) {
