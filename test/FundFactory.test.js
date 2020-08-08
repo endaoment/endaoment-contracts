@@ -73,24 +73,4 @@ describe("FundFactory", function () {
       "FundFactory: Manager cannot be the zero address"
     );
   });
-
-  it("returns count of total funds", async function () {
-    const before_count = await this.fundFactory.countFunds();
-    assert.equal(before_count, 0);
-
-    await this.fundFactory.createFund(manager, {
-      from: admin,
-    });
-
-    const after_count = await this.fundFactory.countFunds();
-    assert.equal(after_count, 1);
-  });
-
-  it("gets fund address via index", async function () {
-    const fund = await this.fundFactory.createFund(manager, {from: accountant});
-
-    const getFundAddress = await this.fundFactory.createdFunds(0);
-
-    assert.equal(fund.logs[0].args.newAddress, getFundAddress);
-  });
 });
