@@ -30,22 +30,6 @@ Returns total number Org contracts created by the factory.
 
 
 
-### `getDeployedOrg(uint256 index) → address` (external)
-Returns address of given index postiion in deployedOrgs[].
-
-
-
-_Parameters:_
-- `index`: Array position of requested org
-
-### `getAllowedOrg(address org) → bool` (external)
-Returns boolean if provided address is present in allowedOrgs[].
-
-
-
-_Parameters:_
-- `org`: address of the organization contract requested.
-
 
 ### `OrgCreated(address newAddress)`
 

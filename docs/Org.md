@@ -16,7 +16,7 @@ _Parameters:_
 
 - `adminContractAddress`: Contract Address for Endaoment Admin
 
-### `claimRequest(string fName, string lName, bool fSub, string eMail, address orgAdminAddress)` (public)
+### `claimRequest(string fName, string lName, string eMail, address orgAdminWalletAddress)` (public)
 Create Organization Claim
 
 
@@ -26,11 +26,9 @@ _Parameters:_
 
 - `lName`: Last name of Administrator
 
-- `fSub`: Information Submitted successfully.
-
 - `eMail`: Email contact for Organization Administrator.
 
-- `orgAdminAddress`: Wallet address of Organization's Administrator.
+- `orgAdminWalletAddress`: Wallet address of Organization's Administrator.
 
 ### `approveClaim(uint256 index, address adminContractAddress)` (public)
 Approving Organization Claim
@@ -42,14 +40,12 @@ _Parameters:_
 
 - `adminContractAddress`: Contract Address for Endaoment Admin
 
-### `cashOutOrg(address desiredWithdrawalAddress, address tokenAddress, address adminContractAddress)` (public)
+### `cashOutOrg(address tokenAddress, address adminContractAddress)` (public)
 Cashing out Organization Contract
 
 
 
 _Parameters:_
-- `desiredWithdrawalAddress`: Destination for withdrawal
-
 - `tokenAddress`: Stablecoin address of desired token withdrawal
 
 - `adminContractAddress`: Contract Address for Endaoment Admin
