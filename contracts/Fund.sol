@@ -171,7 +171,7 @@ contract Fund is Administratable {
       "Fund: Recipient contract was not created by the OrgFactory and is not allowed."
     );
     require(pendingGrants[grantId].recipient != address(0), "Fund: Grant does not exist.");
-    require(pendingGrants[grantId].complete == false, "Fund: Grant is already finalized.");
+    require(!pendingGrants[grantId].complete, "Fund: Grant is already finalized.");
     Grant memory replacementGrant = Grant({
       description: description,
       value: value,
@@ -196,7 +196,7 @@ contract Fund is Administratable {
   {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(pendingGrants[grantId].recipient != address(0), "Fund: Grant does not exist.");
-    require(pendingGrants[grantId].complete == false, "Fund: Grant is already finalized.");
+    require(!pendingGrants[grantId].complete, "Fund: Grant is already finalized.");
 
     delete pendingGrants[grantId];
     emit GrantRejected(grantId);
@@ -216,7 +216,7 @@ contract Fund is Administratable {
     Grant storage grant = pendingGrants[grantId];
     require(grant.recipient != address(0), "Fund: Grant does not exist");
     // Checks
-    require(grant.complete == false, "Fund: Grant is already finalized.");
+    require(!grant.complete, "Fund: Grant is already finalized.");
     // Effects
     IERC20 tokenContract = IERC20(tokenAddress);
     // Process fees:

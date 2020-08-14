@@ -57,7 +57,7 @@ To prevent an attacker from deploying their own EndaomentAdmin contract and repr
 Provides an interface containing key modifiers for administering the `FundFactory` and `OrgFactory` that reference the `EndaomentAdmin` contract. 
 
 ### `FundFactory.sol`
-Provides method for creating/deploying a new `Fund` contract. Methods are also available for retrieving the total number of Funds deployed by the factory and the address of any given Fund at a specific Index position in the list of created `Funds[]`. 
+Provides method for creating/deploying a new `Fund` contract. 
 
 ### `Fund.sol`
 Provides all methods for the administration of any specific Fund in the Endaoment ecosystem.
@@ -65,7 +65,7 @@ Provides all methods for the administration of any specific Fund in the Endaomen
 Includes a `Grants` mapping that allows for the `manager` to create a new `Grant` recommendation data struct whereby they provide a recipeint organization address to send funds from their DAF. Any new `Grant` must have a recipient that was created by decalred `OrgFactory` role in the enumerated `EndaomentAdmin`. If approved, the `amount` of tokens prescribed in the `Grant` struct is transferred to the desired recipient.  
 
 ### `OrgFactory.sol`
-Provides method for creating/deploying a new `Org` contract. Methods are also available for retrieving the total number of Orgs deployed by the factory and the address of any given Org at a specific Index position in the list of created `Orgs[]`. 
+Provides method for creating/deploying a new `Org` contract. Methods are also available for toggling an `Org` contract address to allowed/disallowed. A mappoing is present to allow individual addresses to be checked if they came from the `OrgFactory`. 
 
 ### `Org.sol`
 Provides all methods for the administration of any specific Org in the Endaoment ecosystem. 

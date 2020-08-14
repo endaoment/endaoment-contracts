@@ -90,7 +90,7 @@ contract Administratable {
   }
 
   /**
-   * @notice Checks that the caller is either a provided adress, admin or role.
+   * @notice Checks that the caller is either a provided address, admin or role.
    * @param allowedAddress An exempt address provided that shall be allowed to proceed.
    * @param adminContractAddress The EndaomentAdmin contract address.
    * @param role The desired IEndaomentAdmin.Role to check against. Permitted
