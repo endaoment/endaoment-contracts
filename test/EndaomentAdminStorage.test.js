@@ -46,7 +46,7 @@ describe("EndaomentAdminStorage", function () {
   it('prevents changing the endaomentAdmin address to the zero address', async function() {
     await expectRevert(
       this.fundFactory.updateEndaomentAdmin(constants.ZERO_ADDRESS, { from: admin }),
-      "FundFactory: New admin cannot be the zero address"
+      "EndaomentAdminStorage: New admin cannot be the zero address"
     )
   });
   
