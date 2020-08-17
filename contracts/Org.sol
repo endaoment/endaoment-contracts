@@ -7,6 +7,7 @@ import "./Administratable.sol";
 import "./interfaces/IFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 //ORG CONTRACT
 /**
@@ -17,7 +18,7 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
  * and allows for an address to submit a Claim struct to the contract whereby
  * the organization can directly receive grant awards from Endaoment Funds.
  */
-contract Org is Administratable {
+contract Org is Initializable, Administratable {
   using SafeERC20 for IERC20;
 
   // ========== STRUCTS & EVENTS ==========
@@ -44,11 +45,12 @@ contract Org is Administratable {
 
   /**
    * @notice Create new Organization Contract
+   * @dev Using initializer instead of constructor for minimal proxy support. This function
+   * can only be called once in the contract's lifetime
    * @param ein The U.S. Tax Identification Number for the Organization
    * @param orgFactory Address of the Factory contract.
    */
-  constructor(uint256 ein, address orgFactory) public {
-    require(ein >= 10000000 && ein <= 999999999, "Org: Must provide a valid EIN");
+  function initializeOrg(uint256 ein, address orgFactory) public initializer {
     require(orgFactory != address(0), "Org: Factory cannot be null address.");
     taxId = ein;
     orgFactoryContract = IFactory(orgFactory);
