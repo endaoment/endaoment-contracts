@@ -6,7 +6,7 @@ contract ProxyFactory {
    * @dev This function enables deployment of EIP-1167 minimal proxies. The code below
    * was copied from the OpenZeppelin ProxyFactory.sol contract, as there is currently
    * no package that has a version compatible with Solidity ^0.6.0. At the time of writing
-   * copy/pasting the file in this manner is considered the best practive for ^0.6.0:
+   * copy/pasting the file in this manner is considered the best practice for ^0.6.0:
    *   https://forum.openzeppelin.com/t/best-practice-for-using-proxyfactory-sol-in-a-solidity-0-6-project-deploying-minimal-proxies/3478
    *
    * EIP-1167 references:
