@@ -58,14 +58,6 @@ describe("Fund", function () {
     assert.isDefined(fund.logs[0].args.newAddress);
   });
 
-  it("denies invalid admin contract to construct fund contract", async function () {
-    await expectRevert.unspecified(
-      Fund.new(constants.ZERO_ADDRESS, this.endaomentAdmin.address, {
-        from: admin,
-      })
-    );
-  });
-
   it("creates funds with correct manager", async function () {
     const fundContract = await Fund.at(this.fund.address);
     const fundManager = await fundContract.manager();

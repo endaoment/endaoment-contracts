@@ -7,6 +7,7 @@ import "./Administratable.sol";
 import "./OrgFactory.sol";
 import "./interfaces/IFactory.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 // FUND CONTRACT
 /**
@@ -19,7 +20,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
  * a SafeMath transfer of a 1% fee to the EndaomentAdmin and the remainder to the
  * recipient Org contract.
  */
-contract Fund is Administratable {
+contract Fund is Initializable, Administratable {
   using SafeMath for uint256;
   using SafeERC20 for IERC20;
 
@@ -47,10 +48,12 @@ contract Fund is Administratable {
   // ========== CONSTRUCTOR ==========
   /**
    * @notice Create new Fund
+   * @dev Using initializer instead of constructor for minimal proxy support. This function
+   * can only be called once in the contract's lifetime
    * @param fundManager Address of the Fund's Primary Advisor
    * @param fundFactory Address of the Factory contract.
    */
-  constructor(address fundManager, address fundFactory) public {
+  function initializeFund(address fundManager, address fundFactory) public initializer {
     require(fundManager != address(0), "Fund: Creator cannot be null address.");
     require(fundFactory != address(0), "Fund: Factory cannot be null address.");
     manager = fundManager;
