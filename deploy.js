@@ -5,7 +5,7 @@ const EndaomentAdmin = require("./build/contracts/EndaomentAdmin.json");
 const OrgFactory = require("./build/contracts/OrgFactory.json");
 const FundFactory = require("./build/contracts/FundFactory.json");
 
-const mnemonic = process.env.ADMIN_MNEMONIC;
+const mnemonic = process.env.DEPLOYER_MNEMONIC;
 const infuraKey = process.env.INFURA_KEY;
 const infuraPrefix = process.env.INFURA_PREFIX;
 const admin = process.env.ADMIN_ADDRESS;
@@ -43,7 +43,7 @@ const deploy = async () => {
 
   //Set wallet address roles
   console.log("Setting wallet address roles...");
-  const adminReciept = await attemptRoleSet(0, admin, endaomentAdmin, accounts[0])
+  const adminReciept = await attemptRoleSet(6, admin, endaomentAdmin, accounts[0])
   console.log("EndaomentAdmin.Role.ADMIN set to:", adminReciept.events.RoleModified.returnValues.account);
 
   const pauserReceipt = await attemptRoleSet(1, pauser, endaomentAdmin, accounts[0])
