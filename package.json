@@ -7,7 +7,7 @@
     "@nomiclabs/buidler-truffle5": "^1.1.2",
     "@nomiclabs/buidler-web3": "^1.1.2",
     "@openzeppelin/contracts": "^3.0.2",
-    "@truffle/hdwallet-provider": "^1.0.35",
+    "@truffle/hdwallet-provider": "^1.0.41-1",
     "bip39": "^3.0.2",
     "dotenv": "^8.2.0",
     "fs-extra": "^7.0.1",
@@ -18,8 +18,9 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "test": "npm run build && mocha --exit --recursive test --timeout 5000",
+    "test": "npm run build:optimized && mocha --exit --recursive test --timeout 5000",
     "build": "oz compile",
+    "build:optimized": "oz compile --solc-version 0.6.12 --optimizer-runs 999999",
     "coverage": "buidler coverage --network coverage",
     "lint": "npx solhint **/*.sol",
     "prettier": "prettier --write **/*.sol"
