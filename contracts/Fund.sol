@@ -212,7 +212,7 @@ contract Fund is Initializable, Administratable {
    */
   function finalizeGrant(string calldata grantId, address tokenAddress)
     public
-    onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.ACCOUNTANT)
+    onlyAdminOrRole(fundFactoryContract.endaomentAdmin(), IEndaomentAdmin.Role.REVIEWER)
   {
     require(!isEqual(grantId, ""), "Fund: Must provide a grantId");
     require(tokenAddress != address(0), "Fund: Token address cannot be the zero address");
