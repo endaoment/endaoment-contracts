@@ -1,791 +1,825 @@
 APPROVED TOKENS:
 9/11 Batch
 ETH, WETH, DAI, USDC, MKR, HEX, DAI, SNX, PNK, sETH, UBT, LINK, BAT, WBTC, REP, KNC, RPL, NMR, ANJ, sUSD, imBTC, CNCC, WETH, LEND, TKN, ANT, BAND, JRT, XIO, UMA, TUSD, ZRX, REN, CBIX7, LRC, GNO, eINV, ESH, DZAR, TUSD, sETH, SPANK, BUIDL, cDAI, CEL, RLC, BNT, RING, MLN, RCN, NEXO, AMPL, HXY, BLT, DATA, SNT, SNX, AUC, RDN, GEN, DIP, MANA, FUN, XCHF, OXT, LPT, HOT, DGX, SNX, cDAI, DGD, RSR, LOOM, ENJ, FOAM, sUSD, PAXG, TMV, GRID, XOR, AMN, SHIP, CMRA, SHUF, FXC, CMME, 0xBTC, DXD, pBTC, ULT, CHAI, RAISE, STA, VETH, AST, STAKE, LQD, SOCKS, PAN, aDAI, GST2, MET, MCX, VXV, MI, COT, ISLA, SNX, SALT, KEY, STORJ, TNT, TRST, DONUT, HEDG, MATIC, OCEAN, MI, SNX, 1UP, USDx, PYRO, LEV, EBASE, ocDai, DRGN, C20, FTX, ENG, iDAI, cUSDC, CBI, FRM
-
 {
-  "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-  "tokenName": "Dai Stablecoin",
-  "tokenSymbol": "DAI",
-  "tradeVolumeUSD": "242964184.5135880964908579025904251"
-},
-{
-  "tokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-  "tokenName": "USD//C",
-  "tokenSymbol": "USDC",
-  "tradeVolumeUSD": "210532582.440228797066759962921"
-},
-{
-  "tokenAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
-  "tokenName": "Maker",
-  "tokenSymbol": "MKR",
-  "tradeVolumeUSD": "205997218.9021477018210749272859488"
-},
-{
-  "tokenAddress": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
-  "tokenName": "HEX",
-  "tokenSymbol": "HEX",
-  "tradeVolumeUSD": "187474396.5851851139647756889660794"
-},
-{
-  "tokenAddress": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
-  "tokenName": "Dai Stablecoin v1.0",
-  "tokenSymbol": "DAI",
-  "tradeVolumeUSD": "159870148.5585428848646807271396127"
-},
-{
-  "tokenAddress": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
-  "tokenName": "Synthetix Network Token",
-  "tokenSymbol": "SNX",
-  "tradeVolumeUSD": "81649252.13892506517579870789118395"
-},
-{
-  "tokenAddress": "0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d",
-  "tokenName": "Pinakion",
-  "tokenSymbol": "PNK",
-  "tradeVolumeUSD": "52409406.15153880059869427643033398"
-},
-{
-  "tokenAddress": "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb",
-  "tokenName": "Synth sETH",
-  "tokenSymbol": "sETH",
-  "tradeVolumeUSD": "44294439.084507860190438809257979"
-},
-{
-  "tokenAddress": "0x8400d94a5cb0fa0d041a3788e395285d61c9ee5e",
-  "tokenName": "UniBright",
-  "tokenSymbol": "UBT",
-  "tradeVolumeUSD": "34163595.72382772347857611274904998"
-},
-{
-  "tokenAddress": "0x514910771af9ca656af840dff83e8264ecf986ca",
-  "tokenName": "ChainLink Token",
-  "tokenSymbol": "LINK",
-  "tradeVolumeUSD": "31609428.91770517285004187751151184"
-},
-{
-  "tokenAddress": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-  "tokenName": "Basic Attention Token",
-  "tokenSymbol": "BAT",
-  "tradeVolumeUSD": "31601767.02619562270217918279248165"
-},
-{
-  "tokenAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-  "tokenName": "Wrapped BTC",
-  "tokenSymbol": "WBTC",
-  "tradeVolumeUSD": "29623979.32751444676949113612839064"
-},
-{
-  "tokenAddress": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
-  "tokenName": "Reputation",
-  "tokenSymbol": "REP",
-  "tradeVolumeUSD": "25635411.5310087911013308239296206"
-},
-{
-  "tokenAddress": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
-  "tokenName": "Kyber Network Crystal",
-  "tokenSymbol": "KNC",
-  "tradeVolumeUSD": "18505246.01233947217756848111245173"
-},
-{
-  "tokenAddress": "0xb4efd85c19999d84251304bda99e90b92300bd93",
-  "tokenName": "Rocket Pool",
-  "tokenSymbol": "RPL",
-  "tradeVolumeUSD": "16986228.96464942500502577752385377"
-},
-{
-  "tokenAddress": "0x1776e1f26f98b1a5df9cd347953a26dd3cb46671",
-  "tokenName": "Numeraire",
-  "tokenSymbol": "NMR",
-  "tradeVolumeUSD": "13485334.74216575889854930385340162"
-},
-{
-  "tokenAddress": "0xcd62b1c403fa761baadfc74c525ce2b51780b184",
-  "tokenName": "Aragon Network Juror",
-  "tokenSymbol": "ANJ",
-  "tradeVolumeUSD": "13484240.05779625406592513268348039"
-},
-{
-  "tokenAddress": "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
-  "tokenName": "Synth sUSD",
-  "tokenSymbol": "sUSD",
-  "tradeVolumeUSD": "11586744.38374123045197833497408558"
-},
-{
-  "tokenAddress": "0x3212b29e33587a00fb1c83346f5dbfa69a458923",
-  "tokenName": "The Tokenized Bitcoin",
-  "tokenSymbol": "imBTC",
-  "tradeVolumeUSD": "11317938.62338470365399010602087382"
-},
-{
-  "tokenAddress": "0xbe15c4ebb73a67ddd94b83b237d2bdde5a5079ba",
-  "tokenName": "Complete New Commerce Chain",
-  "tokenSymbol": "CNCC",
-  "tradeVolumeUSD": "10102337.86316102200927475118798892"
-},
-{
-  "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  "tokenName": "Wrapped Ether",
-  "tokenSymbol": "WETH",
-  "tradeVolumeUSD": "9939533.591733399965128792755087461"
-},
-{
-  "tokenAddress": "0x80fb784b7ed66730e8b1dbd9820afd29931aab03",
-  "tokenName": "EthLend Token",
-  "tokenSymbol": "LEND",
-  "tradeVolumeUSD": "9544246.434684193073489234852106361"
-},
-{
-  "tokenAddress": "0xaaaf91d9b90df800df4f55c205fd6989c977e73a",
-  "tokenName": "Monolith TKN",
-  "tokenSymbol": "TKN",
-  "tradeVolumeUSD": "8977457.378137827730078573321300492"
-},
-{
-  "tokenAddress": "0x960b236a07cf122663c4303350609a66a7b288c0",
-  "tokenName": "Aragon Network Token",
-  "tokenSymbol": "ANT",
-  "tradeVolumeUSD": "8916679.640548884431432807405818784"
-},
-{
-  "tokenAddress": "0xba11d00c5f74255f56a5e366f4f77f5a186d7f55",
-  "tokenName": "BandToken",
-  "tokenSymbol": "BAND",
-  "tradeVolumeUSD": "8838930.831729236017016916484909102"
-},
-{
-  "tokenAddress": "0x8a9c67fee641579deba04928c4bc45f66e26343a",
-  "tokenName": "Jarvis Reward Token",
-  "tokenSymbol": "JRT",
-  "tradeVolumeUSD": "8048320.861005041264027217137271934"
-},
-{
-  "tokenAddress": "0x0f7f961648ae6db43c75663ac7e5414eb79b5704",
-  "tokenName": "XIO Network",
-  "tokenSymbol": "XIO",
-  "tradeVolumeUSD": "7369210.694139006615698457685206485"
-},
-{
-  "tokenAddress": "0x04fa0d235c4abf4bcf4787af4cf447de572ef828",
-  "tokenName": "UMA Voting Token v1",
-  "tokenSymbol": "UMA",
-  "tradeVolumeUSD": "6918341.796988555139441614318616094"
-},
-{
-  "tokenAddress": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
-  "tokenName": "TrueUSD",
-  "tokenSymbol": "TUSD",
-  "tradeVolumeUSD": "6791623.028409123810653075244219582"
-},
-{
-  "tokenAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-  "tokenName": "0x Protocol Token",
-  "tokenSymbol": "ZRX",
-  "tradeVolumeUSD": "6585304.075915131012188337964879138"
-},
-{
-  "tokenAddress": "0x408e41876cccdc0f92210600ef50372656052a38",
-  "tokenName": "Republic Token",
-  "tokenSymbol": "REN",
-  "tradeVolumeUSD": "5356694.91978741717040346177478193"
-},
-{
-  "tokenAddress": "0xcf8f9555d55ce45a3a33a81d6ef99a2a2e71dee2",
-  "tokenName": "CBI Index 7",
-  "tokenSymbol": "CBIX7",
-  "tradeVolumeUSD": "4930854.32324046921926411048933538"
-},
-{
-  "tokenAddress": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
-  "tokenName": "LoopringCoin V2",
-  "tokenSymbol": "LRC",
-  "tradeVolumeUSD": "4606180.452385947477292887633866144"
-},
-{
-  "tokenAddress": "0x6810e776880c02933d47db1b9fc05908e5386b96",
-  "tokenName": "Gnosis Token",
-  "tokenSymbol": "GNO",
-  "tradeVolumeUSD": "4583799.633295861171147390924062982"
-},
-{
-  "tokenAddress": "0x09a8f2041be23e8ec3c72790c9a92089bc70fbca",
-  "tokenName": "eINV",
-  "tokenSymbol": "eINV",
-  "tradeVolumeUSD": "4214758.601111208419386747721222254"
-},
-{
-  "tokenAddress": "0xd6a55c63865affd67e2fb9f284f87b7a9e5ff3bd",
-  "tokenName": "Switch",
-  "tokenSymbol": "ESH",
-  "tradeVolumeUSD": "3997825.208789632414999775569434741"
-},
-{
-  "tokenAddress": "0x9cb2f26a23b8d89973f08c957c4d7cdf75cd341c",
-  "tokenName": "Digital Rand",
-  "tokenSymbol": "DZAR",
-  "tradeVolumeUSD": "3919620.959384083376184696605888364"
-},
-{
-  "tokenAddress": "0x0000000000085d4780b73119b644ae5ecd22b376",
-  "tokenName": "TrueUSD",
-  "tokenSymbol": "TUSD",
-  "tradeVolumeUSD": "3723040.180244285083722823064736067"
-},
-{
-  "tokenAddress": "0x42456d7084eacf4083f1140d3229471bba2949a8",
-  "tokenName": "Synth sETH",
-  "tokenSymbol": "sETH",
-  "tradeVolumeUSD": "3360674.960972524364355075990779551"
-},
-{
-  "tokenAddress": "0x42d6622dece394b54999fbd73d108123806f6a18",
-  "tokenName": "SPANK",
-  "tokenSymbol": "SPANK",
-  "tradeVolumeUSD": "3130440.529629635731229762173880104"
-},
-{
-  "tokenAddress": "0xd6f0bb2a45110f819e908a915237d652ac7c5aa8",
-  "tokenName": "DFOHub",
-  "tokenSymbol": "BUIDL",
-  "tradeVolumeUSD": "3065881.003475323976981645021021525"
-},
-{
-  "tokenAddress": "0xf5dce57282a584d2746faf1593d3121fcac444dc",
-  "tokenName": "Compound Dai",
-  "tokenSymbol": "cDAI",
-  "tradeVolumeUSD": "3064669.525816850827880794155596101"
-},
-{
-  "tokenAddress": "0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d",
-  "tokenName": "Celsius",
-  "tokenSymbol": "CEL",
-  "tradeVolumeUSD": "3046649.927662877910651866827638721"
-},
-{
-  "tokenAddress": "0x607f4c5bb672230e8672085532f7e901544a7375",
-  "tokenName": "iEx.ec Network Token",
-  "tokenSymbol": "RLC",
-  "tradeVolumeUSD": "3019998.379911900749615227542544838"
-},
-{
-  "tokenAddress": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
-  "tokenName": "Bancor Network Token",
-  "tokenSymbol": "BNT",
-  "tradeVolumeUSD": "2632491.124936321584055590262108544"
-},
-{
-  "tokenAddress": "0x9469d013805bffb7d3debe5e7839237e535ec483",
-  "tokenName": "Darwinia Network Native Token",
-  "tokenSymbol": "RING",
-  "tradeVolumeUSD": "2121555.638201175038189805165591168"
-},
-{
-  "tokenAddress": "0xec67005c4e498ec7f55e092bd1d35cbc47c91892",
-  "tokenName": "Melon Token",
-  "tokenSymbol": "MLN",
-  "tradeVolumeUSD": "2116134.980337113847346294523549422"
-},
-{
-  "tokenAddress": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-  "tokenName": "Ripio Credit Network Token",
-  "tokenSymbol": "RCN",
-  "tradeVolumeUSD": "2101914.61415445599665736964662997"
-},
-{
-  "tokenAddress": "0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206",
-  "tokenName": "Nexo",
-  "tokenSymbol": "NEXO",
-  "tradeVolumeUSD": "1946759.462939503867373786868676548"
-},
-{
-  "tokenAddress": "0xd46ba6d942050d489dbd938a2c909a5d5039a161",
-  "tokenName": "Ampleforth",
-  "tokenSymbol": "AMPL",
-  "tradeVolumeUSD": "1943621.233304534660785641194422808"
-},
-{
-  "tokenAddress": "0x44f00918a540774b422a1a340b75e055ff816d83",
-  "tokenName": "HEX Money",
-  "tokenSymbol": "HXY",
-  "tradeVolumeUSD": "1938188.956048598567951700088485645"
-},
-{
-  "tokenAddress": "0x107c4504cd79c5d2696ea0030a8dd4e92601b82e",
-  "tokenName": "Bloom Token",
-  "tokenSymbol": "BLT",
-  "tradeVolumeUSD": "1724808.170167471384079513333823083"
-},
-{
-  "tokenAddress": "0x0cf0ee63788a0849fe5297f3407f701e122cc023",
-  "tokenName": "Streamr DATAcoin",
-  "tokenSymbol": "DATA",
-  "tradeVolumeUSD": "1705972.389454423207081282574814677"
-},
-{
-  "tokenAddress": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
-  "tokenName": "Status Network Token",
-  "tokenSymbol": "SNT",
-  "tradeVolumeUSD": "1649096.743978987903907953768262794"
-},
-{
-  "tokenAddress": "0x5a4ade4f3e934a0885f42884f7077261c3f4f66f",
-  "tokenName": "Synthetix Network Token",
-  "tokenSymbol": "SNX",
-  "tradeVolumeUSD": "1625667.628129950051698160761756296"
-},
-{
-  "tokenAddress": "0xc12d099be31567add4e4e4d0d45691c3f58f5663",
-  "tokenName": "Auctus Token",
-  "tokenSymbol": "AUC",
-  "tradeVolumeUSD": "1573064.10878575421069729894174211"
-},
-{
-  "tokenAddress": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6",
-  "tokenName": "Raiden Token",
-  "tokenSymbol": "RDN",
-  "tradeVolumeUSD": "1500420.34816744603260163960550508"
-},
-{
-  "tokenAddress": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
-  "tokenName": "DAOstack",
-  "tokenSymbol": "GEN",
-  "tradeVolumeUSD": "1458610.64673997594692742846068825"
-},
-{
-  "tokenAddress": "0xc719d010b63e5bbf2c0551872cd5316ed26acd83",
-  "tokenName": "Decentralized Insurance Protocol",
-  "tokenSymbol": "DIP",
-  "tradeVolumeUSD": "1451249.592565661128758793457041901"
-},
-{
-  "tokenAddress": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
-  "tokenName": "Decentraland MANA",
-  "tokenSymbol": "MANA",
-  "tradeVolumeUSD": "1446093.710287709982778784980071538"
-},
-{
-  "tokenAddress": "0x419d0d8bdd9af5e606ae2232ed285aff190e711b",
-  "tokenName": "FunFair",
-  "tokenSymbol": "FUN",
-  "tradeVolumeUSD": "1434466.945708492712660648793168689"
-},
-{
-  "tokenAddress": "0xb4272071ecadd69d933adcd19ca99fe80664fc08",
-  "tokenName": "CryptoFranc",
-  "tokenSymbol": "XCHF",
-  "tradeVolumeUSD": "1404562.744504128487295186568783184"
-},
-{
-  "tokenAddress": "0x4575f41308ec1483f3d399aa9a2826d74da13deb",
-  "tokenName": "Orchid",
-  "tokenSymbol": "OXT",
-  "tradeVolumeUSD": "1348151.791125642309522560345074066"
-},
-{
-  "tokenAddress": "0x58b6a8a3302369daec383334672404ee733ab239",
-  "tokenName": "Livepeer Token",
-  "tokenSymbol": "LPT",
-  "tradeVolumeUSD": "1343441.66865183346369288505549437"
-},
-{
-  "tokenAddress": "0x6c6ee5e31d828de241282b9606c8e98ea48526e2",
-  "tokenName": "HoloToken",
-  "tokenSymbol": "HOT",
-  "tradeVolumeUSD": "1098447.998410456887076352387654059"
-},
-{
-  "tokenAddress": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
-  "tokenName": "Digix Gold Token",
-  "tokenSymbol": "DGX",
-  "tradeVolumeUSD": "1087674.879962077275617261708723555"
-},
-{
-  "tokenAddress": "0x2dea20405c52fb477ecca8fe622661d316ac5400",
-  "tokenName": "Synthetix Network Token",
-  "tokenSymbol": "SNX",
-  "tradeVolumeUSD": "1060850.993511117613120279490423913"
-},
-{
-  "tokenAddress": "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
-  "tokenName": "Compound Dai",
-  "tokenSymbol": "cDAI",
-  "tradeVolumeUSD": "1035328.391967102082090545243827154"
-},
-{
-  "tokenAddress": "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a",
-  "tokenName": "DigixDAO",
-  "tokenSymbol": "DGD",
-  "tradeVolumeUSD": "942471.6539200442306005008231558663"
-},
-{
-  "tokenAddress": "0x8762db106b2c2a0bccb3a80d1ed41273552616e8",
-  "tokenName": "Reserve Rights",
-  "tokenSymbol": "RSR",
-  "tradeVolumeUSD": "873406.2481331138905096511073035238"
-},
-{
-  "tokenAddress": "0xa4e8c3ec456107ea67d3075bf9e3df3a75823db0",
-  "tokenName": "LoomToken",
-  "tokenSymbol": "LOOM",
-  "tradeVolumeUSD": "817577.4259568488652482073401055738"
-},
-{
-  "tokenAddress": "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
-  "tokenName": "Enjin Coin",
-  "tokenSymbol": "ENJ",
-  "tradeVolumeUSD": "806001.0057417003439342509208553872"
-},
-{
-  "tokenAddress": "0x4946fcea7c692606e8908002e55a582af44ac121",
-  "tokenName": "FOAM Token",
-  "tokenSymbol": "FOAM",
-  "tradeVolumeUSD": "804925.9448879921412106550223545569"
-},
-{
-  "tokenAddress": "0x0cbe2df57ca9191b64a7af3baa3f946fa7df2f25",
-  "tokenName": "Synth sUSD",
-  "tokenSymbol": "sUSD",
-  "tradeVolumeUSD": "781282.9502953991339314798767912294"
-},
-{
-  "tokenAddress": "0x45804880de22913dafe09f4980848ece6ecbaf78",
-  "tokenName": "Paxos Gold",
-  "tokenSymbol": "PAXG",
-  "tradeVolumeUSD": "743599.6454891473570574062667228848"
-},
-{
-  "tokenAddress": "0x5abfd418adb35e89c68313574eb16bdffc15e607",
-  "tokenName": "TimviToken",
-  "tokenSymbol": "TMV",
-  "tradeVolumeUSD": "705495.0343120819146677801055959737"
-},
-{
-  "tokenAddress": "0x12b19d3e2ccc14da04fae33e63652ce469b3f2fd",
-  "tokenName": "GRID Token",
-  "tokenSymbol": "GRID",
-  "tradeVolumeUSD": "591368.375391773848332639704620057"
-},
-{
-  "tokenAddress": "0x40fd72257597aa14c7231a7b1aaa29fce868f677",
-  "tokenName": "Sora Token",
-  "tokenSymbol": "XOR",
-  "tradeVolumeUSD": "567090.8515318501478519753565136757"
-},
-{
-  "tokenAddress": "0x737f98ac8ca59f2c68ad658e3c3d8c8963e40a4c",
-  "tokenName": "Amon",
-  "tokenSymbol": "AMN",
-  "tradeVolumeUSD": "540607.5804418214124994470497859827"
-},
-{
-  "tokenAddress": "0xe25b0bba01dc5630312b6a21927e578061a13f55",
-  "tokenName": "ShipChain SHIP",
-  "tokenSymbol": "SHIP",
-  "tradeVolumeUSD": "536250.3457595559642360764223058032"
-},
-{
-  "tokenAddress": "0x37737ad7e32ed440c312910cfc4a2e4d52867caf",
-  "tokenName": "Chimera",
-  "tokenSymbol": "CMRA",
-  "tradeVolumeUSD": "434879.1235770458600736838863760309"
-},
-{
-  "tokenAddress": "0x3a9fff453d50d4ac52a6890647b823379ba36b9e",
-  "tokenName": "Shuffle.Monster V3",
-  "tokenSymbol": "SHUF",
-  "tradeVolumeUSD": "409505.3716522574395321283053129078"
-},
-{
-  "tokenAddress": "0x4a57e687b9126435a9b19e4a802113e266adebde",
-  "tokenName": "Flexacoin",
-  "tokenSymbol": "FXC",
-  "tradeVolumeUSD": "380980.9093951113209213830746468431"
-},
-{
-  "tokenAddress": "0x9f949124e2a23492005a9bb937acb29bda2cab9e",
-  "tokenName": "CMMEToken",
-  "tokenSymbol": "CMME",
-  "tradeVolumeUSD": "369504.80049160020245907487433946"
-},
-{
-  "tokenAddress": "0xb6ed7644c69416d67b522e20bc294a9a9b405b31",
-  "tokenName": "0xBitcoin Token",
-  "tokenSymbol": "0xBTC",
-  "tradeVolumeUSD": "357012.5624645493340019055094637533"
-},
-{
-  "tokenAddress": "0xa1d65e8fb6e87b60feccbc582f7f97804b725521",
-  "tokenName": "DXdao",
-  "tokenSymbol": "DXD",
-  "tradeVolumeUSD": "346731.5816508057586926988465145176"
-},
-{
-  "tokenAddress": "0x5228a22e72ccc52d415ecfd199f99d0665e7733b",
-  "tokenName": "pTokens BTC",
-  "tokenSymbol": "pBTC",
-  "tradeVolumeUSD": "343272.5702678523070483768019146842"
-},
-{
-  "tokenAddress": "0x09617f6fd6cf8a71278ec86e23bbab29c04353a7",
-  "tokenName": "Unblocked Ledger Token",
-  "tokenSymbol": "ULT",
-  "tradeVolumeUSD": "336393.3308678683239451001164399965"
-},
-{
-  "tokenAddress": "0x06af07097c9eeb7fd685c692751d5c66db49c215",
-  "tokenName": "Chai",
-  "tokenSymbol": "CHAI",
-  "tradeVolumeUSD": "326774.2238861010598041805912379224"
-},
-{
-  "tokenAddress": "0x10ba8c420e912bf07bedac03aa6908720db04e0c",
-  "tokenName": "Raise",
-  "tokenSymbol": "RAISE",
-  "tradeVolumeUSD": "326511.5484078952618745028820532806"
-},
-{
-  "tokenAddress": "0xe343245de92181bc06ba5cd1152c705a2c5f3e2f",
-  "tokenName": "Statera",
-  "tokenSymbol": "STA",
-  "tradeVolumeUSD": "303908.5623778533785601232347080096"
-},
-{
-  "tokenAddress": "0x31bb711de2e457066c6281f231fb473fc5c2afd3",
-  "tokenName": "Vether",
-  "tokenSymbol": "VETH",
-  "tradeVolumeUSD": "292442.4215705130919719386669766953"
-},
-{
-  "tokenAddress": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
-  "tokenName": "AirSwap Token",
-  "tokenSymbol": "AST",
-  "tradeVolumeUSD": "288317.4238933493577183195330772556"
-},
-{
-  "tokenAddress": "0x0ae055097c6d159879521c384f1d2123d1f195e6",
-  "tokenName": "STAKE",
-  "tokenSymbol": "STAKE",
-  "tradeVolumeUSD": "276392.9996087282020974150263449475"
-},
-{
-  "tokenAddress": "0xd29f0b5b3f50b07fe9a9511f7d86f4f4bac3f8c4",
-  "tokenName": "Liquidity.Network Token",
-  "tokenSymbol": "LQD",
-  "tradeVolumeUSD": "273575.0186048056577447127460287176"
-},
-{
-  "tokenAddress": "0x23b608675a2b2fb1890d3abbd85c5775c51691d5",
-  "tokenName": "Unisocks Edition 0",
-  "tokenSymbol": "SOCKS",
-  "tradeVolumeUSD": "270091.7255738967602264807193947389"
-},
-{
-  "tokenAddress": "0xd56dac73a4d6766464b38ec6d91eb45ce7457c44",
-  "tokenName": "Panvala pan",
-  "tokenSymbol": "PAN",
-  "tradeVolumeUSD": "268851.8545025799619665533390131296"
-},
-{
-  "tokenAddress": "0xfc1e690f61efd961294b3e1ce3313fbd8aa4f85d",
-  "tokenName": "Aave Interest bearing DAI",
-  "tokenSymbol": "aDAI",
-  "tradeVolumeUSD": "265957.1771147028492299619382870672"
-},
-{
-  "tokenAddress": "0x0000000000b3f879cb30fe243b4dfee438691c04",
-  "tokenName": "Gastoken.io",
-  "tokenSymbol": "GST2",
-  "tradeVolumeUSD": "238909.8008653566497507321063551695"
-},
-{
-  "tokenAddress": "0xa3d58c4e56fedcae3a7c43a725aee9a71f0ece4e",
-  "tokenName": "Metronome",
-  "tokenSymbol": "MET",
-  "tradeVolumeUSD": "222647.9168039224711659384074961096"
-},
-{
-  "tokenAddress": "0xd15ecdcf5ea68e3995b2d0527a0ae0a3258302f8",
-  "tokenName": "MachiX Token",
-  "tokenSymbol": "MCX",
-  "tradeVolumeUSD": "213700.2969075036331030057031536334"
-},
-{
-  "tokenAddress": "0x7d29a64504629172a429e64183d6673b9dacbfce",
-  "tokenName": "VectorspaceAI",
-  "tokenSymbol": "VXV",
-  "tradeVolumeUSD": "209804.1589484213009231222602478756"
-},
-{
-  "tokenAddress": "0x5807ca447851c98569c567963b25b1c83d41bebc",
-  "tokenName": "RealToken 10024-10028 Appoline Street Detroit MI",
-  "tokenSymbol": "REALTOKEN-10024-10028-APPOLINE-ST-DETROIT-MI",
-  "tradeVolumeUSD": "199879.3072171186189168595587751435"
-},
-{
-  "tokenAddress": "0x5c872500c00565505f3624ab435c222e558e9ff8",
-  "tokenName": "CoTrader",
-  "tokenSymbol": "COT",
-  "tradeVolumeUSD": "193871.6544743978377085391089725746"
-},
-{
-  "tokenAddress": "0x697ef32b4a3f5a4c39de1cb7563f24ca7bfc5947",
-  "tokenName": "Insula",
-  "tokenSymbol": "ISLA",
-  "tradeVolumeUSD": "181588.8264910960115287541984861412"
-},
-{
-  "tokenAddress": "0x3772f9716cf6d7a09ede3587738aa2af5577483a",
-  "tokenName": "Synthetix Network Token",
-  "tokenSymbol": "SNX",
-  "tradeVolumeUSD": "180757.5028123081004787628050975586"
-},
-{
-  "tokenAddress": "0x4156d3342d5c385a87d264f90653733592000581",
-  "tokenName": "Salt",
-  "tokenSymbol": "SALT",
-  "tradeVolumeUSD": "177594.4615453645778973003528016873"
-},
-{
-  "tokenAddress": "0x4cd988afbad37289baaf53c13e98e2bd46aaea8c",
-  "tokenName": "KEY",
-  "tokenSymbol": "KEY",
-  "tradeVolumeUSD": "175867.8159267303610832963967617761"
-},
-{
-  "tokenAddress": "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac",
-  "tokenName": "StorjToken",
-  "tokenSymbol": "STORJ",
-  "tradeVolumeUSD": "174513.8081338971905639968857815368"
-},
-{
-  "tokenAddress": "0x08f5a9235b08173b7569f83645d2c7fb55e8ccd8",
-  "tokenName": "Tierion Network Token",
-  "tokenSymbol": "TNT",
-  "tradeVolumeUSD": "173753.79025605234715017389396556"
-},
-{
-  "tokenAddress": "0xcb94be6f13a1182e4a4b6140cb7bf2025d28e41b",
-  "tokenName": "Trustcoin",
-  "tokenSymbol": "TRST",
-  "tradeVolumeUSD": "168372.3112485741193381966574631329"
-},
-{
-  "tokenAddress": "0xc0f9bd5fa5698b6505f643900ffa515ea5df54a9",
-  "tokenName": "Donut",
-  "tokenSymbol": "DONUT",
-  "tradeVolumeUSD": "164012.7051942798561876994624896486"
-},
-{
-  "tokenAddress": "0xf1290473e210b2108a85237fbcd7b6eb42cc654f",
-  "tokenName": "HedgeTrade",
-  "tokenSymbol": "HEDG",
-  "tradeVolumeUSD": "163814.7107768589755234773623025935"
-},
-{
-  "tokenAddress": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
-  "tokenName": "Matic Token",
-  "tokenSymbol": "MATIC",
-  "tradeVolumeUSD": "162551.4499933019680838669467286977"
-},
-{
-  "tokenAddress": "0x985dd3d42de1e256d09e1c10f112bccb8015ad41",
-  "tokenName": "OceanToken",
-  "tokenSymbol": "OCEAN",
-  "tradeVolumeUSD": "161968.6874667380401290728817513377"
-},
-{
-  "tokenAddress": "0x22c8ecf727c23422f47093b562ec53c139805301",
-  "tokenName": "RealToken 16200 Fullerton Ave Detroit MI",
-  "tokenSymbol": "REALTOKEN-16200-FULLERTON-AVE-DETROIT-MI",
-  "tradeVolumeUSD": "161108.2271530443747912106928131109"
-},
-{
-  "tokenAddress": "0xef8a2c1bc94e630463293f71bf5414d13e80f62d",
-  "tokenName": "Synthetix Network Token",
-  "tokenSymbol": "SNX",
-  "tradeVolumeUSD": "157078.0445502526015803930341096935"
-},
-{
-  "tokenAddress": "0x07597255910a51509ca469568b048f2597e72504",
-  "tokenName": "Uptrennd",
-  "tokenSymbol": "1UP",
-  "tradeVolumeUSD": "142387.6876678281647788964791349929"
-},
-{
-  "tokenAddress": "0xeb269732ab75a6fd61ea60b06fe994cd32a83549",
-  "tokenName": "dForce",
-  "tokenSymbol": "USDx",
-  "tradeVolumeUSD": "133475.3223950837393031260682740978"
-},
-{
-  "tokenAddress": "0x14409b0fc5c7f87b5dad20754fe22d29a3de8217",
-  "tokenName": "PYRO Network",
-  "tokenSymbol": "PYRO",
-  "tradeVolumeUSD": "130038.0871218315396275399727275173"
-},
-{
-  "tokenAddress": "0x0f4ca92660efad97a9a70cb0fe969c755439772c",
-  "tokenName": "Leverj",
-  "tokenSymbol": "LEV",
-  "tradeVolumeUSD": "129372.5658276310220289610668551624"
-},
-{
-  "tokenAddress": "0x86fadb80d8d2cff3c3680819e4da99c10232ba0f",
-  "tokenName": "EURBASE Stablecoin",
-  "tokenSymbol": "EBASE",
-  "tradeVolumeUSD": "127793.0332821674553880278275102605"
-},
-{
-  "tokenAddress": "0x98cc3bd6af1880fcfda17ac477b2f612980e5e33",
-  "tokenName": "Opyn cDai Insurance",
-  "tokenSymbol": "ocDai",
-  "tradeVolumeUSD": "119045.1026202948594402220474888755"
-},
-{
-  "tokenAddress": "0x419c4db4b9e25d6db2ad9691ccb832c8d9fda05e",
-  "tokenName": "Dragon",
-  "tokenSymbol": "DRGN",
-  "tradeVolumeUSD": "118833.420700932919707849573243382"
-},
-{
-  "tokenAddress": "0x26e75307fc0c021472feb8f727839531f112f317",
-  "tokenName": "Crypto20",
-  "tokenSymbol": "C20",
-  "tradeVolumeUSD": "117076.6130926133519334571130684644"
-},
-{
-  "tokenAddress": "0xd559f20296ff4895da39b5bd9add54b442596a61",
-  "tokenName": "FintruX Network",
-  "tokenSymbol": "FTX",
-  "tradeVolumeUSD": "112710.1604897980482448123469976606"
-},
-{
-  "tokenAddress": "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",
-  "tokenName": "Enigma",
-  "tokenSymbol": "ENG",
-  "tradeVolumeUSD": "110900.0869271019684428879227937831"
-},
-{
-  "tokenAddress": "0x14094949152eddbfcd073717200da82fed8dc960",
-  "tokenName": "bZx DAI iToken",
-  "tokenSymbol": "iDAI",
-  "tradeVolumeUSD": "108656.8503074944353969941934530163"
-},
-{
-  "tokenAddress": "0x39aa39c021dfbae8fac545936693ac917d5e7563",
-  "tokenName": "Compound USD Coin",
-  "tokenSymbol": "cUSDC",
-  "tradeVolumeUSD": "103750.0030214898997409144889781541"
-},
-{
-  "tokenAddress": "0x43e5f59247b235449e16ec84c46ba43991ef6093",
-  "tokenName": "Coin Bank Int",
-  "tokenSymbol": "CBI",
-  "tradeVolumeUSD": "102025.0534364228317118139591172677"
-},
-{
-  "tokenAddress": "0xe5caef4af8780e59df925470b050fb23c43ca68c",
-  "tokenName": "Ferrum Network Token",
-  "tokenSymbol": "FRM",
-  "tradeVolumeUSD": "101806.0483098521219082025665913106"
-},
-
+  "data": {
+    "exchanges": [
+      {
+        "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DAI",
+        "tokenName": "Dai Stablecoin",
+      },
+      {
+        "tokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "tokenDecimals": 6,
+        "tokenSymbol": "USDC",
+        "tokenName": "USD//C",
+      },
+      {
+        "tokenAddress": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MKR",
+        "tokenName": "Maker",
+      },
+      {
+        "tokenAddress": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39",
+        "tokenDecimals": 8,
+        "tokenSymbol": "HEX,"
+        "tokenName": "HEX",
+      },
+      {
+        "tokenAddress": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DAI",
+        "tokenName": "Dai Stablecoin v1.0",
+      },
+      {
+        "tokenAddress": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SNX",
+        "tokenName": "Synthetix Network Token",
+      },
+      {
+        "tokenAddress": "0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d",
+        "tokenDecimals": 18,
+        "tokenSymbol": "PNK",
+        "tokenName": "Pinakion",
+      },
+      {
+        "tokenAddress": "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb",
+        "tokenDecimals": 18,
+        "tokenSymbol": "sETH",
+        "tokenName": "Synth sETH",
+      },
+      {
+        "tokenAddress": "0x8400d94a5cb0fa0d041a3788e395285d61c9ee5e",
+        "tokenDecimals": 8,
+        "tokenSymbol": "UBT",
+        "tokenName": "UniBright",
+      },
+      {
+        "tokenAddress": "0x514910771af9ca656af840dff83e8264ecf986ca",
+        "tokenDecimals": 18,
+        "tokenSymbol": "LINK",
+        "tokenName": "ChainLink Token",
+      },
+      {
+        "tokenAddress": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        "tokenDecimals": 18,
+        "tokenSymbol": "BAT",
+        "tokenName": "Basic Attention Token",
+      },
+      {
+        "tokenAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        "tokenDecimals": 8,
+        "tokenSymbol": "WBTC",
+        "tokenName": "Wrapped BTC",
+      },
+      {
+        "tokenAddress": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
+        "tokenDecimals": 18,
+        "tokenSymbol": "REP",
+        "tokenName": "Reputation",
+      },
+      {
+        "tokenAddress": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
+        "tokenDecimals": 18,
+        "tokenSymbol": "KNC",
+        "tokenName": "Kyber Network Crystal",
+      },
+      {
+        "tokenAddress": "0xb4efd85c19999d84251304bda99e90b92300bd93",
+        "tokenDecimals": 18,
+        "tokenSymbol": "RPL",
+        "tokenName": "Rocket Pool",
+      },
+      {
+        "tokenAddress": "0x1776e1f26f98b1a5df9cd347953a26dd3cb46671",
+        "tokenDecimals": 18,
+        "tokenSymbol": "NMR",
+        "tokenName": "Numeraire",
+      },
+      {
+        "tokenAddress": "0xcd62b1c403fa761baadfc74c525ce2b51780b184",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ANJ",
+        "tokenName": "Aragon Network Juror",
+      },
+      {
+        "tokenAddress": "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+        "tokenDecimals": 18,
+        "tokenSymbol": "sUSD",
+        "tokenName": "Synth sUSD",
+      },
+      {
+        "tokenAddress": "0x3212b29e33587a00fb1c83346f5dbfa69a458923",
+        "tokenDecimals": 8,
+        "tokenSymbol": "imBTC",
+        "tokenName": "The Tokenized Bitcoin",
+      },
+      {
+        "tokenAddress": "0xbe15c4ebb73a67ddd94b83b237d2bdde5a5079ba",
+        "tokenDecimals": 18,
+        "tokenSymbol": "CNCC",
+        "tokenName": "Complete New Commerce Chain",
+      },
+      {
+        "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "tokenDecimals": 18,
+        "tokenSymbol": "WETH",
+        "tokenName": "Wrapped Ether",
+      },
+      {
+        "tokenAddress": "0x80fb784b7ed66730e8b1dbd9820afd29931aab03",
+        "tokenDecimals": 18,
+        "tokenSymbol": "LEND",
+        "tokenName": "EthLend Token",
+      },
+      {
+        "tokenAddress": "0xaaaf91d9b90df800df4f55c205fd6989c977e73a",
+        "tokenDecimals": 8,
+        "tokenSymbol": "TKN",
+        "tokenName": "Monolith TKN",
+      },
+      {
+        "tokenAddress": "0x960b236a07cf122663c4303350609a66a7b288c0",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ANT",
+        "tokenName": "Aragon Network Token",
+      },
+      {
+        "tokenAddress": "0xba11d00c5f74255f56a5e366f4f77f5a186d7f55",
+        "tokenDecimals": 18,
+        "tokenSymbol": "BAND",
+        "tokenName": "BandToken",
+      },
+      {
+        "tokenAddress": "0x8a9c67fee641579deba04928c4bc45f66e26343a",
+        "tokenDecimals": 18,
+        "tokenSymbol": "JRT",
+        "tokenName": "Jarvis Reward Token",
+      },
+      {
+        "tokenAddress": "0x0f7f961648ae6db43c75663ac7e5414eb79b5704",
+        "tokenDecimals": 18,
+        "tokenSymbol": "XIO",
+        "tokenName": "XIO Network",
+      },
+      {
+        "tokenAddress": "0x04fa0d235c4abf4bcf4787af4cf447de572ef828",
+        "tokenDecimals": 18,
+        "tokenSymbol": "UMA",
+        "tokenName": "UMA Voting Token v1",
+      },
+      {
+        "tokenAddress": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
+        "tokenDecimals": 18,
+        "tokenSymbol": "TUSD",
+        "tokenName": "TrueUSD",
+      },
+      {
+        "tokenAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ZRX",
+        "tokenName": "0x Protocol Token",
+      },
+      {
+        "tokenAddress": "0x408e41876cccdc0f92210600ef50372656052a38",
+        "tokenDecimals": 18,
+        "tokenSymbol": "REN",
+        "tokenName": "Republic Token",
+      },
+      {
+        "tokenAddress": "0xcf8f9555d55ce45a3a33a81d6ef99a2a2e71dee2",
+        "tokenDecimals": 18,
+        "tokenSymbol": "CBIX7",
+        "tokenName": "CBI Index 7",
+      },
+      {
+        "tokenAddress": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
+        "tokenDecimals": 18,
+        "tokenSymbol": "LRC",
+        "tokenName": "LoopringCoin V2",
+      },
+      {
+        "tokenAddress": "0x6810e776880c02933d47db1b9fc05908e5386b96",
+        "tokenDecimals": 18,
+        "tokenSymbol": "GNO",
+        "tokenName": "Gnosis Token",
+      },
+      {
+        "tokenAddress": "0x09a8f2041be23e8ec3c72790c9a92089bc70fbca",
+        "tokenDecimals": 18,
+        "tokenSymbol": "eINV,"
+        "tokenName": "eINV",
+      },
+      {
+        "tokenAddress": "0xd6a55c63865affd67e2fb9f284f87b7a9e5ff3bd",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ESH",
+        "tokenName": "Switch",
+      },
+      {
+        "tokenAddress": "0x9cb2f26a23b8d89973f08c957c4d7cdf75cd341c",
+        "tokenDecimals": 6,
+        "tokenSymbol": "DZAR",
+        "tokenName": "Digital Rand",
+      },
+      {
+        "tokenAddress": "0x0000000000085d4780b73119b644ae5ecd22b376",
+        "tokenDecimals": 18,
+        "tokenSymbol": "TUSD",
+        "tokenName": "TrueUSD",
+      },
+      {
+        "tokenAddress": "0x42456d7084eacf4083f1140d3229471bba2949a8",
+        "tokenDecimals": 18,
+        "tokenSymbol": "sETH",
+        "tokenName": "Synth sETH",
+      },
+      {
+        "tokenAddress": "0x42d6622dece394b54999fbd73d108123806f6a18",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SPANK,"
+        "tokenName": "SPANK",
+      },
+      {
+        "tokenAddress": "0xd6f0bb2a45110f819e908a915237d652ac7c5aa8",
+        "tokenDecimals": 18,
+        "tokenSymbol": "BUIDL",
+        "tokenName": "DFOHub",
+      },
+      {
+        "tokenAddress": "0xf5dce57282a584d2746faf1593d3121fcac444dc",
+        "tokenDecimals": 8,
+        "tokenSymbol": "cDAI",
+        "tokenName": "Compound Dai",
+      },
+      {
+        "tokenAddress": "0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d",
+        "tokenDecimals": 4,
+        "tokenSymbol": "CEL",
+        "tokenName": "Celsius",
+      },
+      {
+        "tokenAddress": "0x607f4c5bb672230e8672085532f7e901544a7375",
+        "tokenDecimals": 9,
+        "tokenSymbol": "RLC",
+        "tokenName": "iEx.ec Network Token",
+      },
+      {
+        "tokenAddress": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
+        "tokenDecimals": 18,
+        "tokenSymbol": "BNT",
+        "tokenName": "Bancor Network Token",
+      },
+      {
+        "tokenAddress": "0x9469d013805bffb7d3debe5e7839237e535ec483",
+        "tokenDecimals": 18,
+        "tokenSymbol": "RING",
+        "tokenName": "Darwinia Network Native Token",
+      },
+      {
+        "tokenAddress": "0xec67005c4e498ec7f55e092bd1d35cbc47c91892",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MLN",
+        "tokenName": "Melon Token",
+      },
+      {
+        "tokenAddress": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
+        "tokenDecimals": 18,
+        "tokenSymbol": "RCN",
+        "tokenName": "Ripio Credit Network Token",
+      },
+      {
+        "tokenAddress": "0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206",
+        "tokenDecimals": 18,
+        "tokenSymbol": "NEXO,"
+        "tokenName": "Nexo",
+      },
+      {
+        "tokenAddress": "0xd46ba6d942050d489dbd938a2c909a5d5039a161",
+        "tokenDecimals": 9,
+        "tokenSymbol": "AMPL",
+        "tokenName": "Ampleforth",
+      },
+      {
+        "tokenAddress": "0x44f00918a540774b422a1a340b75e055ff816d83",
+        "tokenDecimals": 8,
+        "tokenSymbol": "HXY",
+        "tokenName": "HEX Money",
+      },
+      {
+        "tokenAddress": "0x107c4504cd79c5d2696ea0030a8dd4e92601b82e",
+        "tokenDecimals": 18,
+        "tokenSymbol": "BLT",
+        "tokenName": "Bloom Token",
+      },
+      {
+        "tokenAddress": "0x0cf0ee63788a0849fe5297f3407f701e122cc023",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DATA",
+        "tokenName": "Streamr DATAcoin",
+      },
+      {
+        "tokenAddress": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SNT",
+        "tokenName": "Status Network Token",
+      },
+      {
+        "tokenAddress": "0x5a4ade4f3e934a0885f42884f7077261c3f4f66f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SNX",
+        "tokenName": "Synthetix Network Token",
+      },
+      {
+        "tokenAddress": "0xc12d099be31567add4e4e4d0d45691c3f58f5663",
+        "tokenDecimals": 18,
+        "tokenSymbol": "AUC",
+        "tokenName": "Auctus Token",
+      },
+      {
+        "tokenAddress": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6",
+        "tokenDecimals": 18,
+        "tokenSymbol": "RDN",
+        "tokenName": "Raiden Token",
+      },
+      {
+        "tokenAddress": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
+        "tokenDecimals": 18,
+        "tokenSymbol": "GEN",
+        "tokenName": "DAOstack",
+      },
+      {
+        "tokenAddress": "0xc719d010b63e5bbf2c0551872cd5316ed26acd83",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DIP",
+        "tokenName": "Decentralized Insurance Protocol",
+      },
+      {
+        "tokenAddress": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MANA",
+        "tokenName": "Decentraland MANA",
+      },
+      {
+        "tokenAddress": "0x419d0d8bdd9af5e606ae2232ed285aff190e711b",
+        "tokenDecimals": 8,
+        "tokenSymbol": "FUN",
+        "tokenName": "FunFair",
+      },
+      {
+        "tokenAddress": "0xb4272071ecadd69d933adcd19ca99fe80664fc08",
+        "tokenDecimals": 18,
+        "tokenSymbol": "XCHF",
+        "tokenName": "CryptoFranc",
+      },
+      {
+        "tokenAddress": "0x4575f41308ec1483f3d399aa9a2826d74da13deb",
+        "tokenDecimals": 18,
+        "tokenSymbol": "OXT",
+        "tokenName": "Orchid",
+      },
+      {
+        "tokenAddress": "0x58b6a8a3302369daec383334672404ee733ab239",
+        "tokenDecimals": 18,
+        "tokenSymbol": "LPT",
+        "tokenName": "Livepeer Token",
+      },
+      {
+        "tokenAddress": "0x6c6ee5e31d828de241282b9606c8e98ea48526e2",
+        "tokenDecimals": 18,
+        "tokenSymbol": "HOT",
+        "tokenName": "HoloToken",
+      },
+      {
+        "tokenAddress": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
+        "tokenDecimals": 9,
+        "tokenSymbol": "DGX",
+        "tokenName": "Digix Gold Token",
+      },
+      {
+        "tokenAddress": "0x2dea20405c52fb477ecca8fe622661d316ac5400",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SNX",
+        "tokenName": "Synthetix Network Token",
+      },
+      {
+        "tokenAddress": "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
+        "tokenDecimals": 8,
+        "tokenSymbol": "cDAI",
+        "tokenName": "Compound Dai",
+      },
+      {
+        "tokenAddress": "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a",
+        "tokenDecimals": 9,
+        "tokenSymbol": "DGD",
+        "tokenName": "DigixDAO",
+      },
+      {
+        "tokenAddress": "0x8762db106b2c2a0bccb3a80d1ed41273552616e8",
+        "tokenDecimals": 18,
+        "tokenSymbol": "RSR",
+        "tokenName": "Reserve Rights",
+      },
+      {
+        "tokenAddress": "0xa4e8c3ec456107ea67d3075bf9e3df3a75823db0",
+        "tokenDecimals": 18,
+        "tokenSymbol": "LOOM",
+        "tokenName": "LoomToken",
+      },
+      {
+        "tokenAddress": "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ENJ",
+        "tokenName": "Enjin Coin",
+      },
+      {
+        "tokenAddress": "0x4946fcea7c692606e8908002e55a582af44ac121",
+        "tokenDecimals": 18,
+        "tokenSymbol": "FOAM",
+        "tokenName": "FOAM Token",
+      },
+      {
+        "tokenAddress": "0x0cbe2df57ca9191b64a7af3baa3f946fa7df2f25",
+        "tokenDecimals": 18,
+        "tokenSymbol": "sUSD",
+        "tokenName": "Synth sUSD",
+      },
+      {
+        "tokenAddress": "0x45804880de22913dafe09f4980848ece6ecbaf78",
+        "tokenDecimals": 18,
+        "tokenSymbol": "PAXG",
+        "tokenName": "Paxos Gold",
+      },
+      {
+        "tokenAddress": "0x5abfd418adb35e89c68313574eb16bdffc15e607",
+        "tokenDecimals": 18,
+        "tokenSymbol": "TMV",
+        "tokenName": "TimviToken",
+      },
+      {
+        "tokenAddress": "0x12b19d3e2ccc14da04fae33e63652ce469b3f2fd",
+        "tokenDecimals": 12,
+        "tokenSymbol": "GRID",
+        "tokenName": "GRID Token",
+      },
+      {
+        "tokenAddress": "0x40fd72257597aa14c7231a7b1aaa29fce868f677",
+        "tokenDecimals": 18,
+        "tokenSymbol": "XOR",
+        "tokenName": "Sora Token",
+      },
+      {
+        "tokenAddress": "0x737f98ac8ca59f2c68ad658e3c3d8c8963e40a4c",
+        "tokenDecimals": 18,
+        "tokenSymbol": "AMN",
+        "tokenName": "Amon",
+      },
+      {
+        "tokenAddress": "0xe25b0bba01dc5630312b6a21927e578061a13f55",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SHIP",
+        "tokenName": "ShipChain SHIP",
+      },
+      {
+        "tokenAddress": "0x37737ad7e32ed440c312910cfc4a2e4d52867caf",
+        "tokenDecimals": 3,
+        "tokenSymbol": "CMRA",
+        "tokenName": "Chimera",
+      },
+      {
+        "tokenAddress": "0x3a9fff453d50d4ac52a6890647b823379ba36b9e",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SHUF",
+        "tokenName": "Shuffle.Monster V3",
+      },
+      {
+        "tokenAddress": "0x4a57e687b9126435a9b19e4a802113e266adebde",
+        "tokenDecimals": 18,
+        "tokenSymbol": "FXC",
+        "tokenName": "Flexacoin",
+      },
+      {
+        "tokenAddress": "0x9f949124e2a23492005a9bb937acb29bda2cab9e",
+        "tokenDecimals": 8,
+        "tokenSymbol": "CMME",
+        "tokenName": "CMMEToken",
+      },
+      {
+        "tokenAddress": "0xb6ed7644c69416d67b522e20bc294a9a9b405b31",
+        "tokenDecimals": 8,
+        "tokenSymbol": "0xBTC",
+        "tokenName": "0xBitcoin Token",
+      },
+      {
+        "tokenAddress": "0xa1d65e8fb6e87b60feccbc582f7f97804b725521",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DXD",
+        "tokenName": "DXdao",
+      },
+      {
+        "tokenAddress": "0x5228a22e72ccc52d415ecfd199f99d0665e7733b",
+        "tokenDecimals": 18,
+        "tokenSymbol": "pBTC",
+        "tokenName": "pTokens BTC",
+      },
+      {
+        "tokenAddress": "0x09617f6fd6cf8a71278ec86e23bbab29c04353a7",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ULT",
+        "tokenName": "Unblocked Ledger Token",
+      },
+      {
+        "tokenAddress": "0x06af07097c9eeb7fd685c692751d5c66db49c215",
+        "tokenDecimals": 18,
+        "tokenSymbol": "CHAI,"
+        "tokenName": "Chai",
+      },
+      {
+        "tokenAddress": "0x10ba8c420e912bf07bedac03aa6908720db04e0c",
+        "tokenDecimals": 18,
+        "tokenSymbol": "RAISE,"
+        "tokenName": "Raise",
+      },
+      {
+        "tokenAddress": "0xe343245de92181bc06ba5cd1152c705a2c5f3e2f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "STA",
+        "tokenName": "Statera",
+      },
+      {
+        "tokenAddress": "0x31bb711de2e457066c6281f231fb473fc5c2afd3",
+        "tokenDecimals": 18,
+        "tokenSymbol": "VETH",
+        "tokenName": "Vether",
+      },
+      {
+        "tokenAddress": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
+        "tokenDecimals": 4,
+        "tokenSymbol": "AST",
+        "tokenName": "AirSwap Token",
+      },
+      {
+        "tokenAddress": "0x0ae055097c6d159879521c384f1d2123d1f195e6",
+        "tokenDecimals": 18,
+        "tokenSymbol": "STAKE,"
+        "tokenName": "STAKE",
+      },
+      {
+        "tokenAddress": "0xd29f0b5b3f50b07fe9a9511f7d86f4f4bac3f8c4",
+        "tokenDecimals": 18,
+        "tokenSymbol": "LQD",
+        "tokenName": "Liquidity.Network Token",
+      },
+      {
+        "tokenAddress": "0x23b608675a2b2fb1890d3abbd85c5775c51691d5",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SOCKS",
+        "tokenName": "Unisocks Edition 0",
+      },
+      {
+        "tokenAddress": "0xd56dac73a4d6766464b38ec6d91eb45ce7457c44",
+        "tokenDecimals": 18,
+        "tokenSymbol": "PAN",
+        "tokenName": "Panvala pan",
+      },
+      {
+        "tokenAddress": "0xfc1e690f61efd961294b3e1ce3313fbd8aa4f85d",
+        "tokenDecimals": 18,
+        "tokenSymbol": "aDAI",
+        "tokenName": "Aave Interest bearing DAI",
+      },
+      {
+        "tokenAddress": "0x0000000000b3f879cb30fe243b4dfee438691c04",
+        "tokenDecimals": 2,
+        "tokenSymbol": "GST2",
+        "tokenName": "Gastoken.io",
+      },
+      {
+        "tokenAddress": "0xa3d58c4e56fedcae3a7c43a725aee9a71f0ece4e",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MET",
+        "tokenName": "Metronome",
+      },
+      {
+        "tokenAddress": "0xd15ecdcf5ea68e3995b2d0527a0ae0a3258302f8",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MCX",
+        "tokenName": "MachiX Token",
+      },
+      {
+        "tokenAddress": "0x7d29a64504629172a429e64183d6673b9dacbfce",
+        "tokenDecimals": 18,
+        "tokenSymbol": "VXV",
+        "tokenName": "VectorspaceAI",
+      },
+      {
+        "tokenAddress": "0x5807ca447851c98569c567963b25b1c83d41bebc",
+        "tokenDecimals": 18,
+        "tokenSymbol": "REALTOKEN-10024-10028-APPOLINE-ST-DETROIT-MI",
+        "tokenName": "RealToken 10024-10028 Appoline Street Detroit MI",
+      },
+      {
+        "tokenAddress": "0x5c872500c00565505f3624ab435c222e558e9ff8",
+        "tokenDecimals": 18,
+        "tokenSymbol": "COT",
+        "tokenName": "CoTrader",
+      },
+      {
+        "tokenAddress": "0x697ef32b4a3f5a4c39de1cb7563f24ca7bfc5947",
+        "tokenDecimals": 18,
+        "tokenSymbol": "ISLA",
+        "tokenName": "Insula",
+      },
+      {
+        "tokenAddress": "0x3772f9716cf6d7a09ede3587738aa2af5577483a",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SNX",
+        "tokenName": "Synthetix Network Token",
+      },
+      {
+        "tokenAddress": "0x4156d3342d5c385a87d264f90653733592000581",
+        "tokenDecimals": 8,
+        "tokenSymbol": "SALT,"
+        "tokenName": "Salt",
+      },
+      {
+        "tokenAddress": "0x4cd988afbad37289baaf53c13e98e2bd46aaea8c",
+        "tokenDecimals": 18,
+        "tokenSymbol": "KEY,"
+        "tokenName": "KEY",
+      },
+      {
+        "tokenAddress": "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac",
+        "tokenDecimals": 8,
+        "tokenSymbol": "STORJ",
+        "tokenName": "StorjToken",
+      },
+      {
+        "tokenAddress": "0x08f5a9235b08173b7569f83645d2c7fb55e8ccd8",
+        "tokenDecimals": 8,
+        "tokenSymbol": "TNT",
+        "tokenName": "Tierion Network Token",
+      },
+      {
+        "tokenAddress": "0xcb94be6f13a1182e4a4b6140cb7bf2025d28e41b",
+        "tokenDecimals": 6,
+        "tokenSymbol": "TRST",
+        "tokenName": "Trustcoin",
+      },
+      {
+        "tokenAddress": "0xc0f9bd5fa5698b6505f643900ffa515ea5df54a9",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DONUT,"
+        "tokenName": "Donut",
+      },
+      {
+        "tokenAddress": "0xf1290473e210b2108a85237fbcd7b6eb42cc654f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "HEDG",
+        "tokenName": "HedgeTrade",
+      },
+      {
+        "tokenAddress": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MATIC",
+        "tokenName": "Matic Token",
+      },
+      {
+        "tokenAddress": "0x985dd3d42de1e256d09e1c10f112bccb8015ad41",
+        "tokenDecimals": 18,
+        "tokenSymbol": "OCEAN",
+        "tokenName": "OceanToken",
+      },
+      {
+        "tokenAddress": "0x22c8ecf727c23422f47093b562ec53c139805301",
+        "tokenDecimals": 18,
+        "tokenSymbol": "REALTOKEN-16200-FULLERTON-AVE-DETROIT-MI,"
+        "tokenName": "RealToken 16200 Fullerton Ave Detroit MI",
+      },
+      {
+        "tokenAddress": "0xef8a2c1bc94e630463293f71bf5414d13e80f62d",
+        "tokenDecimals": 18,
+        "tokenSymbol": "SNX",
+        "tokenName": "Synthetix Network Token",
+      },
+      {
+        "tokenAddress": "0x07597255910a51509ca469568b048f2597e72504",
+        "tokenDecimals": 18,
+        "tokenSymbol": "1UP",
+        "tokenName": "Uptrennd",
+      },
+      {
+        "tokenAddress": "0xeb269732ab75a6fd61ea60b06fe994cd32a83549",
+        "tokenDecimals": 18,
+        "tokenSymbol": "USDx",
+        "tokenName": "dForce",
+      },
+      {
+        "tokenAddress": "0x14409b0fc5c7f87b5dad20754fe22d29a3de8217",
+        "tokenDecimals": 18,
+        "tokenSymbol": "PYRO",
+        "tokenName": "PYRO Network",
+      },
+      {
+        "tokenAddress": "0x0f4ca92660efad97a9a70cb0fe969c755439772c",
+        "tokenDecimals": 9,
+        "tokenSymbol": "LEV",
+        "tokenName": "Leverj",
+      },
+      {
+        "tokenAddress": "0x86fadb80d8d2cff3c3680819e4da99c10232ba0f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "EBASE",
+        "tokenName": "EURBASE Stablecoin",
+      },
+      {
+        "tokenAddress": "0x98cc3bd6af1880fcfda17ac477b2f612980e5e33",
+        "tokenDecimals": 8,
+        "tokenSymbol": "ocDai",
+        "tokenName": "Opyn cDai Insurance",
+      },
+      {
+        "tokenAddress": "0x419c4db4b9e25d6db2ad9691ccb832c8d9fda05e",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DRGN",
+        "tokenName": "Dragon",
+      },
+      {
+        "tokenAddress": "0x26e75307fc0c021472feb8f727839531f112f317",
+        "tokenDecimals": 18,
+        "tokenSymbol": "C20",
+        "tokenName": "Crypto20",
+      },
+      {
+        "tokenAddress": "0xd559f20296ff4895da39b5bd9add54b442596a61",
+        "tokenDecimals": 18,
+        "tokenSymbol": "FTX",
+        "tokenName": "FintruX Network",
+      },
+      {
+        "tokenAddress": "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",
+        "tokenDecimals": 8,
+        "tokenSymbol": "ENG",
+        "tokenName": "Enigma",
+      },
+      {
+        "tokenAddress": "0x14094949152eddbfcd073717200da82fed8dc960",
+        "tokenDecimals": 18,
+        "tokenSymbol": "iDAI",
+        "tokenName": "bZx DAI iToken",
+      },
+      {
+        "tokenAddress": "0x39aa39c021dfbae8fac545936693ac917d5e7563",
+        "tokenDecimals": 8,
+        "tokenSymbol": "cUSDC",
+        "tokenName": "Compound USD Coin",
+      },
+      {
+        "tokenAddress": "0x43e5f59247b235449e16ec84c46ba43991ef6093",
+        "tokenDecimals": 18,
+        "tokenSymbol": "CBI",
+        "tokenName": "Coin Bank Int",
+      },
+      {
+        "tokenAddress": "0xe5caef4af8780e59df925470b050fb23c43ca68c",
+        "tokenDecimals": 6,
+        "tokenSymbol": "FRM",
+        "tokenName": "Ferrum Network Token",
+      },
+      {
+        "tokenAddress": "0xb26631c6dda06ad89b93c71400d25692de89c068",
+        "tokenDecimals": 18,
+        "tokenSymbol": "MINDS,"
+        "tokenName": "Minds",
+      },
+      {
+        "tokenAddress": "0x5adc961d6ac3f7062d2ea45fefb8d8167d44b190",
+        "tokenDecimals": 18,
+        "tokenSymbol": "DTH",
+        "tokenName": "Dether",
+      },
+      {
+        "tokenAddress": "0xed42cedcadbfbcaa3e6f411b09567c2c0b5ad28f",
+        "tokenDecimals": 18,
+        "tokenSymbol": "REALTOKEN-9336-PATTON-ST-DETROIT-MI",
+        "tokenName": "RealToken 9336 Patton Street Detroit MI",
+      },
+      {
+        "tokenAddress": "0x06f65b8cfcb13a9fe37d836fe9708da38ecb29b2",
+        "tokenDecimals": 18,
+        "tokenSymbol": "FAME",
+        "tokenName": "SAINT FAME: Genesis Shirt",
+      },
+      {
+        "tokenAddress": "0x6fd016ccc4611f7bab1dd3267334cb0216ef47f9",
+        "tokenDecimals": 18,
+        "tokenSymbol": "REALTOKEN-8342-SCHAEFER-HWY-DETROIT-MI,"
+        "tokenName": "RealToken 8342 Schaefer Hwy Detroit MI",
+      }
+    ]
+  }
+}
