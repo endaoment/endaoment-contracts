@@ -12,16 +12,19 @@ const infuraEndpoint = "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
 const web3 = new Web3(provider);
 
-const tokensToUnlock = [{
-  "tokenAddress": "0x8ae2a0bfb3315b63ee8e88ac7d3f6b5a68f01cf5",
-  "tokenDecimals": 18,
-  "tokenSymbol": "SNX",
-  "tokenName": "SNX",
-}]
+const tokensToUnlock = [
+
+  {
+    "tokenAddress": "",
+    "tokenDecimals": 18,
+    "tokenSymbol": "",
+    "tokenName": "",
+  },
+]
+
 const unlockToken = async (tokenContractAddress) => {
-  const nonce = await web3.eth.getTransactionCount(accounts[0])
   const tokenContract = await new web3.eth.Contract(ERC20.abi, tokenContractAddress)
-  const receipt = await tokenContract.methods.approve("0xf164fC0Ec4E93095b804a4795bBe1e041497b92a", "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: accountant, nonce, gasPrice: web3.utils.toWei("545", "gwei") })
+  const receipt = await tokenContract.methods.approve("0x7a250d5630b4cf539739df2c5dacb4c659f2488d", "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: accountant })
 
   return receipt
 }
@@ -47,7 +50,7 @@ const deploy = async () => {
     return
   })
 
-  return console.log("All tokens approved")
+  return
 };
 
 
