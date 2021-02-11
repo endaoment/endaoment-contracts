@@ -826,6 +826,42 @@ ETH, WETH, DAI, USDC, MKR, HEX, DAI, SNX, PNK, sETH, UBT, LINK, BAT, WBTC, REP, 
         "tokenSymbol": "SUSHI",
         "tokenName": "SUSHI",
       },
+      {
+        "tokenAddress": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+        "tokenDecimals": 18,
+        "tokenSymbol": "AAVE",
+        "tokenName": "Aave Token",
+      },
+      {
+        "tokenAddress": "0xba100000625a3754423978a60c9317c58a424e3d",
+        "tokenDecimals": 18,
+        "tokenSymbol": "BAL",
+        "tokenName": "Balancer Token",
+      },
+      {
+        "tokenAddress": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+        "tokenDecimals": 18,
+        "tokenSymbol": "COMP",
+        "tokenName": "Compound Token",
+      },
+      {
+        "tokenAddress": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+        "tokenDecimals": 18,
+        "tokenSymbol": "CRV",
+        "tokenName": "Curve DAO Token",
+      },
+      {
+        "tokenAddress": "0xc944e90c64b2c07662a292be6244bdf05cda44a7",
+        "tokenDecimals": 18,
+        "tokenSymbol": "GRT",
+        "tokenName": "Graph Token",
+      },
+      {
+        "tokenAddress": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+        "tokenDecimals": 18,
+        "tokenSymbol": "UNI",
+        "tokenName": "Uniswap Token",
+      },
     ]
   }
 }

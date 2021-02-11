@@ -13,7 +13,6 @@ const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
 const web3 = new Web3(provider);
 
 const tokensToUnlock = [
-
   {
     "tokenAddress": "",
     "tokenDecimals": 18,
